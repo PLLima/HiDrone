@@ -1,7 +1,7 @@
 import { get } from "@/server/users";
 
 export default async function Home() {
-  const data = get();
+  // const data = get();
   
   return (
     <div>
