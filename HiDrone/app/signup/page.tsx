@@ -15,7 +15,6 @@ type SubmittedData = {
   name: string;
   email: string;
   password: string;
-  country: string;
   terms: string;
 };
 
@@ -38,6 +37,14 @@ export default function AboutPage() {
 
     return null;
   };
+
+  // Real-time password repeat validation
+  const getPasswordRepeatError = (value1: string, value2: string): string | null => {
+    if (value1 !== value2) {
+      return "Passwords do not match";
+    }
+    return null;
+  }
 
   const onSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -124,20 +131,6 @@ export default function AboutPage() {
           value={password}
           onValueChange={setPassword}
         />
-
-        <Select
-          isRequired
-          label="Country"
-          labelPlacement="outside"
-          name="country"
-          placeholder="Select country"
-        >
-          <SelectItem key="br">Brazil</SelectItem>
-          <SelectItem key="us">United States</SelectItem>
-          <SelectItem key="ca">Canada</SelectItem>
-          <SelectItem key="uk">United Kingdom</SelectItem>
-          <SelectItem key="au">Australia</SelectItem>
-        </Select>
 
         <Checkbox
           isRequired
