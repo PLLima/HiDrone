@@ -20,6 +20,7 @@ type SubmittedData = {
 
 export default function AboutPage() {
   const [password, setPassword] = React.useState<string>("");
+  const [repeat_password, setRepeatPassword] = React.useState<string>("");
   const [submitted, setSubmitted] = React.useState<SubmittedData | null>(null);
   const [errors, setErrors] = React.useState<Errors>({});
 
@@ -39,7 +40,7 @@ export default function AboutPage() {
   };
 
   // Real-time password repeat validation
-  const getPasswordRepeatError = (value1: string, value2: string): string | null => {
+  const getRepeatPasswordError = (value1: string, value2: string): string | null => {
     if (value1 !== value2) {
       return "Passwords do not match";
     }
@@ -128,8 +129,22 @@ export default function AboutPage() {
           name="password"
           placeholder="Enter your password"
           type="password"
+          autoComplete="new-password"
           value={password}
           onValueChange={setPassword}
+        />
+
+        <Input
+          isRequired
+          errorMessage={getRepeatPasswordError(password, repeat_password)}
+          isInvalid={getRepeatPasswordError(password, repeat_password) !== null}
+          label="Repeat password"
+          labelPlacement="outside"
+          placeholder="Repeat your password"
+          type="password"
+          autoComplete="new-password"
+          value={repeat_password}
+          onValueChange={setRepeatPassword}
         />
 
         <Checkbox
