@@ -18,7 +18,7 @@ type SubmittedData = {
   terms: string;
 };
 
-export default function AboutPage() {
+export default function SignUpPage() {
   const [password, setPassword] = React.useState<string>("");
   const [repeat_password, setRepeatPassword] = React.useState<string>("");
   const [submitted, setSubmitted] = React.useState<SubmittedData | null>(null);
