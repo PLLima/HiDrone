@@ -21,21 +21,6 @@ export default function SignInPage() {
   const [submitted, setSubmitted] = React.useState<SubmittedData | null>(null);
   const [errors, setErrors] = React.useState<Errors>({});
 
-  // Real-time password validation
-  const getPasswordError = (value: string): string | null => {
-    if (value.length < 4) {
-      return "Password must be 4 characters or more";
-    }
-    if ((value.match(/[A-Z]/g) || []).length < 1) {
-      return "Password needs at least 1 uppercase letter";
-    }
-    if ((value.match(/[^a-z]/gi) || []).length < 1) {
-      return "Password needs at least 1 symbol";
-    }
-
-    return null;
-  };
-
   const onSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -43,12 +28,6 @@ export default function SignInPage() {
 
     // Custom validation checks
     const newErrors: Errors = {};
-
-    // Password validation
-    const passwordError = getPasswordError(data.password);
-    if (passwordError) {
-      newErrors.password = passwordError;
-    }
 
     // Username validation
     if (data.name === "admin") {
@@ -93,8 +72,6 @@ export default function SignInPage() {
 
         <Input
           isRequired
-          errorMessage={getPasswordError(password)}
-          isInvalid={getPasswordError(password) !== null}
           label="Password"
           labelPlacement="outside"
           name="password"
