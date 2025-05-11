@@ -59,8 +59,19 @@ export const Navbar = () => {
           </Link>
           <ThemeSwitch />
         </NavbarItem>
-        <NavbarItem className="hidden lg:flex"></NavbarItem>
-
+        <NavbarItem className="hidden lg:flex items-center gap-4">
+          <NextLink
+            href="/login"
+            className="text-default-500 hover:text-primary transition-colors"
+          >
+            Log in
+          </NextLink>
+          <NextLink href="/signup">
+            <Button variant="ghost" color="primary">
+              Sign up
+            </Button>
+          </NextLink>
+        </NavbarItem>
       </NavbarContent>
 
       <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
