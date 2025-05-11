@@ -1,40 +1,22 @@
 "use client";
 
-import { title } from "@/components/primitives";
 import React, { FormEvent } from "react";
-import { Form, Input, Select, SelectItem, Checkbox, Button } from "@heroui/react";
+import { Form, Input, Button } from "@heroui/react";
 
 // Define types for errors and submitted data
 type Errors = {
-  password?: string;
-  name?: string;
+  pickup?: string;
+  Delivery?: string;
 };
 
 type SubmittedData = {
-  name: string;
-  email: string;
-  password: string;
+  pickup: string;
+  Delivery: string;
 };
 
-export default function HirePage() {
-  const [password, setPassword] = React.useState<string>("");
+export default function RideRequestPage() {
   const [submitted, setSubmitted] = React.useState<SubmittedData | null>(null);
   const [errors, setErrors] = React.useState<Errors>({});
-
-  // Real-time password validation
-  const getPasswordError = (value: string): string | null => {
-    if (value.length < 4) {
-      return "Password must be 4 characters or more";
-    }
-    if ((value.match(/[A-Z]/g) || []).length < 1) {
-      return "Password needs at least 1 uppercase letter";
-    }
-    if ((value.match(/[^a-z]/gi) || []).length < 1) {
-      return "Password needs at least 1 symbol";
-    }
-
-    return null;
-  };
 
   const onSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -44,15 +26,12 @@ export default function HirePage() {
     // Custom validation checks
     const newErrors: Errors = {};
 
-    // Password validation
-    const passwordError = getPasswordError(data.password);
-    if (passwordError) {
-      newErrors.password = passwordError;
+    if (!data.pickup) {
+      newErrors.pickup = "Please enter a pickup location";
     }
 
-    // Username validation
-    if (data.name === "admin") {
-      newErrors.name = "Nice try! Choose a different username";
+    if (!data.Delivery) {
+      newErrors.Delivery = "Please enter a delivery location";
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -66,60 +45,54 @@ export default function HirePage() {
   };
 
   return (
-    <Form
-      className="w-full justify-center items-center space-y-4"
-      validationErrors={errors}
-      onReset={() => setSubmitted(null)}
-      onSubmit={onSubmit}
-    >
-      <div className="flex flex-col gap-4 max-w-md">
-        <Input
-          isRequired
-          errorMessage={({ validationDetails }) => {
-            if (validationDetails.valueMissing) {
-              return "Please enter your email";
-            }
-            if (validationDetails.typeMismatch) {
-              return "Please enter a valid email address";
-            }
-          }}
-          label="Email"
-          labelPlacement="outside"
-          name="email"
-          placeholder="Enter your email"
-          type="email"
-          autoComplete="email"
-        />
+    <div className="w-full flex flex-col items-center space-y-6">
+      <h1 className="text-4xl font-bold text-center">Request Delivery</h1>
+      <Form
+        className="w-full justify-center items-center space-y-4"
+        validationErrors={errors}
+        onReset={() => setSubmitted(null)}
+        onSubmit={onSubmit}
+      >
+        <div className="flex flex-col gap-4 max-w-md">
+          <Input
+            errorMessage={({ validationDetails }) => {
+              if (validationDetails.valueMissing) {
+                return "Please enter a pickup location";
+              }
+              return errors.pickup;
+            }}
+            name="pickup"
+            placeholder="Pickup location"
+            type="text"
+            autoComplete="street-address"
+          />
 
-        <Input
-          isRequired
-          errorMessage={getPasswordError(password)}
-          isInvalid={getPasswordError(password) !== null}
-          label="Password"
-          labelPlacement="outside"
-          name="password"
-          placeholder="Enter your password"
-          type="password"
-          autoComplete="password"
-          value={password}
-          onValueChange={setPassword}
-        />
+          <Input
+            errorMessage={({ validationDetails }) => {
+              if (validationDetails.valueMissing) {
+                return "Please enter a delivery location";
+              }
+              return errors.Delivery;
+            }}
+            name="Delivery"
+            placeholder="Delivery location"
+            type="text"
+            autoComplete="street-address"
+          />
 
-        <div className="flex gap-4">
-          <Button className="w-full" color="primary" type="submit">
-            Submit
-          </Button>
-          <Button type="reset" variant="bordered">
-            Reset
-          </Button>
+          <div className="flex gap-4">
+            <Button className="w-full" color="primary" type="submit">
+              See Drones Avaliable
+            </Button>
+          </div>
         </div>
-      </div>
 
-      {submitted && (
-        <div className="text-small text-default-500 mt-4">
-          Submitted data: <pre>{JSON.stringify(submitted, null, 2)}</pre>
-        </div>
-      )}
-    </Form>
+        {submitted && (
+          <div className="text-small text-default-500 mt-4">
+            Submitted data: <pre>{JSON.stringify(submitted, null, 2)}</pre>
+          </div>
+        )}
+      </Form>
+    </div>
   );
 }
