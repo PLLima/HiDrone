@@ -1,39 +1,34 @@
 "use client";
 
-import { title } from "@/components/primitives";
 import React, { FormEvent } from "react";
-import { Form, Input, Select, SelectItem, Checkbox, Button } from "@heroui/react";
+import { Form, Input, Button } from "@heroui/react";
 
 // Define types for errors and submitted data
 type Errors = {
-  password?: string;
-  name?: string;
+  enterpriseName?: string;
+  cnpj?: string;
 };
 
 type SubmittedData = {
-  name: string;
-  email: string;
-  password: string;
+  enterpriseName: string;
+  cnpj: string;
 };
 
 export default function SupplyPage() {
-  const [password, setPassword] = React.useState<string>("");
   const [submitted, setSubmitted] = React.useState<SubmittedData | null>(null);
   const [errors, setErrors] = React.useState<Errors>({});
+  const [cnpj, setCnpj] = React.useState<string>("");
 
-  // Real-time password validation
-  const getPasswordError = (value: string): string | null => {
-    if (value.length < 4) {
-      return "Password must be 4 characters or more";
-    }
-    if ((value.match(/[A-Z]/g) || []).length < 1) {
-      return "Password needs at least 1 uppercase letter";
-    }
-    if ((value.match(/[^a-z]/gi) || []).length < 1) {
-      return "Password needs at least 1 symbol";
-    }
+  const formatCnpj = (value: string): string => {
+    // Remove all non-numeric characters
+    const numericValue = value.replace(/\D/g, "");
 
-    return null;
+    // Format as CNPJ (99.999.999/9999-99)
+    return numericValue
+      .replace(/^(\d{2})(\d)/, "$1.$2")
+      .replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3")
+      .replace(/\.(\d{3})(\d)/, ".$1/$2")
+      .replace(/(\d{4})(\d)/, "$1-$2");
   };
 
   const onSubmit = (e: FormEvent<HTMLFormElement>): void => {
@@ -41,18 +36,20 @@ export default function SupplyPage() {
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries()) as Record<string, string>;
 
+    // Remove formatting from CNPJ for validation
+    const unformattedCnpj = cnpj.replace(/\D/g, "");
+
     // Custom validation checks
     const newErrors: Errors = {};
 
-    // Password validation
-    const passwordError = getPasswordError(data.password);
-    if (passwordError) {
-      newErrors.password = passwordError;
+    if (!data.enterpriseName) {
+      newErrors.enterpriseName = "Please enter your enterprise name";
     }
 
-    // Username validation
-    if (data.name === "admin") {
-      newErrors.name = "Nice try! Choose a different username";
+    if (!unformattedCnpj) {
+      newErrors.cnpj = "Please enter your CNPJ";
+    } else if (!/^\d{14}$/.test(unformattedCnpj)) {
+      newErrors.cnpj = "CNPJ must be 14 digits";
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -62,64 +59,64 @@ export default function SupplyPage() {
 
     // Clear errors and submit
     setErrors({});
-    setSubmitted(data as SubmittedData);
+    setSubmitted({ ...data, cnpj: unformattedCnpj } as SubmittedData);
   };
 
   return (
-    <Form
-      className="w-full justify-center items-center space-y-4"
-      validationErrors={errors}
-      onReset={() => setSubmitted(null)}
-      onSubmit={onSubmit}
-    >
-      <div className="flex flex-col gap-4 max-w-md">
-        <Input
-          isRequired
-          errorMessage={({ validationDetails }) => {
-            if (validationDetails.valueMissing) {
-              return "Please enter your email";
-            }
-            if (validationDetails.typeMismatch) {
-              return "Please enter a valid email address";
-            }
-          }}
-          label="Email"
-          labelPlacement="outside"
-          name="email"
-          placeholder="Enter your email"
-          type="email"
-          autoComplete="email"
-        />
+    <div className="w-full flex flex-col items-center space-y-6">
+      <h1 className="text-4xl font-bold text-center">Supplier Registration</h1>
+      <Form
+        className="w-full justify-center items-center space-y-4"
+        validationErrors={errors}
+        onReset={() => setSubmitted(null)}
+        onSubmit={onSubmit}
+      >
+        <div className="flex flex-col gap-4 max-w-md">
+          <Input
+            isRequired
+            errorMessage={({ validationDetails }) => {
+              if (validationDetails.valueMissing) {
+                return "Please enter your enterprise name";
+              }
+              return errors.enterpriseName;
+            }}
+            label="Enterprise Name"
+            labelPlacement="outside"
+            name="enterpriseName"
+            placeholder="Enter your enterprise name"
+            type="text"
+            autoComplete="organization"
+          />
 
-        <Input
-          isRequired
-          errorMessage={getPasswordError(password)}
-          isInvalid={getPasswordError(password) !== null}
-          label="Password"
-          labelPlacement="outside"
-          name="password"
-          placeholder="Enter your password"
-          type="password"
-          autoComplete="password"
-          value={password}
-          onValueChange={setPassword}
-        />
+          <Input
+            isRequired
+            value={cnpj}
+            onValueChange={(value) => setCnpj(formatCnpj(value))}
+            errorMessage={() => errors.cnpj}
+            label="CNPJ"
+            labelPlacement="outside"
+            name="cnpj"
+            placeholder="Enter your CNPJ"
+            type="text"
+            autoComplete="off"
+          />
 
-        <div className="flex gap-4">
-          <Button className="w-full" color="primary" type="submit">
-            Submit
-          </Button>
-          <Button type="reset" variant="bordered">
-            Reset
-          </Button>
+          <div className="flex gap-4">
+            <Button className="w-full" color="primary" type="submit">
+              Submit
+            </Button>
+            <Button type="reset" variant="bordered">
+              Reset
+            </Button>
+          </div>
         </div>
-      </div>
 
-      {submitted && (
-        <div className="text-small text-default-500 mt-4">
-          Submitted data: <pre>{JSON.stringify(submitted, null, 2)}</pre>
-        </div>
-      )}
-    </Form>
+        {submitted && (
+          <div className="text-small text-default-500 mt-4">
+            Submitted data: <pre>{JSON.stringify(submitted, null, 2)}</pre>
+          </div>
+        )}
+      </Form>
+    </div>
   );
 }

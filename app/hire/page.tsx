@@ -6,12 +6,12 @@ import { Form, Input, Button } from "@heroui/react";
 // Define types for errors and submitted data
 type Errors = {
   pickup?: string;
-  Delivery?: string;
+  delivery?: string;
 };
 
 type SubmittedData = {
   pickup: string;
-  Delivery: string;
+  delivery: string;
 };
 
 export default function RideRequestPage() {
@@ -30,8 +30,8 @@ export default function RideRequestPage() {
       newErrors.pickup = "Please enter a pickup location";
     }
 
-    if (!data.Delivery) {
-      newErrors.Delivery = "Please enter a delivery location";
+    if (!data.delivery) {
+      newErrors.delivery = "Please enter a delivery location";
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -46,7 +46,7 @@ export default function RideRequestPage() {
 
   return (
     <div className="w-full flex flex-col items-center space-y-6">
-      <h1 className="text-4xl font-bold text-center">Request Delivery</h1>
+      <h1 className="text-4xl font-bold text-center">Hire Delivery</h1>
       <Form
         className="w-full justify-center items-center space-y-4"
         validationErrors={errors}
@@ -72,9 +72,9 @@ export default function RideRequestPage() {
               if (validationDetails.valueMissing) {
                 return "Please enter a delivery location";
               }
-              return errors.Delivery;
+              return errors.delivery;
             }}
-            name="Delivery"
+            name="delivery"
             placeholder="Delivery location"
             type="text"
             autoComplete="street-address"
@@ -82,7 +82,7 @@ export default function RideRequestPage() {
 
           <div className="flex gap-4">
             <Button className="w-full" color="primary" type="submit">
-              See Drones Avaliable
+              See drones avaliable
             </Button>
           </div>
         </div>
