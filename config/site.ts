@@ -53,7 +53,5 @@ export const siteConfig = {
   ],
   links: {
     github: "https://github.com/PLLima/HiDrone",
-    docs: "https://heroui.com",
-    sponsor: "https://patreon.com/jrgarciadev",
   },
 };
