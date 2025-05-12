@@ -1,7 +1,7 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-  name: "Next.js + HeroUI",
+  name: "HiDrone",
   description: "Homepage currently missing 😅",
   navItems: [
     {
