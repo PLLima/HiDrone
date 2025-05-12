@@ -76,9 +76,16 @@ export default function SignUpPage() {
       return;
     }
 
+    // Store the username  and email in localStorage
+    localStorage.setItem("logged_name_debug", data.name);
+    localStorage.setItem("logged_email_debug", data.email);
+
     // Clear errors and submit
     setErrors({});
     setSubmitted(data as SubmittedData);
+
+    // Redirect to "/Hire"
+    window.location.href = "/hire";
   };
 
   return (

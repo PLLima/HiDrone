@@ -1,3 +1,6 @@
+"use client";
+
+
 import {
   Navbar as HeroUINavbar,
   NavbarContent,
@@ -12,15 +15,22 @@ import { Link } from "@heroui/link";
 import { link as linkStyles } from "@heroui/theme";
 import NextLink from "next/link";
 import clsx from "clsx";
+import { useEffect, useState } from "react";
 
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
-import {
-  GithubIcon,
-  Logo,
-} from "@/components/icons";
+import { GithubIcon, Logo } from "@/components/icons";
+
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@heroui/react";
 
 export const Navbar = () => {
+  const [loggedName, setLoggedName] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Retrieve the logged_name_debug value from localStorage
+    const storedName = localStorage.getItem("logged_name_debug");
+    setLoggedName(storedName);
+  }, []);
 
   return (
     <HeroUINavbar maxWidth="xl" position="sticky">
@@ -37,7 +47,7 @@ export const Navbar = () => {
               <NextLink
                 className={clsx(
                   linkStyles({ color: "foreground" }),
-                  "data-[active=true]:text-primary data-[active=true]:font-medium",
+                  "data-[active=true]:text-primary data-[active=true]:font-medium"
                 )}
                 color="foreground"
                 href={item.href}
@@ -60,17 +70,45 @@ export const Navbar = () => {
           <ThemeSwitch />
         </NavbarItem>
         <NavbarItem className="hidden lg:flex items-center gap-4">
-          <NextLink
-            href="/login"
-            className="text-default-500 hover:text-primary transition-colors"
-          >
-            Log in
-          </NextLink>
-          <NextLink href="/signup">
-            <Button variant="ghost" color="primary">
-              Sign up
-            </Button>
-          </NextLink>
+          {loggedName ? (
+            // Display the logged name manu if it exists
+            <Dropdown backdrop="blur">
+              <DropdownTrigger>
+                <Button variant="bordered">{loggedName}</Button>
+              </DropdownTrigger>
+              <DropdownMenu aria-label="Static Actions" variant="faded">
+                <DropdownItem key="new">New file</DropdownItem>
+                <DropdownItem key="copy">Copy link</DropdownItem>
+                <DropdownItem key="edit">Edit file</DropdownItem>
+                <DropdownItem
+                  key="logout"
+                  className="text-danger"
+                  color="danger"
+                  onClick={() => {
+                  localStorage.removeItem("logged_name_debug");
+                  setLoggedName(null);
+                  }}
+                >
+                  Log Out
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          ) : (
+            // Display "Log in" and "Sign up" buttons if no logged name
+            <>
+              <NextLink
+                href="/login"
+                className="text-default-500 hover:text-primary transition-colors"
+              >
+                Log in
+              </NextLink>
+              <NextLink href="/signup">
+                <Button variant="ghost" color="primary">
+                  Sign up
+                </Button>
+              </NextLink>
+            </>
+          )}
         </NavbarItem>
       </NavbarContent>
 
@@ -91,8 +129,8 @@ export const Navbar = () => {
                   index === 2
                     ? "primary"
                     : index === siteConfig.navMenuItems.length - 1
-                      ? "danger"
-                      : "foreground"
+                    ? "danger"
+                    : "foreground"
                 }
                 href="#"
                 size="lg"

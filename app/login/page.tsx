@@ -39,9 +39,17 @@ export default function SignInPage() {
       return;
     }
 
+    // Stores the submitted data
+    localStorage.setItem("logged_email_debug", data.email);
+    // Stores a generic username
+    localStorage.setItem("logged_name_debug", "User");
+
     // Clear errors and submit
     setErrors({});
     setSubmitted(data as SubmittedData);
+
+    // Redirect to the "Hire" page
+    window.location.href = "/hire";
   };
 
   return (
