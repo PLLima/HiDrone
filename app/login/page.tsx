@@ -56,7 +56,6 @@ export default function SignInPage() {
     <Form
       className="w-full justify-center items-center space-y-4"
       validationErrors={errors}
-      onReset={() => setSubmitted(null)}
       onSubmit={onSubmit}
     >
       <div className="flex flex-col gap-4 max-w-md">
@@ -93,9 +92,6 @@ export default function SignInPage() {
         <div className="flex gap-4">
           <Button className="w-full" color="primary" type="submit">
             Submit
-          </Button>
-          <Button type="reset" variant="bordered">
-            Reset
           </Button>
         </div>
       </div>

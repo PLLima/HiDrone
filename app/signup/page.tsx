@@ -8,14 +8,12 @@ import { Form, Input, Select, SelectItem, Checkbox, Button } from "@heroui/react
 type Errors = {
   password?: string;
   name?: string;
-  terms?: string;
 };
 
 type SubmittedData = {
   name: string;
   email: string;
   password: string;
-  terms: string;
 };
 
 export default function SignUpPage() {
@@ -23,6 +21,10 @@ export default function SignUpPage() {
   const [repeat_password, setRepeatPassword] = React.useState<string>("");
   const [submitted, setSubmitted] = React.useState<SubmittedData | null>(null);
   const [errors, setErrors] = React.useState<Errors>({});
+  const [touched, setTouched] = React.useState<{ password: boolean; repeat_password: boolean }>({
+    password: false,
+    repeat_password: false,
+  });
 
   // Real-time password validation
   const getPasswordError = (value: string): string | null => {
@@ -45,7 +47,7 @@ export default function SignUpPage() {
       return "Passwords do not match";
     }
     return null;
-  }
+  };
 
   const onSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -71,12 +73,7 @@ export default function SignUpPage() {
       return;
     }
 
-    if (data.terms !== "true") {
-      setErrors({ terms: "Please accept the terms" });
-      return;
-    }
-
-    // Store the username  and email in localStorage
+    // Store the username and email in localStorage
     localStorage.setItem("logged_name_debug", data.name);
     localStorage.setItem("logged_email_debug", data.email);
 
@@ -92,7 +89,6 @@ export default function SignUpPage() {
     <Form
       className="w-full justify-center items-center space-y-4"
       validationErrors={errors}
-      onReset={() => setSubmitted(null)}
       onSubmit={onSubmit}
     >
       <div className="flex flex-col gap-4 max-w-md">
@@ -129,8 +125,8 @@ export default function SignUpPage() {
 
         <Input
           isRequired
-          errorMessage={getPasswordError(password)}
-          isInvalid={getPasswordError(password) !== null}
+          errorMessage={touched.password ? getPasswordError(password) : null} // Show error only if touched
+          isInvalid={touched.password && getPasswordError(password) !== null}
           label="Password"
           labelPlacement="outside"
           name="password"
@@ -138,44 +134,35 @@ export default function SignUpPage() {
           type="password"
           autoComplete="new-password"
           value={password}
-          onValueChange={setPassword}
+          onValueChange={(value) => {
+            setPassword(value);
+            setTouched((prev) => ({ ...prev, password: true })); // Mark as touched
+          }}
         />
 
         <Input
           isRequired
-          errorMessage={getRepeatPasswordError(password, repeat_password)}
-          isInvalid={getRepeatPasswordError(password, repeat_password) !== null}
+          errorMessage={
+            touched.repeat_password ? getRepeatPasswordError(password, repeat_password) : null
+          } // Show error only if touched
+          isInvalid={
+            touched.repeat_password && getRepeatPasswordError(password, repeat_password) !== null
+          }
           label="Repeat password"
           labelPlacement="outside"
           placeholder="Repeat your password"
           type="password"
           autoComplete="new-password"
           value={repeat_password}
-          onValueChange={setRepeatPassword}
-        />
-
-        <Checkbox
-          isRequired
-          classNames={{
-            label: "text-small",
+          onValueChange={(value) => {
+            setRepeatPassword(value);
+            setTouched((prev) => ({ ...prev, repeat_password: true })); // Mark as touched
           }}
-          isInvalid={!!errors.terms}
-          name="terms"
-          validationBehavior="aria"
-          value="true"
-          onValueChange={() => setErrors((prev) => ({ ...prev, terms: undefined }))}
-        >
-          I agree to the terms and conditions
-        </Checkbox>
-
-        {errors.terms && <span className="text-danger text-small">{errors.terms}</span>}
+        />
 
         <div className="flex gap-4">
           <Button className="w-full" color="primary" type="submit">
             Submit
-          </Button>
-          <Button type="reset" variant="bordered">
-            Reset
           </Button>
         </div>
       </div>
