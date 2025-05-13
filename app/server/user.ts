@@ -15,7 +15,7 @@ export async function registerClient(client: ClientData) {
     return false;
   }
 
-  await prisma.client.create({
+  await (prisma as any).client.create({
   data: {
     name: client.name,
     email: client.email,
@@ -28,7 +28,7 @@ export async function registerClient(client: ClientData) {
 }
 
 export async function checkClient(email: string) {
-  const existingUser = await prisma.client.findUnique({
+  const existingUser = await (prisma as any).client.findUnique({
     where: {
       email: email,
     },
