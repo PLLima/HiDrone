@@ -1,38 +1,30 @@
 // schema.prisma
 
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "postgresql"
-    url = env("DATABASE_URL") // uses connection pooling
-}
-
-model User {
-    id            Int       @id @default(autoincrement())
-    name          String?
-    email         String?   @unique
-    password      String
-
-    client       Client?
-    suplier      Supplier?
-
-    @@map(name: "users")
+  provider = "postgresql"
+  url      = env("DATABASE_URL") // uses connection pooling
 }
 
 model Client {
-    id         Int     @id
-    user       User    @relation(fields: [id], references: [id])
-    credits    Decimal
+  id       Int        @id @default(autoincrement())
+  name     String
+  email    String     @unique
+  password String
+  credits Decimal
 
-    @@map(name: "clients")
+  @@map(name: "clients")
 }
 
 model Supplier {
-    id         Int     @id
-    user       User    @relation(fields: [id], references: [id])
-    cnpj       Int     @unique
+  id       Int        @id @default(autoincrement())
+  name     String
+  email    String     @unique
+  password String
+  cnpj   Int  @unique
 
-    @@map(name: "suppliers")
+  @@map(name: "suppliers")
 }
