@@ -20,11 +20,15 @@ import { useEffect, useState } from "react";
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { GithubIcon, Logo } from "@/components/icons";
+import { LogInModal } from "./login";
 
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@heroui/react";
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, useDisclosure} from "@heroui/react";
 
 export const Navbar = () => {
   const [loggedName, setLoggedName] = useState<string | null>(null);
+  const {isOpen, onOpenChange} = useDisclosure({
+    defaultOpen: false,
+  });
 
   useEffect(() => {
     // Retrieve the logged_name_debug value from localStorage
@@ -96,12 +100,15 @@ export const Navbar = () => {
           ) : (
             // Display "Log in" and "Sign up" buttons if no logged name
             <>
-              <NextLink
-                href="/login"
-                className="text-default-500 hover:text-primary transition-colors"
+              <Button
+                // When clicked, open the login modal
+                onClick={() => {
+                  
+                }}
               >
                 Log in
-              </NextLink>
+              </Button>
+              <LogInModal isOpenExternal={isOpen} />
               <NextLink href="/signup">
                 <Button variant="ghost" color="primary">
                   Sign up
