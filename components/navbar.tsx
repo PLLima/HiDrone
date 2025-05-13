@@ -86,7 +86,7 @@ export const Navbar = () => {
                   key="logout"
                   className="text-danger"
                   color="danger"
-                  onClick={() => {
+                  onPress={() => {
                   localStorage.removeItem("logged_name_debug");
                   setLoggedName(null);
                   }}

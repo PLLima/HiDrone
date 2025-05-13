@@ -14,7 +14,7 @@ type SubmittedData = {
   cnpj: string;
 };
 
-export default function SupplyPage() {
+export default function ResgitrationSupplyPage() {
   const [submitted, setSubmitted] = React.useState<SubmittedData | null>(null);
   const [errors, setErrors] = React.useState<Errors>({});
   const [cnpj, setCnpj] = React.useState<string>("");
@@ -57,9 +57,16 @@ export default function SupplyPage() {
       return;
     }
 
+    // Save data to localStorage
+    localStorage.setItem("enterprise_name_debug", data.enterpriseName);
+    localStorage.setItem("cnpj_debug", unformattedCnpj);
+
     // Clear errors and submit
     setErrors({});
     setSubmitted({ ...data, cnpj: unformattedCnpj } as SubmittedData);
+
+    // Redirect to supply page
+    window.location.href = "/supply";
   };
 
   return (
@@ -80,9 +87,7 @@ export default function SupplyPage() {
               return errors.enterpriseName;
             }}
             label="Enterprise Name"
-            labelPlacement="outside"
             name="enterpriseName"
-            placeholder="Enter your enterprise name"
             type="text"
             autoComplete="organization"
           />
@@ -93,9 +98,7 @@ export default function SupplyPage() {
             onValueChange={(value) => setCnpj(formatCnpj(value))}
             errorMessage={() => errors.cnpj}
             label="CNPJ"
-            labelPlacement="outside"
             name="cnpj"
-            placeholder="Enter your CNPJ"
             type="text"
             autoComplete="off"
           />

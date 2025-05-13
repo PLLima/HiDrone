@@ -62,7 +62,7 @@ export default function RideRequestPage() {
               return errors.pickup;
             }}
             name="pickup"
-            placeholder="Pickup location"
+            label="Pickup location"
             type="text"
             autoComplete="street-address"
           />
@@ -75,7 +75,7 @@ export default function RideRequestPage() {
               return errors.delivery;
             }}
             name="delivery"
-            placeholder="Delivery location"
+            label="Delivery location"
             type="text"
             autoComplete="street-address"
           />
