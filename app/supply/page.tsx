@@ -1,30 +1,48 @@
 "use client";
 
 import { title, subtitle } from "@/components/primitives";
-import {Link, useDisclosure} from "@heroui/react";
+import { useDisclosure } from "@heroui/react";
 import { LogInModal } from "@/components/login";
-import { Sign } from "crypto";
 import { SignUpModal } from "@/components/signup";
-
+import React, { useEffect, useState } from "react";
 
 export default function SupplyPage() {
   const { isOpen: isOpenLogin, onOpen: onOpenLogin, onClose: onCloseLogin } = useDisclosure();
   const { isOpen: isOpenSignup, onOpen: onOpenSignup, onClose: onCloseSignup } = useDisclosure();
+
+  const [loggedName, setLoggedName] = useState<string | null>(null);
+  const [enterpriseName, setEnterpriseName] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Access localStorage only on the client side
+    const name = localStorage.getItem("logged_name_debug");
+    const enterprise = localStorage.getItem("enterprise_name_debug");
+    setLoggedName(name);
+    setEnterpriseName(enterprise);
+  }, []);
+
   const SessionAdvise = () => {
-    // Analize localstorage user name and enterprise name
-    
     // If user name is null, show a message
-    if (localStorage.getItem("logged_name_debug") === null) {
+    if (!loggedName) {
       return (
-        <div className={subtitle({})}> 
-          Please <button onClick={onOpenLogin} className="text-blue-500">log in</button> or <button onClick={onOpenSignup} className="text-blue-500">sign up</button> up to manage your supply chain.
+        <div className={subtitle({})}>
+          Please{" "}
+          <button onClick={onOpenLogin} className="text-blue-500">
+            log in
+          </button>{" "}
+          or{" "}
+          <button onClick={onOpenSignup} className="text-blue-500">
+            sign up
+          </button>{" "}
+          to manage your supply chain.
           <LogInModal isOpen={isOpenLogin} onClose={onCloseLogin} />
           <SignUpModal isOpen={isOpenSignup} onClose={onCloseSignup} />
         </div>
       );
     }
+
     // If enterprise name is null, show another message
-    if (localStorage.getItem("enterprise_name_debug") === null) {
+    if (!enterpriseName) {
       return (
         <a href="/supply/registration" className="text-blue-500 underline">
           Please, register your enterprise to manage your supply chain.
@@ -35,7 +53,7 @@ export default function SupplyPage() {
     // If both are not null, show the information
     return (
       <span className={subtitle({})}>
-        Welcome, {localStorage.getItem("logged_name_debug")}! You are managing the supply chain of {localStorage.getItem("enterprise_name_debug")}.
+        Welcome, {loggedName}! You are managing the supply chain of {enterpriseName}.
       </span>
     );
   };
@@ -50,7 +68,6 @@ export default function SupplyPage() {
       <div className="flex gap-3">
         <SessionAdvise />
       </div>
-
     </section>
   );
 }
