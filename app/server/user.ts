@@ -8,19 +8,19 @@ export type ClientData = {
   credits: number;
 };
 
-export async function registerClient(data: ClientData) {
+export async function registerClient(client: ClientData) {
   
-  const existingUser = await checkClient(data.email);
+  const existingUser = await checkClient(client.email);
   if (existingUser) {
     return false;
   }
 
   await prisma.client.create({
   data: {
-    email: data.email,
-    name: data.name,
-    password: data.password,
-    credits: data.credits
+    email: client.email,
+    name: client.name,
+    password: client.password,
+    credits: client.credits
   },
 })
 
