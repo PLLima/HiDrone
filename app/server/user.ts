@@ -17,10 +17,10 @@ export async function registerClient(client: ClientData) {
 
   await prisma.client.create({
   data: {
-    email: client.email,
     name: client.name,
+    email: client.email,
     password: client.password,
-    credits: client.credits
+    credits: client.credits,
   },
 })
 
