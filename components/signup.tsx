@@ -84,8 +84,7 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
     setErrors({});
     setSubmitted(data as SubmittedData);
 
-    // Redirect to "/Hire"
-    window.location.href = "/hire";
+    window.location.reload();
   };
 
 

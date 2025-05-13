@@ -48,8 +48,7 @@ export const LogInModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =
                 // Stores a generic username
                 localStorage.setItem("logged_name_debug", "User");
 
-                // Redirect to the "Hire" page
-                window.location.href = "/hire";
+                window.location.reload();
               }}
             >
               <div className="flex flex-col gap-4 max-w-md">

@@ -89,6 +89,7 @@ export const Navbar = () => {
                   onPress={() => {
                   localStorage.removeItem("logged_name_debug");
                   setLoggedName(null);
+                  window.location.reload();
                   }}
                 >
                   Log Out
