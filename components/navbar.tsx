@@ -26,9 +26,7 @@ import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, useDisclosure} fr
 
 export const Navbar = () => {
   const [loggedName, setLoggedName] = useState<string | null>(null);
-  const {isOpen, onOpenChange} = useDisclosure({
-    defaultOpen: false,
-  });
+  const { isOpen: isOpenLogin, onOpen: onOpenLogin, onClose: onCloseLogin } = useDisclosure();
 
   useEffect(() => {
     // Retrieve the logged_name_debug value from localStorage
@@ -99,22 +97,21 @@ export const Navbar = () => {
             </Dropdown>
           ) : (
             // Display "Log in" and "Sign up" buttons if no logged name
-            <>
+            <div className="flex gap-2">
               <Button
-                // When clicked, open the login modal
-                onClick={() => {
-                  
-                }}
+              // When clicked, open the login modal
+              onPress={onOpenLogin}
+              variant="light"
               >
-                Log in
+              Log in
               </Button>
-              <LogInModal isOpenExternal={isOpen} />
+              <LogInModal isOpen={isOpenLogin} onClose={onCloseLogin} />
               <NextLink href="/signup">
-                <Button variant="ghost" color="primary">
-                  Sign up
-                </Button>
+              <Button variant="ghost" color="primary">
+                Sign up
+              </Button>
               </NextLink>
-            </>
+            </div>
           )}
         </NavbarItem>
       </NavbarContent>
