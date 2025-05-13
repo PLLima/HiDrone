@@ -11,23 +11,20 @@ import {
 import { title } from "@/components/primitives";
 import React, { FormEvent } from "react";
 import { Form, Input, Select, SelectItem, Checkbox, Button } from "@heroui/react";
+import { ClientData, registerClient } from "@/app/server/user";
+import { hash } from "bcryptjs";
 
 // Define types for errors and submitted data
 type Errors = {
   password?: string;
   name?: string;
-};
-
-type SubmittedData = {
-  name: string;
-  email: string;
-  password: string;
+  email?: string;
 };
 
 export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   const [password, setPassword] = React.useState<string>("");
   const [repeat_password, setRepeatPassword] = React.useState<string>("");
-  const [submitted, setSubmitted] = React.useState<SubmittedData | null>(null);
+  const [submitted, setSubmitted] = React.useState<ClientData | null>(null);
   const [errors, setErrors] = React.useState<Errors>({});
   const [touched, setTouched] = React.useState<{ password: boolean; repeat_password: boolean }>({
     password: false,
@@ -57,7 +54,7 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
     return null;
   };
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>): void => {
+  async function onSubmit(e: FormEvent<HTMLFormElement>){
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries()) as Record<string, string>;
@@ -76,13 +73,30 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
       return;
     }
 
+    // Format the data to update the database
+    const hashedPassword = await hash(data.password, 10);
+    const formattedData = {
+      name: data.name,
+      email: data.email,
+      password: hashedPassword,
+      credits: 0,
+    };
+
+    // Try to register the client
+    const registered = await registerClient(formattedData);
+    if (registered === false) {
+      newErrors.email = "Email already exists";
+      setErrors(newErrors);
+      return;
+    }
+
     // Store the username and email in localStorage
     localStorage.setItem("logged_name_debug", data.name);
     localStorage.setItem("logged_email_debug", data.email);
 
     // Clear errors and submit
     setErrors({});
-    setSubmitted(data as SubmittedData);
+    setSubmitted(formattedData as ClientData);
 
     window.location.reload();
   };
