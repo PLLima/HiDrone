@@ -8,21 +8,36 @@ import {
   ModalFooter,
 } from "@heroui/react";
 
-import { title } from "@/components/primitives";
 import React, { FormEvent } from "react";
-import { Form, Input, Select, SelectItem, Checkbox, Button } from "@heroui/react";
+import { Form, Input, Button } from "@heroui/react";
 
 // Define types for errors and submitted data
 type Errors = {
   password?: string;
 };
 
-type SubmittedData = {
-  email: string;
-  password: string;
-};
-
 export const LogInModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData.entries()) as Record<string, string>;
+
+    // Custom validation checks
+    const newErrors: Errors = {};
+
+    if (Object.keys(newErrors).length > 0) {
+      return;
+    }
+
+    // Store the submitted data
+    localStorage.setItem("logged_email_debug", data.email);
+    localStorage.setItem("logged_name_debug", "User");
+
+    // Close the modal and reload the page
+    onClose();
+    window.location.reload();
+  };
+
   return (
     <Modal isOpen={isOpen} onOpenChange={(isOpen) => !isOpen && onClose()} backdrop="blur" size="xs">
       <ModalContent>
@@ -31,29 +46,11 @@ export const LogInModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =
           <ModalBody>
             <Form
               className="w-full justify-center items-center space-y-4"
-              onSubmit={(e: FormEvent<HTMLFormElement>) => {
-                e.preventDefault();
-                const formData = new FormData(e.currentTarget);
-                const data = Object.fromEntries(formData.entries()) as Record<string, string>;
-
-                // Custom validation checks
-                const newErrors: Errors = {};
-
-                if (Object.keys(newErrors).length > 0) {
-                  return;
-                }
-
-                // Stores the submitted data
-                localStorage.setItem("logged_email_debug", data.email);
-                // Stores a generic username
-                localStorage.setItem("logged_name_debug", "User");
-
-                window.location.reload();
-              }}
+              onSubmit={handleSubmit}
             >
               <div className="flex flex-col gap-4 max-w-md">
-                <Input name="email" label="Email"/>
-                <Input name="password" type="password" label="Password"/>
+                <Input name="email" label="Email" isRequired />
+                <Input name="password" type="password" label="Password" isRequired />
                 <div className="flex w-full gap-1">
                   <Button
                     type="button"
@@ -67,7 +64,6 @@ export const LogInModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =
                   <Button
                     type="submit"
                     className="flex-1"
-                    onPress={onClose}
                     color="primary"
                   >
                     Submit
@@ -76,7 +72,7 @@ export const LogInModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =
               </div>
             </Form>
           </ModalBody>
-        <ModalFooter className="h-4" />
+          <ModalFooter className="h-4" />
         </>
       </ModalContent>
     </Modal>
