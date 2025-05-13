@@ -15,11 +15,9 @@ import { Form, Input, Select, SelectItem, Checkbox, Button } from "@heroui/react
 // Define types for errors and submitted data
 type Errors = {
   password?: string;
-  name?: string;
 };
 
 type SubmittedData = {
-  name: string;
   email: string;
   password: string;
 };

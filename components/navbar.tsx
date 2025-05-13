@@ -21,12 +21,14 @@ import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { GithubIcon, Logo } from "@/components/icons";
 import { LogInModal } from "./login";
+import { SignUpModal } from "./signup";
 
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, useDisclosure} from "@heroui/react";
 
 export const Navbar = () => {
   const [loggedName, setLoggedName] = useState<string | null>(null);
   const { isOpen: isOpenLogin, onOpen: onOpenLogin, onClose: onCloseLogin } = useDisclosure();
+  const { isOpen: isOpenSignup, onOpen: onOpenSignup, onClose: onCloseSignup } = useDisclosure();
 
   useEffect(() => {
     // Retrieve the logged_name_debug value from localStorage
@@ -106,11 +108,10 @@ export const Navbar = () => {
               Log in
               </Button>
               <LogInModal isOpen={isOpenLogin} onClose={onCloseLogin} />
-              <NextLink href="/signup">
-              <Button variant="ghost" color="primary">
+              <Button variant="ghost" color="primary" onPress={onOpenSignup}>
                 Sign up
               </Button>
-              </NextLink>
+              <SignUpModal isOpen={isOpenSignup} onClose={onCloseSignup} />
             </div>
           )}
         </NavbarItem>
