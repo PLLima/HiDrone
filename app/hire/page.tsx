@@ -28,11 +28,14 @@ export const cities = [
 // Mock data for drones (same data for all drones for now)
 const mockDrones = Array.from({ length: 12 }, (_, index) => ({
   id: `drone-${index + 1}`,
+  supplier: "Drone Supplier Inc.",
   model: "Drone Model X",
   neighborhood: "Downtown",
   image: "https://media.craiyon.com/2025-04-15/xk67yE3jTA6QC0-N-CqA4Q.webp",
+  drone_weight: "2.5",
+  drone_dimentions: "2x2x2",
   weight_capacity: "1.5",
-  volume_capacity: "2",
+  dimentions_capacity: "2x1x1",
   material: "Carbon Fiber",
 }));
 
@@ -72,8 +75,11 @@ const DroneDetailsModal = ({ isOpen, onClose, droneId }: { isOpen: boolean; onCl
     { name: "Model", value: drone.model },
     { name: "Neighborhood", value: drone.neighborhood },
     { name: "Weight Capacity", value: `${drone.weight_capacity} kg` },
-    { name: "Volume Capacity", value: `${drone.volume_capacity} m³` },
+    { name: "Dimensions Capacity", value: `${drone.dimentions_capacity} (m)` },
+    { name: "Drone Weight", value: `${drone.drone_weight} kg` },
+    { name: "Drone Dimensions", value: `${drone.drone_dimentions} (m)` },
     { name: "Material", value: drone.material },
+    { name: "Supplier", value: drone.supplier },
   ];
 
   return (
@@ -112,12 +118,12 @@ const DroneDetailsModal = ({ isOpen, onClose, droneId }: { isOpen: boolean; onCl
           {/* Modal Footer */}
           <div className="flex justify-center gap-4 p-4">
             <div className="flex w-full gap-4">
-              <Button onPress={onClose} color="danger" variant="light" className="flex-1">
-                Close
-              </Button>
-              <Button onPress={() => alert(`Drone ${drone.id} chosen!`)} color="primary" className="flex-1">
+                <Button onPress={onClose} color="danger" variant="light" className="flex-[0.5]">
+                Cancel
+                </Button>
+                <Button onPress={() => alert(`Drone ${drone.id} chosen!`)} color="primary" className="flex-[1.5]">
                 Choose this Drone
-              </Button>
+                </Button>
             </div>
           </div>
         </>
