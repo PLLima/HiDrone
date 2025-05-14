@@ -6,6 +6,8 @@ import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Accordion, AccordionItem } from "@heroui/react";
 import { title, subtitle } from "@/components/primitives";
 import {Autocomplete, AutocompleteItem} from "@heroui/react";
+import {  Table,  TableHeader,  TableBody,  TableColumn,  TableRow,  TableCell} from "@heroui/table";
+import { aborted } from "util";
 
 export const cities = [
   { label: "São Paulo", key: "sao_paulo" },
@@ -29,6 +31,9 @@ const mockDrones = Array.from({ length: 12 }, (_, index) => ({
   model: "Drone Model X",
   neighborhood: "Downtown",
   image: "https://media.craiyon.com/2025-04-15/xk67yE3jTA6QC0-N-CqA4Q.webp",
+  weight_capacity: "1.5",
+  volume_capacity: "2",
+  material: "Carbon Fiber",
 }));
 
 // Drone Card Component
@@ -57,17 +62,64 @@ const DroneCard = ({ drone, onClick }: { drone: { id: string; model: string; nei
 
 // Drone Details Modal Component
 const DroneDetailsModal = ({ isOpen, onClose, droneId }: { isOpen: boolean; onClose: () => void; droneId: string | null }) => {
+  // Find the selected drone data
+  const drone = mockDrones.find((d) => d.id === droneId);
+
+  if (!drone) return null; // If no drone is selected, return nothing
+
+  // Prepare rows for the table
+  const rows = [
+    { name: "Model", value: drone.model },
+    { name: "Neighborhood", value: drone.neighborhood },
+    { name: "Weight Capacity", value: `${drone.weight_capacity} kg` },
+    { name: "Volume Capacity", value: `${drone.volume_capacity} m³` },
+    { name: "Material", value: drone.material },
+  ];
+
   return (
     <Modal isOpen={isOpen} onOpenChange={(open) => { if (!open) onClose(); }} backdrop="blur">
       <ModalContent>
         <>
-          <ModalHeader className="text-2xl font-bold">Drone Details</ModalHeader>
-          <ModalBody>
-            <p className="text-lg">Selected Drone ID: {droneId}</p>
+          {/* Modal Header */}
+          <ModalHeader className="text-2xl font-bold text-center">Drone Details</ModalHeader>
+
+          {/* Modal Body */}
+          <ModalBody className="flex flex-col items-center gap-6">
+            {/* Drone Image */}
+            <img
+              src={drone.image}
+              alt={drone.model}
+              className="w-full max-w-md h-auto rounded-lg object-cover"
+            />
+
+            {/* Drone Details Table */}
+            <Table aria-label="Drone Details Table" className="w-full max-w-md" isStriped hideHeader removeWrapper>
+              <TableHeader>
+                <TableColumn>Name</TableColumn>
+                <TableColumn>Value</TableColumn>
+              </TableHeader>
+              <TableBody items={rows}>
+                {(item) => (
+                  <TableRow key={item.name}>
+                    <TableCell className="font-bold">{item.name}</TableCell>
+                    <TableCell>{item.value}</TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
           </ModalBody>
-          <Button onPress={onClose} className="mt-4" color="primary">
-            Close
-          </Button>
+
+          {/* Modal Footer */}
+          <div className="flex justify-center gap-4 p-4">
+            <div className="flex w-full gap-4">
+              <Button onPress={onClose} color="danger" variant="light" className="flex-1">
+                Close
+              </Button>
+              <Button onPress={() => alert(`Drone ${drone.id} chosen!`)} color="primary" className="flex-1">
+                Choose this Drone
+              </Button>
+            </div>
+          </div>
         </>
       </ModalContent>
     </Modal>
