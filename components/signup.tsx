@@ -115,6 +115,7 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
             <Form
               className="w-full justify-center items-center space-y-4"
               onSubmit={onSubmit}
+              validationErrors={errors}
             >
               <div className="flex flex-col gap-4 max-w-md">
                 <Input
@@ -131,15 +132,6 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
 
                 <Input
                   isRequired
-                  errorMessage={({ validationDetails }) => {
-                    if (validationDetails.valueMissing) {
-                      return "Please enter your email";
-                    }
-                    if (validationDetails.typeMismatch) {
-                      return "Please enter a valid email address";
-                    }
-                    return errors.email; // Show email error if it exists
-                  }}
                   label="Email"
                   name="email"
                   type="email"
