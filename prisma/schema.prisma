@@ -26,7 +26,8 @@ model Supplier {
   name          String
   email         String          @unique
   password      String
-  cnpj          Int             @unique
+  cnpj          String          @unique
+  credits  Decimal
   DroneInstance DroneInstance[]
 
   @@map(name: "suppliers")
