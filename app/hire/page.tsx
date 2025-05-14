@@ -8,6 +8,8 @@ import { Autocomplete, AutocompleteItem } from "@heroui/react";
 import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell } from "@heroui/table";
 import { Slider } from "@heroui/react";
 
+import { DroneFilters } from "@/app/server/supply";
+
 export const cities = [
   { label: "São Paulo", key: "sao_paulo" },
   { label: "Rio de Janeiro", key: "rio_de_janeiro" },
@@ -137,15 +139,6 @@ const DroneDetailsModal = ({ isOpen, onClose, droneId }: { isOpen: boolean; onCl
       </ModalContent>
     </Modal>
   );
-};
-
-// Types for filters
-type DroneFilters = {
-  city: string | null;
-  material: string | null;
-  weightCapacity: [number, number];
-  volumeCapacity: [number, number];
-  droneWeight: [number, number];
 };
 
 // Default filter values
