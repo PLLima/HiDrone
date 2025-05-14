@@ -5929,7 +5929,7 @@ export namespace Prisma {
     capacity: Decimal | null
     size: string | null
     composition: string | null
-    image: Uint8Array | null
+    image: string | null
   }
 
   export type DroneModelMaxAggregateOutputType = {
@@ -5939,7 +5939,7 @@ export namespace Prisma {
     capacity: Decimal | null
     size: string | null
     composition: string | null
-    image: Uint8Array | null
+    image: string | null
   }
 
   export type DroneModelCountAggregateOutputType = {
@@ -6090,7 +6090,7 @@ export namespace Prisma {
     capacity: Decimal
     size: string
     composition: string
-    image: Uint8Array | null
+    image: string | null
     _count: DroneModelCountAggregateOutputType | null
     _avg: DroneModelAvgAggregateOutputType | null
     _sum: DroneModelSumAggregateOutputType | null
@@ -6174,7 +6174,7 @@ export namespace Prisma {
       capacity: Prisma.Decimal
       size: string
       composition: string
-      image: Uint8Array | null
+      image: string | null
     }, ExtArgs["result"]["droneModel"]>
     composites: {}
   }
@@ -6605,7 +6605,7 @@ export namespace Prisma {
     readonly capacity: FieldRef<"DroneModel", 'Decimal'>
     readonly size: FieldRef<"DroneModel", 'String'>
     readonly composition: FieldRef<"DroneModel", 'String'>
-    readonly image: FieldRef<"DroneModel", 'Bytes'>
+    readonly image: FieldRef<"DroneModel", 'String'>
   }
     
 
@@ -7228,20 +7228,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Bytes'
-   */
-  export type BytesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Bytes'>
-    
-
-
-  /**
-   * Reference to a field of type 'Bytes[]'
-   */
-  export type ListBytesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Bytes[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -7530,7 +7516,7 @@ export namespace Prisma {
     capacity?: DecimalFilter<"DroneModel"> | Decimal | DecimalJsLike | number | string
     size?: StringFilter<"DroneModel"> | string
     composition?: StringFilter<"DroneModel"> | string
-    image?: BytesNullableFilter<"DroneModel"> | Uint8Array | null
+    image?: StringNullableFilter<"DroneModel"> | string | null
     DroneInstance?: DroneInstanceListRelationFilter
   }
 
@@ -7555,7 +7541,7 @@ export namespace Prisma {
     capacity?: DecimalFilter<"DroneModel"> | Decimal | DecimalJsLike | number | string
     size?: StringFilter<"DroneModel"> | string
     composition?: StringFilter<"DroneModel"> | string
-    image?: BytesNullableFilter<"DroneModel"> | Uint8Array | null
+    image?: StringNullableFilter<"DroneModel"> | string | null
     DroneInstance?: DroneInstanceListRelationFilter
   }, "id">
 
@@ -7584,7 +7570,7 @@ export namespace Prisma {
     capacity?: DecimalWithAggregatesFilter<"DroneModel"> | Decimal | DecimalJsLike | number | string
     size?: StringWithAggregatesFilter<"DroneModel"> | string
     composition?: StringWithAggregatesFilter<"DroneModel"> | string
-    image?: BytesNullableWithAggregatesFilter<"DroneModel"> | Uint8Array | null
+    image?: StringNullableWithAggregatesFilter<"DroneModel"> | string | null
   }
 
   export type ClientCreateInput = {
@@ -7848,7 +7834,7 @@ export namespace Prisma {
     capacity: Decimal | DecimalJsLike | number | string
     size: string
     composition: string
-    image?: Uint8Array | null
+    image?: string | null
     DroneInstance?: DroneInstanceCreateNestedManyWithoutModelInput
   }
 
@@ -7859,7 +7845,7 @@ export namespace Prisma {
     capacity: Decimal | DecimalJsLike | number | string
     size: string
     composition: string
-    image?: Uint8Array | null
+    image?: string | null
     DroneInstance?: DroneInstanceUncheckedCreateNestedManyWithoutModelInput
   }
 
@@ -7869,7 +7855,7 @@ export namespace Prisma {
     capacity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     size?: StringFieldUpdateOperationsInput | string
     composition?: StringFieldUpdateOperationsInput | string
-    image?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     DroneInstance?: DroneInstanceUpdateManyWithoutModelNestedInput
   }
 
@@ -7880,7 +7866,7 @@ export namespace Prisma {
     capacity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     size?: StringFieldUpdateOperationsInput | string
     composition?: StringFieldUpdateOperationsInput | string
-    image?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     DroneInstance?: DroneInstanceUncheckedUpdateManyWithoutModelNestedInput
   }
 
@@ -7891,7 +7877,7 @@ export namespace Prisma {
     capacity: Decimal | DecimalJsLike | number | string
     size: string
     composition: string
-    image?: Uint8Array | null
+    image?: string | null
   }
 
   export type DroneModelUpdateManyMutationInput = {
@@ -7900,7 +7886,7 @@ export namespace Prisma {
     capacity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     size?: StringFieldUpdateOperationsInput | string
     composition?: StringFieldUpdateOperationsInput | string
-    image?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DroneModelUncheckedUpdateManyInput = {
@@ -7910,7 +7896,7 @@ export namespace Prisma {
     capacity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     size?: StringFieldUpdateOperationsInput | string
     composition?: StringFieldUpdateOperationsInput | string
-    image?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -8299,11 +8285,19 @@ export namespace Prisma {
     modelId?: SortOrder
   }
 
-  export type BytesNullableFilter<$PrismaModel = never> = {
-    equals?: Uint8Array | BytesFieldRefInput<$PrismaModel> | null
-    in?: Uint8Array[] | ListBytesFieldRefInput<$PrismaModel> | null
-    notIn?: Uint8Array[] | ListBytesFieldRefInput<$PrismaModel> | null
-    not?: NestedBytesNullableFilter<$PrismaModel> | Uint8Array | null
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type DroneModelCountOrderByAggregateInput = {
@@ -8348,14 +8342,22 @@ export namespace Prisma {
     capacity?: SortOrder
   }
 
-  export type BytesNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Uint8Array | BytesFieldRefInput<$PrismaModel> | null
-    in?: Uint8Array[] | ListBytesFieldRefInput<$PrismaModel> | null
-    notIn?: Uint8Array[] | ListBytesFieldRefInput<$PrismaModel> | null
-    not?: NestedBytesNullableWithAggregatesFilter<$PrismaModel> | Uint8Array | null
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
     _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedBytesNullableFilter<$PrismaModel>
-    _max?: NestedBytesNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type OrderCreateNestedManyWithoutClientInput = {
@@ -8588,8 +8590,8 @@ export namespace Prisma {
     connect?: DroneInstanceWhereUniqueInput | DroneInstanceWhereUniqueInput[]
   }
 
-  export type NullableBytesFieldUpdateOperationsInput = {
-    set?: Uint8Array | null
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type DroneInstanceUpdateManyWithoutModelNestedInput = {
@@ -8802,21 +8804,35 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
-  export type NestedBytesNullableFilter<$PrismaModel = never> = {
-    equals?: Uint8Array | BytesFieldRefInput<$PrismaModel> | null
-    in?: Uint8Array[] | ListBytesFieldRefInput<$PrismaModel> | null
-    notIn?: Uint8Array[] | ListBytesFieldRefInput<$PrismaModel> | null
-    not?: NestedBytesNullableFilter<$PrismaModel> | Uint8Array | null
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type NestedBytesNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Uint8Array | BytesFieldRefInput<$PrismaModel> | null
-    in?: Uint8Array[] | ListBytesFieldRefInput<$PrismaModel> | null
-    notIn?: Uint8Array[] | ListBytesFieldRefInput<$PrismaModel> | null
-    not?: NestedBytesNullableWithAggregatesFilter<$PrismaModel> | Uint8Array | null
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
     _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedBytesNullableFilter<$PrismaModel>
-    _max?: NestedBytesNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type OrderCreateWithoutClientInput = {
@@ -9049,7 +9065,7 @@ export namespace Prisma {
     capacity: Decimal | DecimalJsLike | number | string
     size: string
     composition: string
-    image?: Uint8Array | null
+    image?: string | null
   }
 
   export type DroneModelUncheckedCreateWithoutDroneInstanceInput = {
@@ -9059,7 +9075,7 @@ export namespace Prisma {
     capacity: Decimal | DecimalJsLike | number | string
     size: string
     composition: string
-    image?: Uint8Array | null
+    image?: string | null
   }
 
   export type DroneModelCreateOrConnectWithoutDroneInstanceInput = {
@@ -9145,7 +9161,7 @@ export namespace Prisma {
     capacity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     size?: StringFieldUpdateOperationsInput | string
     composition?: StringFieldUpdateOperationsInput | string
-    image?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type DroneModelUncheckedUpdateWithoutDroneInstanceInput = {
@@ -9155,7 +9171,7 @@ export namespace Prisma {
     capacity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     size?: StringFieldUpdateOperationsInput | string
     composition?: StringFieldUpdateOperationsInput | string
-    image?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type OrderUpsertWithWhereUniqueWithoutDroneInstanceInput = {
