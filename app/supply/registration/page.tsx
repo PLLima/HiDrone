@@ -14,7 +14,7 @@ type SubmittedData = {
   cnpj: string;
 };
 
-export default function ResgitrationSupplyPage() {
+export default function RegistrationSupplyPage() {
   const [submitted, setSubmitted] = React.useState<SubmittedData | null>(null);
   const [errors, setErrors] = React.useState<Errors>({});
   const [cnpj, setCnpj] = React.useState<string>("");

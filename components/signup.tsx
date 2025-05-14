@@ -54,7 +54,7 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
     return null;
   };
 
-  async function onSubmit(e: FormEvent<HTMLFormElement>){
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries()) as Record<string, string>;
@@ -85,9 +85,10 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
     // Try to register the client
     const registered = await registerClient(formattedData);
     if (registered === false) {
-      newErrors.email = "Email already exists";
+      // Set an error message for the email field
+      newErrors.email = "An account with this email already exists.";
       setErrors(newErrors);
-      return;
+      return; // Prevent modal from closing
     }
 
     // Store the username and email in localStorage
@@ -99,8 +100,7 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
     setSubmitted(formattedData as ClientData);
 
     window.location.reload();
-  };
-
+  }
 
   return (
     <Modal isOpen={isOpen} onOpenChange={(isOpen) => !isOpen && onClose()} backdrop="blur" size="xs">
@@ -113,65 +113,66 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
               onSubmit={onSubmit}
             >
               <div className="flex flex-col gap-4 max-w-md">
-                    <Input
-                    isRequired
-                    errorMessage={({ validationDetails }) => {
-                        if (validationDetails.valueMissing) {
-                        return "Please enter your name";
-                        }
-                        return errors.name;
-                    }}
-                    label="Name"
-                    name="name"
-                    />
-
-                    <Input
-                    isRequired
-                    errorMessage={({ validationDetails }) => {
-                        if (validationDetails.valueMissing) {
-                        return "Please enter your email";
-                        }
-                        if (validationDetails.typeMismatch) {
-                        return "Please enter a valid email address";
-                        }
-                    }}
-                    label="Email"
-                    name="email"
-                    type="email"
-                    />
-
-                    <Input
-                    isRequired
-                    errorMessage={touched.password ? getPasswordError(password) : null} // Show error only if touched
-                    isInvalid={touched.password && getPasswordError(password) !== null}
-                    label="Password"
-                    name="password"
-                    type="password"
-                    autoComplete="new-password"
-                    value={password}
-                    onValueChange={(value) => {
-                        setPassword(value);
-                        setTouched((prev) => ({ ...prev, password: true })); // Mark as touched
-                    }}
-                    />
-
-                    <Input
-                    isRequired
-                    errorMessage={
-                        touched.repeat_password ? getRepeatPasswordError(password, repeat_password) : null
-                    } // Show error only if touched
-                    isInvalid={
-                        touched.repeat_password && getRepeatPasswordError(password, repeat_password) !== null
+                <Input
+                  isRequired
+                  errorMessage={({ validationDetails }) => {
+                    if (validationDetails.valueMissing) {
+                      return "Please enter your name";
                     }
-                    label="Repeat password"
-                    type="password"
-                    autoComplete="new-password"
-                    value={repeat_password}
-                    onValueChange={(value) => {
-                        setRepeatPassword(value);
-                        setTouched((prev) => ({ ...prev, repeat_password: true })); // Mark as touched
-                    }}
-                    />
+                    return errors.name;
+                  }}
+                  label="Name"
+                  name="name"
+                />
+
+                <Input
+                  isRequired
+                  errorMessage={({ validationDetails }) => {
+                    if (validationDetails.valueMissing) {
+                      return "Please enter your email";
+                    }
+                    if (validationDetails.typeMismatch) {
+                      return "Please enter a valid email address";
+                    }
+                    return errors.email; // Show email error if it exists
+                  }}
+                  label="Email"
+                  name="email"
+                  type="email"
+                />
+
+                <Input
+                  isRequired
+                  errorMessage={touched.password ? getPasswordError(password) : null} // Show error only if touched
+                  isInvalid={touched.password && getPasswordError(password) !== null}
+                  label="Password"
+                  name="password"
+                  type="password"
+                  autoComplete="new-password"
+                  value={password}
+                  onValueChange={(value) => {
+                    setPassword(value);
+                    setTouched((prev) => ({ ...prev, password: true })); // Mark as touched
+                  }}
+                />
+
+                <Input
+                  isRequired
+                  errorMessage={
+                    touched.repeat_password ? getRepeatPasswordError(password, repeat_password) : null
+                  } // Show error only if touched
+                  isInvalid={
+                    touched.repeat_password && getRepeatPasswordError(password, repeat_password) !== null
+                  }
+                  label="Repeat password"
+                  type="password"
+                  autoComplete="new-password"
+                  value={repeat_password}
+                  onValueChange={(value) => {
+                    setRepeatPassword(value);
+                    setTouched((prev) => ({ ...prev, repeat_password: true })); // Mark as touched
+                  }}
+                />
                 <div className="flex w-full gap-1">
                   <Button
                     type="button"
@@ -197,7 +198,7 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
               </div>
             </Form>
           </ModalBody>
-        <ModalFooter className="h-4" />
+          <ModalFooter className="h-4" />
         </>
       </ModalContent>
     </Modal>
