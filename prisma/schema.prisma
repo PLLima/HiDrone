@@ -71,7 +71,7 @@ model DroneModel {
   capacity      Decimal
   size          String
   composition   String
-  image         Bytes?
+  image         String?
   DroneInstance DroneInstance[]
 
   @@map(name: "drone_models")
