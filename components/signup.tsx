@@ -71,6 +71,7 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
     }
 
     if (Object.keys(newErrors).length > 0) {
+      setIsLoading(false);
       setErrors(newErrors);
       return;
     }
@@ -89,6 +90,7 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
     if (registered === false) {
       // Set an error message for the email field
       newErrors.email = "An account with this email already exists.";
+      setIsLoading(false);
       setErrors(newErrors);
       return; // Prevent modal from closing
     }
