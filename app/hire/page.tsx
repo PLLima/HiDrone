@@ -38,7 +38,7 @@ const mockDrones = Array.from({ length: 12 }, (_, index) => ({
   supplier: "Drone Supplier Inc.",
   model: "Drone Model X",
   neighborhood: "Downtown",
-  image: "https://media.craiyon.com/2025-04-15/xk67yE3jTA6QC0-N-CqA4Q.webp",
+  image: "/drone.png",
   drone_weight: "2.5",
   drone_dimentions: "2x2x2",
   weight_capacity: "1.5",
