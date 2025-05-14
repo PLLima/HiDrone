@@ -24,6 +24,17 @@ export type DroneFilters = {
   droneWeight: [number, number];
 };
 
+export async function getDrones() {
+  const drones = await prisma.droneInstance.findMany({
+    relationLoadStrategy: 'join',
+    include: {
+        drone_instances: true,
+        suppliers: true
+    },
+  });
+  return drones;
+}
+
 export async function filterDrones(filters: DroneFilters) {
   const drones = await prisma.droneInstance.findMany({
     relationLoadStrategy: 'join',
