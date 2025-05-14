@@ -13,6 +13,7 @@ export type SupplierData = {
   email: string;
   password: string;
   cnpj: string;
+  credits: number;
 }
 
 export async function checkClient(email: string) {
@@ -68,6 +69,7 @@ export async function registerSupplier(supplier: SupplierData) {
     email: supplier.email,
     password: supplier.password,
     cnpj: supplier.cnpj,
+    credits: supplier.credits,
   },
   })
 
