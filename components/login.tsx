@@ -13,6 +13,7 @@ import { Form, Input, Button } from "@heroui/react";
 
 // Define types for errors and submitted data
 type Errors = {
+  email?: string;
   password?: string;
 };
 

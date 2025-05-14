@@ -16,7 +16,7 @@ export type SupplierData = {
   credits: number;
 }
 
-export async function checkClient(email: string) {
+async function checkClient(email: string) {
   const existingUser = await (prisma as any).client.findUnique({
     where: {
       email: email,
@@ -44,7 +44,7 @@ export async function registerClient(client: ClientData) {
   return true;
 }
 
-export async function checkSupplier(email: string, cnpj: string) {
+async function checkSupplier(email: string, cnpj: string) {
   const existingUser = await (prisma as any).supplier.findUnique({
     where: {
     OR: [
@@ -74,4 +74,20 @@ export async function registerSupplier(supplier: SupplierData) {
   })
 
   return true;
+}
+
+export async function findUser(email: string) {
+  let existingUser = await (prisma as any).client.findUnique({
+    where: {
+      email: email,
+    },
+  });
+  if (!existingUser) {
+    existingUser = await (prisma as any).supplier.findUnique({
+      where: {
+        email: email,
+      },
+    });
+  }
+  return existingUser;
 }
