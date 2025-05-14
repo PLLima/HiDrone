@@ -166,51 +166,64 @@ export default function SearchDronesPage() {
       {/* Filters Accordion */}
       <Accordion variant="shadow" className="w-full max-w-6xl">
         <AccordionItem title="Filters">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {/* City Filter */}
-            <Autocomplete className="max-w-xs" label="City">
+            <div className="flex flex-col gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {/* City Filter */}
+              <Autocomplete className="max-w-xs" label="City">
               {cities.map((city) => (
                 <AutocompleteItem key={city.key}>{city.label}</AutocompleteItem>
               ))}
-            </Autocomplete>
+              </Autocomplete>
 
-            {/* Material Filter */}
-            <Autocomplete className="max-w-xs" label="Material">
+              {/* Material Filter */}
+              <Autocomplete className="max-w-xs" label="Material">
               {materials.map((material) => (
                 <AutocompleteItem key={material.key}>{material.label}</AutocompleteItem>
               ))}
-            </Autocomplete>
+              </Autocomplete>
 
-            {/* Weight Capacity Filter */}
-            <Slider
+              {/* Weight Capacity Filter */}
+              <Slider
               className="max-w-md"
               defaultValue={[0, 10]}
               label="Weight Capacity (kg)"
               maxValue={10}
               minValue={0}
               step={0.1}
-            />
+              />
 
-            {/* Volume Capacity Filter */}
-            <Slider
+              {/* Volume Capacity Filter */}
+              <Slider
               className="max-w-md"
               defaultValue={[0, 10]}
               label="Volume Capacity (l)"
               maxValue={10}
               minValue={0}
               step={0.1}
-            />
+              />
 
-            {/* Drone Weight Filter */}
-            <Slider
+              {/* Drone Weight Filter */}
+              <Slider
               className="max-w-md"
               defaultValue={[0, 10]}
               label="Drone Weight (kg)"
               maxValue={10}
               minValue={0}
               step={0.1}
-            />
-          </div>
+              />
+            </div>
+
+            {/* Buttons at the bottom */}
+            <div className="flex justify-end mt-4">
+              <Button variant="light" color="danger" className="mr-4">
+              Clear Filters
+              </Button>
+              <Button variant="solid" color="primary">
+              Apply Filters
+              </Button>
+            </div>
+            </div>
+          
         </AccordionItem>
       </Accordion>
 
