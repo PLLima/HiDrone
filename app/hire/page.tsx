@@ -11,7 +11,7 @@ const mockDrones = Array.from({ length: 12 }, (_, index) => ({
   id: `drone-${index + 1}`,
   model: "Drone Model X",
   neighborhood: "Downtown",
-  image: "https://p.turbosquid.com/ts-thumb/6z/ddoFeQ/WQTTdbab/bb_8_final08/png/1457806753/600x600/fit_q87/fc7699e18c45c9c4475dce7aabb7f7bd78e20353/bb_8_final08.jpg",
+  image: "https://media.craiyon.com/2025-04-15/xk67yE3jTA6QC0-N-CqA4Q.webp",
 }));
 
 // Drone Card Component
