@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Modal, ModalContent, ModalHeader, ModalBody, Button, Image } from "@heroui/react";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Accordion, AccordionItem } from "@heroui/react";
+import { title, subtitle } from "@/components/primitives";
 
 // Mock data for drones (same data for all drones for now)
 const mockDrones = Array.from({ length: 12 }, (_, index) => ({
@@ -74,7 +75,10 @@ export default function SearchDronesPage() {
   return (
     <section className="flex flex-col items-center justify-center gap-6 py-8 px-6 w-full max-w-screen-2xl mx-auto">
       {/* Page Title */}
-      <h1 className="text-4xl font-bold">Find Drones</h1>
+      <div className="inline-block max-w-xl text-center justify-center">
+        <span className={title({})}>Find Drones&nbsp;</span>
+        <br />
+      </div>
 
       {/* Filters Accordion */}
       <Accordion variant="shadow" className="w-full max-w-6xl">
