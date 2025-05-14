@@ -8,9 +8,8 @@ import {
   ModalFooter,
 } from "@heroui/react";
 
-import { title } from "@/components/primitives";
 import React, { FormEvent } from "react";
-import { Form, Input, Select, SelectItem, Checkbox, Button } from "@heroui/react";
+import { Form, Input, Button } from "@heroui/react";
 import { ClientData, registerClient } from "@/app/server/user";
 import { hash } from "bcryptjs";
 
@@ -106,8 +105,16 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
     window.location.reload();
   }
 
+  const clearVariables = () => {
+    setPassword("");
+    setRepeatPassword("");
+    setSubmitted(null);
+    setErrors({});
+    setTouched({ password: false, repeat_password: false });
+  }
+
   return (
-    <Modal isOpen={isOpen} onOpenChange={(isOpen) => !isOpen && onClose()} backdrop="blur" size="xs">
+    <Modal isOpen={isOpen} onOpenChange={(isOpen) => !isOpen && onClose()} onClose={() => clearVariables()} backdrop="blur" size="xs">
       <ModalContent>
         <>
           <ModalHeader className="text-4xl font-bold text-center">Sign Up</ModalHeader>
@@ -116,16 +123,11 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
               className="w-full justify-center items-center space-y-4"
               onSubmit={onSubmit}
               validationErrors={errors}
+              autoComplete="on"
             >
               <div className="flex flex-col gap-4 max-w-md">
                 <Input
                   isRequired
-                  errorMessage={({ validationDetails }) => {
-                    if (validationDetails.valueMissing) {
-                      return "Please enter your name";
-                    }
-                    return errors.name;
-                  }}
                   label="Name"
                   name="name"
                 />
@@ -173,7 +175,7 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                   <Button
                     type="button"
                     className="w-1/3"
-                    onPress={onClose}
+                    onPress={() => {clearVariables();onClose();}}
                     color="danger"
                     variant="light"
                   >
