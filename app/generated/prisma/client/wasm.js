@@ -161,7 +161,8 @@ exports.Prisma.DroneModelScalarFieldEnum = {
   id: 'id',
   model: 'model',
   weight: 'weight',
-  capacity: 'capacity',
+  capacityWeight: 'capacityWeight',
+  capacityVolume: 'capacityVolume',
   size: 'size',
   composition: 'composition',
   image: 'image'

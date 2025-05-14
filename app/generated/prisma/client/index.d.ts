@@ -5913,20 +5913,23 @@ export namespace Prisma {
   export type DroneModelAvgAggregateOutputType = {
     id: number | null
     weight: Decimal | null
-    capacity: Decimal | null
+    capacityWeight: Decimal | null
+    capacityVolume: Decimal | null
   }
 
   export type DroneModelSumAggregateOutputType = {
     id: number | null
     weight: Decimal | null
-    capacity: Decimal | null
+    capacityWeight: Decimal | null
+    capacityVolume: Decimal | null
   }
 
   export type DroneModelMinAggregateOutputType = {
     id: number | null
     model: string | null
     weight: Decimal | null
-    capacity: Decimal | null
+    capacityWeight: Decimal | null
+    capacityVolume: Decimal | null
     size: string | null
     composition: string | null
     image: string | null
@@ -5936,7 +5939,8 @@ export namespace Prisma {
     id: number | null
     model: string | null
     weight: Decimal | null
-    capacity: Decimal | null
+    capacityWeight: Decimal | null
+    capacityVolume: Decimal | null
     size: string | null
     composition: string | null
     image: string | null
@@ -5946,7 +5950,8 @@ export namespace Prisma {
     id: number
     model: number
     weight: number
-    capacity: number
+    capacityWeight: number
+    capacityVolume: number
     size: number
     composition: number
     image: number
@@ -5957,20 +5962,23 @@ export namespace Prisma {
   export type DroneModelAvgAggregateInputType = {
     id?: true
     weight?: true
-    capacity?: true
+    capacityWeight?: true
+    capacityVolume?: true
   }
 
   export type DroneModelSumAggregateInputType = {
     id?: true
     weight?: true
-    capacity?: true
+    capacityWeight?: true
+    capacityVolume?: true
   }
 
   export type DroneModelMinAggregateInputType = {
     id?: true
     model?: true
     weight?: true
-    capacity?: true
+    capacityWeight?: true
+    capacityVolume?: true
     size?: true
     composition?: true
     image?: true
@@ -5980,7 +5988,8 @@ export namespace Prisma {
     id?: true
     model?: true
     weight?: true
-    capacity?: true
+    capacityWeight?: true
+    capacityVolume?: true
     size?: true
     composition?: true
     image?: true
@@ -5990,7 +5999,8 @@ export namespace Prisma {
     id?: true
     model?: true
     weight?: true
-    capacity?: true
+    capacityWeight?: true
+    capacityVolume?: true
     size?: true
     composition?: true
     image?: true
@@ -6087,7 +6097,8 @@ export namespace Prisma {
     id: number
     model: string
     weight: Decimal
-    capacity: Decimal
+    capacityWeight: Decimal
+    capacityVolume: Decimal
     size: string
     composition: string
     image: string | null
@@ -6116,7 +6127,8 @@ export namespace Prisma {
     id?: boolean
     model?: boolean
     weight?: boolean
-    capacity?: boolean
+    capacityWeight?: boolean
+    capacityVolume?: boolean
     size?: boolean
     composition?: boolean
     image?: boolean
@@ -6128,7 +6140,8 @@ export namespace Prisma {
     id?: boolean
     model?: boolean
     weight?: boolean
-    capacity?: boolean
+    capacityWeight?: boolean
+    capacityVolume?: boolean
     size?: boolean
     composition?: boolean
     image?: boolean
@@ -6138,7 +6151,8 @@ export namespace Prisma {
     id?: boolean
     model?: boolean
     weight?: boolean
-    capacity?: boolean
+    capacityWeight?: boolean
+    capacityVolume?: boolean
     size?: boolean
     composition?: boolean
     image?: boolean
@@ -6148,13 +6162,14 @@ export namespace Prisma {
     id?: boolean
     model?: boolean
     weight?: boolean
-    capacity?: boolean
+    capacityWeight?: boolean
+    capacityVolume?: boolean
     size?: boolean
     composition?: boolean
     image?: boolean
   }
 
-  export type DroneModelOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "model" | "weight" | "capacity" | "size" | "composition" | "image", ExtArgs["result"]["droneModel"]>
+  export type DroneModelOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "model" | "weight" | "capacityWeight" | "capacityVolume" | "size" | "composition" | "image", ExtArgs["result"]["droneModel"]>
   export type DroneModelInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     DroneInstance?: boolean | DroneModel$DroneInstanceArgs<ExtArgs>
     _count?: boolean | DroneModelCountOutputTypeDefaultArgs<ExtArgs>
@@ -6171,7 +6186,8 @@ export namespace Prisma {
       id: number
       model: string
       weight: Prisma.Decimal
-      capacity: Prisma.Decimal
+      capacityWeight: Prisma.Decimal
+      capacityVolume: Prisma.Decimal
       size: string
       composition: string
       image: string | null
@@ -6602,7 +6618,8 @@ export namespace Prisma {
     readonly id: FieldRef<"DroneModel", 'Int'>
     readonly model: FieldRef<"DroneModel", 'String'>
     readonly weight: FieldRef<"DroneModel", 'Decimal'>
-    readonly capacity: FieldRef<"DroneModel", 'Decimal'>
+    readonly capacityWeight: FieldRef<"DroneModel", 'Decimal'>
+    readonly capacityVolume: FieldRef<"DroneModel", 'Decimal'>
     readonly size: FieldRef<"DroneModel", 'String'>
     readonly composition: FieldRef<"DroneModel", 'String'>
     readonly image: FieldRef<"DroneModel", 'String'>
@@ -7103,7 +7120,8 @@ export namespace Prisma {
     id: 'id',
     model: 'model',
     weight: 'weight',
-    capacity: 'capacity',
+    capacityWeight: 'capacityWeight',
+    capacityVolume: 'capacityVolume',
     size: 'size',
     composition: 'composition',
     image: 'image'
@@ -7513,7 +7531,8 @@ export namespace Prisma {
     id?: IntFilter<"DroneModel"> | number
     model?: StringFilter<"DroneModel"> | string
     weight?: DecimalFilter<"DroneModel"> | Decimal | DecimalJsLike | number | string
-    capacity?: DecimalFilter<"DroneModel"> | Decimal | DecimalJsLike | number | string
+    capacityWeight?: DecimalFilter<"DroneModel"> | Decimal | DecimalJsLike | number | string
+    capacityVolume?: DecimalFilter<"DroneModel"> | Decimal | DecimalJsLike | number | string
     size?: StringFilter<"DroneModel"> | string
     composition?: StringFilter<"DroneModel"> | string
     image?: StringNullableFilter<"DroneModel"> | string | null
@@ -7524,7 +7543,8 @@ export namespace Prisma {
     id?: SortOrder
     model?: SortOrder
     weight?: SortOrder
-    capacity?: SortOrder
+    capacityWeight?: SortOrder
+    capacityVolume?: SortOrder
     size?: SortOrder
     composition?: SortOrder
     image?: SortOrderInput | SortOrder
@@ -7538,7 +7558,8 @@ export namespace Prisma {
     NOT?: DroneModelWhereInput | DroneModelWhereInput[]
     model?: StringFilter<"DroneModel"> | string
     weight?: DecimalFilter<"DroneModel"> | Decimal | DecimalJsLike | number | string
-    capacity?: DecimalFilter<"DroneModel"> | Decimal | DecimalJsLike | number | string
+    capacityWeight?: DecimalFilter<"DroneModel"> | Decimal | DecimalJsLike | number | string
+    capacityVolume?: DecimalFilter<"DroneModel"> | Decimal | DecimalJsLike | number | string
     size?: StringFilter<"DroneModel"> | string
     composition?: StringFilter<"DroneModel"> | string
     image?: StringNullableFilter<"DroneModel"> | string | null
@@ -7549,7 +7570,8 @@ export namespace Prisma {
     id?: SortOrder
     model?: SortOrder
     weight?: SortOrder
-    capacity?: SortOrder
+    capacityWeight?: SortOrder
+    capacityVolume?: SortOrder
     size?: SortOrder
     composition?: SortOrder
     image?: SortOrderInput | SortOrder
@@ -7567,7 +7589,8 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"DroneModel"> | number
     model?: StringWithAggregatesFilter<"DroneModel"> | string
     weight?: DecimalWithAggregatesFilter<"DroneModel"> | Decimal | DecimalJsLike | number | string
-    capacity?: DecimalWithAggregatesFilter<"DroneModel"> | Decimal | DecimalJsLike | number | string
+    capacityWeight?: DecimalWithAggregatesFilter<"DroneModel"> | Decimal | DecimalJsLike | number | string
+    capacityVolume?: DecimalWithAggregatesFilter<"DroneModel"> | Decimal | DecimalJsLike | number | string
     size?: StringWithAggregatesFilter<"DroneModel"> | string
     composition?: StringWithAggregatesFilter<"DroneModel"> | string
     image?: StringNullableWithAggregatesFilter<"DroneModel"> | string | null
@@ -7831,7 +7854,8 @@ export namespace Prisma {
   export type DroneModelCreateInput = {
     model: string
     weight: Decimal | DecimalJsLike | number | string
-    capacity: Decimal | DecimalJsLike | number | string
+    capacityWeight: Decimal | DecimalJsLike | number | string
+    capacityVolume: Decimal | DecimalJsLike | number | string
     size: string
     composition: string
     image?: string | null
@@ -7842,7 +7866,8 @@ export namespace Prisma {
     id?: number
     model: string
     weight: Decimal | DecimalJsLike | number | string
-    capacity: Decimal | DecimalJsLike | number | string
+    capacityWeight: Decimal | DecimalJsLike | number | string
+    capacityVolume: Decimal | DecimalJsLike | number | string
     size: string
     composition: string
     image?: string | null
@@ -7852,7 +7877,8 @@ export namespace Prisma {
   export type DroneModelUpdateInput = {
     model?: StringFieldUpdateOperationsInput | string
     weight?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    capacity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    capacityWeight?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    capacityVolume?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     size?: StringFieldUpdateOperationsInput | string
     composition?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7863,7 +7889,8 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     model?: StringFieldUpdateOperationsInput | string
     weight?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    capacity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    capacityWeight?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    capacityVolume?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     size?: StringFieldUpdateOperationsInput | string
     composition?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7874,7 +7901,8 @@ export namespace Prisma {
     id?: number
     model: string
     weight: Decimal | DecimalJsLike | number | string
-    capacity: Decimal | DecimalJsLike | number | string
+    capacityWeight: Decimal | DecimalJsLike | number | string
+    capacityVolume: Decimal | DecimalJsLike | number | string
     size: string
     composition: string
     image?: string | null
@@ -7883,7 +7911,8 @@ export namespace Prisma {
   export type DroneModelUpdateManyMutationInput = {
     model?: StringFieldUpdateOperationsInput | string
     weight?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    capacity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    capacityWeight?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    capacityVolume?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     size?: StringFieldUpdateOperationsInput | string
     composition?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7893,7 +7922,8 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     model?: StringFieldUpdateOperationsInput | string
     weight?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    capacity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    capacityWeight?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    capacityVolume?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     size?: StringFieldUpdateOperationsInput | string
     composition?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
@@ -8304,7 +8334,8 @@ export namespace Prisma {
     id?: SortOrder
     model?: SortOrder
     weight?: SortOrder
-    capacity?: SortOrder
+    capacityWeight?: SortOrder
+    capacityVolume?: SortOrder
     size?: SortOrder
     composition?: SortOrder
     image?: SortOrder
@@ -8313,14 +8344,16 @@ export namespace Prisma {
   export type DroneModelAvgOrderByAggregateInput = {
     id?: SortOrder
     weight?: SortOrder
-    capacity?: SortOrder
+    capacityWeight?: SortOrder
+    capacityVolume?: SortOrder
   }
 
   export type DroneModelMaxOrderByAggregateInput = {
     id?: SortOrder
     model?: SortOrder
     weight?: SortOrder
-    capacity?: SortOrder
+    capacityWeight?: SortOrder
+    capacityVolume?: SortOrder
     size?: SortOrder
     composition?: SortOrder
     image?: SortOrder
@@ -8330,7 +8363,8 @@ export namespace Prisma {
     id?: SortOrder
     model?: SortOrder
     weight?: SortOrder
-    capacity?: SortOrder
+    capacityWeight?: SortOrder
+    capacityVolume?: SortOrder
     size?: SortOrder
     composition?: SortOrder
     image?: SortOrder
@@ -8339,7 +8373,8 @@ export namespace Prisma {
   export type DroneModelSumOrderByAggregateInput = {
     id?: SortOrder
     weight?: SortOrder
-    capacity?: SortOrder
+    capacityWeight?: SortOrder
+    capacityVolume?: SortOrder
   }
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -9062,7 +9097,8 @@ export namespace Prisma {
   export type DroneModelCreateWithoutDroneInstanceInput = {
     model: string
     weight: Decimal | DecimalJsLike | number | string
-    capacity: Decimal | DecimalJsLike | number | string
+    capacityWeight: Decimal | DecimalJsLike | number | string
+    capacityVolume: Decimal | DecimalJsLike | number | string
     size: string
     composition: string
     image?: string | null
@@ -9072,7 +9108,8 @@ export namespace Prisma {
     id?: number
     model: string
     weight: Decimal | DecimalJsLike | number | string
-    capacity: Decimal | DecimalJsLike | number | string
+    capacityWeight: Decimal | DecimalJsLike | number | string
+    capacityVolume: Decimal | DecimalJsLike | number | string
     size: string
     composition: string
     image?: string | null
@@ -9158,7 +9195,8 @@ export namespace Prisma {
   export type DroneModelUpdateWithoutDroneInstanceInput = {
     model?: StringFieldUpdateOperationsInput | string
     weight?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    capacity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    capacityWeight?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    capacityVolume?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     size?: StringFieldUpdateOperationsInput | string
     composition?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
@@ -9168,7 +9206,8 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     model?: StringFieldUpdateOperationsInput | string
     weight?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    capacity?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    capacityWeight?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    capacityVolume?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     size?: StringFieldUpdateOperationsInput | string
     composition?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null

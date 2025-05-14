@@ -27,7 +27,7 @@ model Supplier {
   email         String          @unique
   password      String
   cnpj          String          @unique
-  credits  Decimal
+  credits       Decimal
   DroneInstance DroneInstance[]
 
   @@map(name: "suppliers")
@@ -65,14 +65,15 @@ model DroneInstance {
 }
 
 model DroneModel {
-  id            Int             @id @default(autoincrement())
-  model         String
-  weight        Decimal
-  capacity      Decimal
-  size          String
-  composition   String
-  image         String?
-  DroneInstance DroneInstance[]
+  id             Int             @id @default(autoincrement())
+  model          String
+  weight         Decimal
+  capacityWeight Decimal
+  capacityVolume Decimal
+  size           String
+  composition    String
+  image          String?
+  DroneInstance  DroneInstance[]
 
   @@map(name: "drone_models")
 }
