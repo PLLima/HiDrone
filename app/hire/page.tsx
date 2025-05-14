@@ -5,6 +5,23 @@ import { Modal, ModalContent, ModalHeader, ModalBody, Button, Image } from "@her
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Accordion, AccordionItem } from "@heroui/react";
 import { title, subtitle } from "@/components/primitives";
+import {Autocomplete, AutocompleteItem} from "@heroui/react";
+
+export const cities = [
+  { label: "São Paulo", key: "sao_paulo" },
+  { label: "Rio de Janeiro", key: "rio_de_janeiro" },
+  { label: "Belo Horizonte", key: "belo_horizonte" },
+  { label: "Brasília", key: "brasilia" },
+  { label: "Salvador", key: "salvador" },
+  { label: "Curitiba", key: "curitiba" },
+  { label: "Fortaleza", key: "fortaleza" },
+  { label: "Recife", key: "recife" },
+  { label: "Porto Alegre", key: "porto_alegre" },
+  { label: "Manaus", key: "manaus" },
+  { label: "Belém", key: "belem" },
+  { label: "Goiânia", key: "goiania" },
+  { label: "Florianópolis", key: "florianopolis" },
+];
 
 // Mock data for drones (same data for all drones for now)
 const mockDrones = Array.from({ length: 12 }, (_, index) => ({
@@ -83,7 +100,11 @@ export default function SearchDronesPage() {
       {/* Filters Accordion */}
       <Accordion variant="shadow" className="w-full max-w-6xl">
         <AccordionItem title="Filters">
-          <p className="text-sm text-default-500">Filter options will go here.</p>
+          <Autocomplete className="max-w-xs" label="City">
+            {cities.map((animal) => (
+              <AutocompleteItem key={animal.key}>{animal.label}</AutocompleteItem>
+            ))}
+          </Autocomplete>
         </AccordionItem>
       </Accordion>
 
