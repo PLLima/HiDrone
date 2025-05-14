@@ -25,6 +25,7 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
   const [password, setPassword] = React.useState<string>("");
   const [repeat_password, setRepeatPassword] = React.useState<string>("");
   const [submitted, setSubmitted] = React.useState<ClientData | null>(null);
+  const [isLoading, setIsLoading] = React.useState(false);
   const [errors, setErrors] = React.useState<Errors>({});
   const [touched, setTouched] = React.useState<{ password: boolean; repeat_password: boolean }>({
     password: false,
@@ -55,6 +56,7 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
   };
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
+    setIsLoading(true);
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries()) as Record<string, string>;
@@ -98,7 +100,7 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
     // Clear errors and submit
     setErrors({});
     setSubmitted(formattedData as ClientData);
-
+    setIsLoading(false);
     window.location.reload();
   }
 
@@ -187,6 +189,7 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                     type="submit"
                     className="flex-1"
                     color="primary"
+                    isLoading={isLoading}
                     isDisabled={
                       !!getPasswordError(password) ||
                       !!getRepeatPasswordError(password, repeat_password)
