@@ -128,6 +128,11 @@ exports.Prisma.ClientScalarFieldEnum = {
   credits: 'credits'
 };
 
+exports.Prisma.RelationLoadStrategy = {
+  query: 'query',
+  join: 'join'
+};
+
 exports.Prisma.SupplierScalarFieldEnum = {
   id: 'id',
   name: 'name',

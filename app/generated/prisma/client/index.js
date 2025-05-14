@@ -101,6 +101,11 @@ exports.Prisma.ClientScalarFieldEnum = {
   credits: 'credits'
 };
 
+exports.Prisma.RelationLoadStrategy = {
+  query: 'query',
+  join: 'join'
+};
+
 exports.Prisma.SupplierScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -198,7 +203,9 @@ const config = {
         "native": true
       }
     ],
-    "previewFeatures": [],
+    "previewFeatures": [
+      "relationJoins"
+    ],
     "sourceFilePath": "/home/pllima0909/Documents/Git/HiDrone/prisma/schema.prisma",
     "isCustomOutput": true
   },
@@ -222,8 +229,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// schema.prisma\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../app/generated/prisma/client\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\") // uses connection pooling\n}\n\nmodel Client {\n  id       Int     @id @default(autoincrement())\n  name     String\n  email    String  @unique\n  password String\n  credits  Decimal\n  Order    Order[]\n\n  @@map(name: \"clients\")\n}\n\nmodel Supplier {\n  id            Int             @id @default(autoincrement())\n  name          String\n  email         String          @unique\n  password      String\n  cnpj          String          @unique\n  credits       Decimal\n  DroneInstance DroneInstance[]\n\n  @@map(name: \"suppliers\")\n}\n\nmodel Order {\n  id               Int      @id @default(autoincrement())\n  number           Int\n  clientId         Int\n  status           String\n  createdAt        DateTime\n  updatedAt        DateTime\n  price            Decimal\n  pickupLocation   Json\n  deliveryLocation Json\n  droneInstanceId  Int?\n\n  client        Client         @relation(fields: [clientId], references: [id], onDelete: Cascade)\n  droneInstance DroneInstance? @relation(fields: [droneInstanceId], references: [id], onDelete: SetNull)\n\n  @@map(name: \"orders\")\n}\n\nmodel DroneInstance {\n  id         Int  @id @default(autoincrement())\n  region     Json\n  supplierId Int\n  modelId    Int\n\n  supplier Supplier   @relation(fields: [supplierId], references: [id], onDelete: Cascade)\n  model    DroneModel @relation(fields: [modelId], references: [id], onDelete: Cascade)\n  Order    Order[]\n\n  @@map(name: \"drone_instances\")\n}\n\nmodel DroneModel {\n  id             Int             @id @default(autoincrement())\n  model          String\n  weight         Decimal\n  capacityWeight Decimal\n  capacityVolume Decimal\n  size           String\n  composition    String\n  image          String?\n  DroneInstance  DroneInstance[]\n\n  @@map(name: \"drone_models\")\n}\n",
-  "inlineSchemaHash": "7bab11aa9b1d12306e633965838567fb02eb69ac87b53ce657dcf5e279a79124",
+  "inlineSchema": "// schema.prisma\n\ngenerator client {\n  provider        = \"prisma-client-js\"\n  previewFeatures = [\"relationJoins\"]\n  output          = \"../app/generated/prisma/client\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\") // uses connection pooling\n}\n\nmodel Client {\n  id       Int     @id @default(autoincrement())\n  name     String\n  email    String  @unique\n  password String\n  credits  Decimal\n  Order    Order[]\n\n  @@map(name: \"clients\")\n}\n\nmodel Supplier {\n  id            Int             @id @default(autoincrement())\n  name          String\n  email         String          @unique\n  password      String\n  cnpj          String          @unique\n  credits       Decimal\n  DroneInstance DroneInstance[]\n\n  @@map(name: \"suppliers\")\n}\n\nmodel Order {\n  id               Int      @id @default(autoincrement())\n  number           Int\n  clientId         Int\n  status           String\n  createdAt        DateTime\n  updatedAt        DateTime\n  price            Decimal\n  pickupLocation   Json\n  deliveryLocation Json\n  droneInstanceId  Int?\n\n  client        Client         @relation(fields: [clientId], references: [id], onDelete: Cascade)\n  droneInstance DroneInstance? @relation(fields: [droneInstanceId], references: [id], onDelete: SetNull)\n\n  @@map(name: \"orders\")\n}\n\nmodel DroneInstance {\n  id         Int  @id @default(autoincrement())\n  region     Json\n  supplierId Int\n  modelId    Int\n\n  supplier Supplier   @relation(fields: [supplierId], references: [id], onDelete: Cascade)\n  model    DroneModel @relation(fields: [modelId], references: [id], onDelete: Cascade)\n  Order    Order[]\n\n  @@map(name: \"drone_instances\")\n}\n\nmodel DroneModel {\n  id             Int             @id @default(autoincrement())\n  model          String\n  weight         Decimal\n  capacityWeight Decimal\n  capacityVolume Decimal\n  size           String\n  composition    String\n  image          String?\n  DroneInstance  DroneInstance[]\n\n  @@map(name: \"drone_models\")\n}\n",
+  "inlineSchemaHash": "f36042604efcb672e5b66a31360851d534633059a0fbcdf97bf9c2ea2d6742b3",
   "copyEngine": true
 }
 

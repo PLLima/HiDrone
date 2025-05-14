@@ -1612,7 +1612,7 @@ export namespace Prisma {
   type ClientGetPayload<S extends boolean | null | undefined | ClientDefaultArgs> = $Result.GetResult<Prisma.$ClientPayload, S>
 
   type ClientCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<ClientFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    Omit<ClientFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
       select?: ClientCountAggregateInputType | true
     }
 
@@ -2058,6 +2058,7 @@ export namespace Prisma {
      * Filter, which Client to fetch.
      */
     where: ClientWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -2080,6 +2081,7 @@ export namespace Prisma {
      * Filter, which Client to fetch.
      */
     where: ClientWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -2132,6 +2134,7 @@ export namespace Prisma {
      * Filter by unique combinations of Clients.
      */
     distinct?: ClientScalarFieldEnum | ClientScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -2184,6 +2187,7 @@ export namespace Prisma {
      * Filter by unique combinations of Clients.
      */
     distinct?: ClientScalarFieldEnum | ClientScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -2231,6 +2235,7 @@ export namespace Prisma {
      */
     skip?: number
     distinct?: ClientScalarFieldEnum | ClientScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -2253,6 +2258,7 @@ export namespace Prisma {
      * The data needed to create a Client.
      */
     data: XOR<ClientCreateInput, ClientUncheckedCreateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -2309,6 +2315,7 @@ export namespace Prisma {
      * Choose, which Client to update.
      */
     where: ClientWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -2383,6 +2390,7 @@ export namespace Prisma {
      * In case the Client was found with the provided `where` argument, update it with this data.
      */
     update: XOR<ClientUpdateInput, ClientUncheckedUpdateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -2405,6 +2413,7 @@ export namespace Prisma {
      * Filter which Client to delete.
      */
     where: ClientWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -2732,7 +2741,7 @@ export namespace Prisma {
   type SupplierGetPayload<S extends boolean | null | undefined | SupplierDefaultArgs> = $Result.GetResult<Prisma.$SupplierPayload, S>
 
   type SupplierCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<SupplierFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    Omit<SupplierFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
       select?: SupplierCountAggregateInputType | true
     }
 
@@ -3179,6 +3188,7 @@ export namespace Prisma {
      * Filter, which Supplier to fetch.
      */
     where: SupplierWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -3201,6 +3211,7 @@ export namespace Prisma {
      * Filter, which Supplier to fetch.
      */
     where: SupplierWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -3253,6 +3264,7 @@ export namespace Prisma {
      * Filter by unique combinations of Suppliers.
      */
     distinct?: SupplierScalarFieldEnum | SupplierScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -3305,6 +3317,7 @@ export namespace Prisma {
      * Filter by unique combinations of Suppliers.
      */
     distinct?: SupplierScalarFieldEnum | SupplierScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -3352,6 +3365,7 @@ export namespace Prisma {
      */
     skip?: number
     distinct?: SupplierScalarFieldEnum | SupplierScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -3374,6 +3388,7 @@ export namespace Prisma {
      * The data needed to create a Supplier.
      */
     data: XOR<SupplierCreateInput, SupplierUncheckedCreateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -3430,6 +3445,7 @@ export namespace Prisma {
      * Choose, which Supplier to update.
      */
     where: SupplierWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -3504,6 +3520,7 @@ export namespace Prisma {
      * In case the Supplier was found with the provided `where` argument, update it with this data.
      */
     update: XOR<SupplierUpdateInput, SupplierUncheckedUpdateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -3526,6 +3543,7 @@ export namespace Prisma {
      * Filter which Supplier to delete.
      */
     where: SupplierWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -3916,7 +3934,7 @@ export namespace Prisma {
   type OrderGetPayload<S extends boolean | null | undefined | OrderDefaultArgs> = $Result.GetResult<Prisma.$OrderPayload, S>
 
   type OrderCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<OrderFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    Omit<OrderFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
       select?: OrderCountAggregateInputType | true
     }
 
@@ -4368,6 +4386,7 @@ export namespace Prisma {
      * Filter, which Order to fetch.
      */
     where: OrderWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -4390,6 +4409,7 @@ export namespace Prisma {
      * Filter, which Order to fetch.
      */
     where: OrderWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -4442,6 +4462,7 @@ export namespace Prisma {
      * Filter by unique combinations of Orders.
      */
     distinct?: OrderScalarFieldEnum | OrderScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -4494,6 +4515,7 @@ export namespace Prisma {
      * Filter by unique combinations of Orders.
      */
     distinct?: OrderScalarFieldEnum | OrderScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -4541,6 +4563,7 @@ export namespace Prisma {
      */
     skip?: number
     distinct?: OrderScalarFieldEnum | OrderScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -4563,6 +4586,7 @@ export namespace Prisma {
      * The data needed to create a Order.
      */
     data: XOR<OrderCreateInput, OrderUncheckedCreateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -4623,6 +4647,7 @@ export namespace Prisma {
      * Choose, which Order to update.
      */
     where: OrderWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -4701,6 +4726,7 @@ export namespace Prisma {
      * In case the Order was found with the provided `where` argument, update it with this data.
      */
     update: XOR<OrderUpdateInput, OrderUncheckedUpdateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -4723,6 +4749,7 @@ export namespace Prisma {
      * Filter which Order to delete.
      */
     where: OrderWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -5037,7 +5064,7 @@ export namespace Prisma {
   type DroneInstanceGetPayload<S extends boolean | null | undefined | DroneInstanceDefaultArgs> = $Result.GetResult<Prisma.$DroneInstancePayload, S>
 
   type DroneInstanceCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<DroneInstanceFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    Omit<DroneInstanceFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
       select?: DroneInstanceCountAggregateInputType | true
     }
 
@@ -5484,6 +5511,7 @@ export namespace Prisma {
      * Filter, which DroneInstance to fetch.
      */
     where: DroneInstanceWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -5506,6 +5534,7 @@ export namespace Prisma {
      * Filter, which DroneInstance to fetch.
      */
     where: DroneInstanceWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -5558,6 +5587,7 @@ export namespace Prisma {
      * Filter by unique combinations of DroneInstances.
      */
     distinct?: DroneInstanceScalarFieldEnum | DroneInstanceScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -5610,6 +5640,7 @@ export namespace Prisma {
      * Filter by unique combinations of DroneInstances.
      */
     distinct?: DroneInstanceScalarFieldEnum | DroneInstanceScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -5657,6 +5688,7 @@ export namespace Prisma {
      */
     skip?: number
     distinct?: DroneInstanceScalarFieldEnum | DroneInstanceScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -5679,6 +5711,7 @@ export namespace Prisma {
      * The data needed to create a DroneInstance.
      */
     data: XOR<DroneInstanceCreateInput, DroneInstanceUncheckedCreateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -5739,6 +5772,7 @@ export namespace Prisma {
      * Choose, which DroneInstance to update.
      */
     where: DroneInstanceWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -5817,6 +5851,7 @@ export namespace Prisma {
      * In case the DroneInstance was found with the provided `where` argument, update it with this data.
      */
     update: XOR<DroneInstanceUpdateInput, DroneInstanceUncheckedUpdateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -5839,6 +5874,7 @@ export namespace Prisma {
      * Filter which DroneInstance to delete.
      */
     where: DroneInstanceWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -6198,7 +6234,7 @@ export namespace Prisma {
   type DroneModelGetPayload<S extends boolean | null | undefined | DroneModelDefaultArgs> = $Result.GetResult<Prisma.$DroneModelPayload, S>
 
   type DroneModelCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<DroneModelFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    Omit<DroneModelFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
       select?: DroneModelCountAggregateInputType | true
     }
 
@@ -6647,6 +6683,7 @@ export namespace Prisma {
      * Filter, which DroneModel to fetch.
      */
     where: DroneModelWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -6669,6 +6706,7 @@ export namespace Prisma {
      * Filter, which DroneModel to fetch.
      */
     where: DroneModelWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -6721,6 +6759,7 @@ export namespace Prisma {
      * Filter by unique combinations of DroneModels.
      */
     distinct?: DroneModelScalarFieldEnum | DroneModelScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -6773,6 +6812,7 @@ export namespace Prisma {
      * Filter by unique combinations of DroneModels.
      */
     distinct?: DroneModelScalarFieldEnum | DroneModelScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -6820,6 +6860,7 @@ export namespace Prisma {
      */
     skip?: number
     distinct?: DroneModelScalarFieldEnum | DroneModelScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -6842,6 +6883,7 @@ export namespace Prisma {
      * The data needed to create a DroneModel.
      */
     data: XOR<DroneModelCreateInput, DroneModelUncheckedCreateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -6898,6 +6940,7 @@ export namespace Prisma {
      * Choose, which DroneModel to update.
      */
     where: DroneModelWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -6972,6 +7015,7 @@ export namespace Prisma {
      * In case the DroneModel was found with the provided `where` argument, update it with this data.
      */
     update: XOR<DroneModelUpdateInput, DroneModelUncheckedUpdateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -6994,6 +7038,7 @@ export namespace Prisma {
      * Filter which DroneModel to delete.
      */
     where: DroneModelWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -7076,6 +7121,14 @@ export namespace Prisma {
   };
 
   export type ClientScalarFieldEnum = (typeof ClientScalarFieldEnum)[keyof typeof ClientScalarFieldEnum]
+
+
+  export const RelationLoadStrategy: {
+    query: 'query',
+    join: 'join'
+  };
+
+  export type RelationLoadStrategy = (typeof RelationLoadStrategy)[keyof typeof RelationLoadStrategy]
 
 
   export const SupplierScalarFieldEnum: {
