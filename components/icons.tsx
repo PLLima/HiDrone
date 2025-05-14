@@ -15,14 +15,34 @@ export const Logo: React.FC<IconSvgProps> = ({
     width={size || width}
     {...props}
   >
-    <path
+    <path      
       clipRule="evenodd"
-      d="M17.6482 10.1305L15.8785 7.02583L7.02979 22.5499H10.5278L17.6482 10.1305ZM19.8798 14.0457L18.11 17.1983L19.394 19.4511H16.8453L15.1056 22.5499H24.7272L19.8798 14.0457Z"
       fill="currentColor"
-      fillRule="evenodd"
-    />
+      fillRule="evenodd" 
+      d="M7,12a5,5,0,1,1,5-5H10a3,3,0,1,0-3,3Z"/>
+    <path       
+      clipRule="evenodd"
+      fill="currentColor"
+      fillRule="evenodd" 
+      d="M25,12V10a3,3,0,1,0-3-3H20a5,5,0,1,1,5,5Z"/>
+    <path       
+      clipRule="evenodd"
+      fill="currentColor"
+      fillRule="evenodd" 
+      d="M7,30A5,5,0,0,1,7,20v2a3,3,0,1,0,3,3h2A5.0055,5.0055,0,0,1,7,30Z"/>
+    <path       
+      clipRule="evenodd"
+      fill="currentColor"
+      fillRule="evenodd" 
+      d="M25,30a5.0055,5.0055,0,0,1-5-5h2a3,3,0,1,0,3-3V20a5,5,0,0,1,0,10Z"/>
+    <path       
+      clipRule="evenodd"
+      fill="currentColor"
+      fillRule="evenodd" 
+      d="M20,18.5859V13.4141L25.707,7.707a1,1,0,1,0-1.414-1.414l-4.4995,4.5a3.9729,3.9729,0,0,0-7.587,0L7.707,6.293a.9994.9994,0,0,0-1.414,0h0a.9994.9994,0,0,0,0,1.414L12,13.4141v5.1718L6.293,24.293a.9994.9994,0,0,0,0,1.414h0a.9994.9994,0,0,0,1.414,0l4.5-4.5a3.9729,3.9729,0,0,0,7.587,0l4.4995,4.5a1,1,0,0,0,1.414-1.414ZM18,20a2,2,0,0,1-4,0V12a2,2,0,0,1,4,0Z"/>
   </svg>
 );
+
 
 export const GithubIcon: React.FC<IconSvgProps> = ({
   size = 24,
