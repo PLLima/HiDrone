@@ -133,7 +133,8 @@ exports.Prisma.SupplierScalarFieldEnum = {
   name: 'name',
   email: 'email',
   password: 'password',
-  cnpj: 'cnpj'
+  cnpj: 'cnpj',
+  credits: 'credits'
 };
 
 exports.Prisma.OrderScalarFieldEnum = {
