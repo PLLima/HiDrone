@@ -7,7 +7,7 @@ import { Accordion, AccordionItem } from "@heroui/react";
 import { title, subtitle } from "@/components/primitives";
 import {Autocomplete, AutocompleteItem} from "@heroui/react";
 import {  Table,  TableHeader,  TableBody,  TableColumn,  TableRow,  TableCell} from "@heroui/table";
-import { aborted } from "util";
+import {Slider} from "@heroui/react";
 
 export const cities = [
   { label: "São Paulo", key: "sao_paulo" },
@@ -25,6 +25,14 @@ export const cities = [
   { label: "Florianópolis", key: "florianopolis" },
 ];
 
+export const materials = [
+  { label: "Carbon Fiber", key: "carbon_fiber" },
+  { label: "Aluminum", key: "aluminum" },
+  { label: "Plastic", key: "plastic" },
+  { label: "Steel", key: "steel" },
+  { label: "Titanium", key: "titanium" },
+];
+
 // Mock data for drones (same data for all drones for now)
 const mockDrones = Array.from({ length: 12 }, (_, index) => ({
   id: `drone-${index + 1}`,
@@ -35,7 +43,7 @@ const mockDrones = Array.from({ length: 12 }, (_, index) => ({
   drone_weight: "2.5",
   drone_dimentions: "2x2x2",
   weight_capacity: "1.5",
-  dimentions_capacity: "2x1x1",
+  volume_capacity: "2",
   material: "Carbon Fiber",
 }));
 
@@ -75,7 +83,7 @@ const DroneDetailsModal = ({ isOpen, onClose, droneId }: { isOpen: boolean; onCl
     { name: "Model", value: drone.model },
     { name: "Neighborhood", value: drone.neighborhood },
     { name: "Weight Capacity", value: `${drone.weight_capacity} kg` },
-    { name: "Dimensions Capacity", value: `${drone.dimentions_capacity} (m)` },
+    { name: "Volume Capacity", value: `${drone.volume_capacity} l` },
     { name: "Drone Weight", value: `${drone.drone_weight} kg` },
     { name: "Drone Dimensions", value: `${drone.drone_dimentions} (m)` },
     { name: "Material", value: drone.material },
@@ -158,11 +166,51 @@ export default function SearchDronesPage() {
       {/* Filters Accordion */}
       <Accordion variant="shadow" className="w-full max-w-6xl">
         <AccordionItem title="Filters">
-          <Autocomplete className="max-w-xs" label="City">
-            {cities.map((animal) => (
-              <AutocompleteItem key={animal.key}>{animal.label}</AutocompleteItem>
-            ))}
-          </Autocomplete>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {/* City Filter */}
+            <Autocomplete className="max-w-xs" label="City">
+              {cities.map((city) => (
+                <AutocompleteItem key={city.key}>{city.label}</AutocompleteItem>
+              ))}
+            </Autocomplete>
+
+            {/* Material Filter */}
+            <Autocomplete className="max-w-xs" label="Material">
+              {materials.map((material) => (
+                <AutocompleteItem key={material.key}>{material.label}</AutocompleteItem>
+              ))}
+            </Autocomplete>
+
+            {/* Weight Capacity Filter */}
+            <Slider
+              className="max-w-md"
+              defaultValue={[0, 10]}
+              label="Weight Capacity (kg)"
+              maxValue={10}
+              minValue={0}
+              step={0.1}
+            />
+
+            {/* Volume Capacity Filter */}
+            <Slider
+              className="max-w-md"
+              defaultValue={[0, 10]}
+              label="Volume Capacity (l)"
+              maxValue={10}
+              minValue={0}
+              step={0.1}
+            />
+
+            {/* Drone Weight Filter */}
+            <Slider
+              className="max-w-md"
+              defaultValue={[0, 10]}
+              label="Drone Weight (kg)"
+              maxValue={10}
+              minValue={0}
+              step={0.1}
+            />
+          </div>
         </AccordionItem>
       </Accordion>
 
