@@ -39,7 +39,7 @@ const mockDrones = Array.from({ length: 12 }, (_, index) => ({
   id: `drone-${index + 1}`,
   supplier: "Drone Supplier Inc.",
   model: "Drone Model X",
-  neighborhood: "Downtown",
+  region: "Downtown",
   image: "/drone.png",
   drone_weight: "2.5",
   drone_dimentions: "2x2x2",
@@ -49,7 +49,7 @@ const mockDrones = Array.from({ length: 12 }, (_, index) => ({
 }));
 
 // Drone Card Component
-const DroneCard = ({ drone, onClick }: { drone: { id: string; model: string; neighborhood: string; image: string }; onClick: (id: string) => void }) => {
+const DroneCard = ({ drone, onClick }: { drone: { id: string; model: string; region: string; image: string }; onClick: (id: string) => void }) => {
   return (
     <Card
       isHoverable
@@ -66,7 +66,7 @@ const DroneCard = ({ drone, onClick }: { drone: { id: string; model: string; nei
       </CardHeader>
       <CardBody className="p-4">
         <h3 className="text-lg font-bold">{drone.model}</h3>
-        <p className="text-sm text-default-500">{drone.neighborhood}</p>
+        <p className="text-sm text-default-500">{drone.region}</p>
       </CardBody>
     </Card>
   );
@@ -82,7 +82,7 @@ const DroneDetailsModal = ({ isOpen, onClose, droneId }: { isOpen: boolean; onCl
   // Prepare rows for the table
   const rows = [
     { name: "Model", value: drone.model },
-    { name: "Neighborhood", value: drone.neighborhood },
+    { name: "Region", value: drone.region },
     { name: "Weight Capacity", value: `${drone.weight_capacity} kg` },
     { name: "Volume Capacity", value: `${drone.volume_capacity} l` },
     { name: "Drone Weight", value: `${drone.drone_weight} kg` },
