@@ -1,13 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, ModalContent, ModalHeader, ModalBody, Button, Image } from "@heroui/react";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Accordion, AccordionItem } from "@heroui/react";
-import { title, subtitle } from "@/components/primitives";
-import {Autocomplete, AutocompleteItem} from "@heroui/react";
-import {  Table,  TableHeader,  TableBody,  TableColumn,  TableRow,  TableCell} from "@heroui/table";
-import {Slider} from "@heroui/react";
+import { Autocomplete, AutocompleteItem } from "@heroui/react";
+import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell } from "@heroui/table";
+import { Slider } from "@heroui/react";
 
 export const cities = [
   { label: "São Paulo", key: "sao_paulo" },
@@ -140,37 +139,62 @@ const DroneDetailsModal = ({ isOpen, onClose, droneId }: { isOpen: boolean; onCl
   );
 };
 
+// Types for filters
+type DroneFilters = {
+  city: string | null;
+  material: string | null;
+  weightCapacity: [number, number];
+  volumeCapacity: [number, number];
+  droneWeight: [number, number];
+};
+
+// Default filter values
+const defaultFilters: DroneFilters = {
+  city: null,
+  material: null,
+  weightCapacity: [0, 10],
+  volumeCapacity: [0, 10],
+  droneWeight: [0, 10],
+};
+
+// Utility functions for localStorage
+const loadFiltersFromLocalStorage = (): DroneFilters => {
+  const storedFilters = localStorage.getItem("droneFilters");
+  return storedFilters ? JSON.parse(storedFilters) : defaultFilters;
+};
+
+const saveFiltersToLocalStorage = (filters: DroneFilters) => {
+  localStorage.setItem("droneFilters", JSON.stringify(filters));
+};
+
 // Main Search Drones Page
 export default function SearchDronesPage() {
+  const [filters, setFilters] = useState<DroneFilters>(defaultFilters);
   const [selectedDroneId, setSelectedDroneId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // State for filters
-  const [city, setCity] = useState<string | null>(null);
-  const [material, setMaterial] = useState<string | null>(null);
-  const [weightCapacity, setWeightCapacity] = useState<[number, number]>([0, 10]);
-  const [volumeCapacity, setVolumeCapacity] = useState<[number, number]>([0, 10]);
-  const [droneWeight, setDroneWeight] = useState<[number, number]>([0, 10]);
+  // Load filters when the accordion is opened
+  const handleAccordionOpen = () => {
+    const storedFilters = loadFiltersFromLocalStorage();
+    setFilters(storedFilters);
+  };
 
-  // Handle "Clear Filters" button
-  const handleClearFilters = () => {
-    setCity(null);
-    setMaterial(null);
-    setWeightCapacity([0, 10]);
-    setVolumeCapacity([0, 10]);
-    setDroneWeight([0, 10]);
+  // Handle filter changes
+  const handleFilterChange = (key: keyof DroneFilters, value: any) => {
+    const updatedFilters = { ...filters, [key]: value };
+    setFilters(updatedFilters);
+    saveFiltersToLocalStorage(updatedFilters);
   };
 
   // Handle "Apply Filters" button
   const handleApplyFilters = () => {
-    const filters = {
-      city,
-      material,
-      weightCapacity,
-      volumeCapacity,
-      droneWeight,
-    };
     alert(`Applied Filters:\n${JSON.stringify(filters, null, 2)}`); // Debug popup
+  };
+
+  // Handle "Reset Filters" button
+  const handleResetFilters = () => {
+    saveFiltersToLocalStorage(defaultFilters);
+    setFilters(defaultFilters);
   };
 
   const handleCardClick = (id: string) => {
@@ -187,12 +211,13 @@ export default function SearchDronesPage() {
     <section className="flex flex-col items-center justify-center gap-6 py-8 px-6 w-full max-w-screen-2xl mx-auto">
       {/* Page Title */}
       <div className="inline-block max-w-xl text-center justify-center">
-        <span className={title({})}>Find Drones&nbsp;</span>
+        <span className="text-4xl font-bold">Find Drones&nbsp;</span>
         <br />
       </div>
 
       {/* Filters Accordion */}
-      <Accordion variant="shadow" className="w-full max-w-6xl">
+      {/* @ts-ignore: Suppress TypeScript error */}
+      <Accordion variant="shadow" className="w-full max-w-6xl" onOpenChange={handleAccordionOpen}>
         <AccordionItem title="Filters">
           <div className="flex flex-col gap-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -200,7 +225,8 @@ export default function SearchDronesPage() {
               <Autocomplete
                 className="max-w-xs"
                 label="City"
-                onSelectionChange={(key) => setCity(key as string)}
+                selectedKey={filters.city}
+                onSelectionChange={(key) => handleFilterChange("city", key as string)}
               >
                 {cities.map((city) => (
                   <AutocompleteItem key={city.key}>{city.label}</AutocompleteItem>
@@ -211,7 +237,8 @@ export default function SearchDronesPage() {
               <Autocomplete
                 className="max-w-xs"
                 label="Material"
-                onSelectionChange={(key) => setMaterial(key as string)}
+                selectedKey={filters.material}
+                onSelectionChange={(key) => handleFilterChange("material", key as string)}
               >
                 {materials.map((material) => (
                   <AutocompleteItem key={material.key}>{material.label}</AutocompleteItem>
@@ -221,34 +248,34 @@ export default function SearchDronesPage() {
               {/* Weight Capacity Filter */}
               <Slider
                 className="max-w-md"
-                defaultValue={weightCapacity}
+                value={filters.weightCapacity}
                 label="Weight Capacity (kg)"
                 maxValue={10}
                 minValue={0}
                 step={0.1}
-                onChange={(value) => setWeightCapacity(value as [number, number])}
+                onChange={(value) => handleFilterChange("weightCapacity", value as [number, number])}
               />
 
               {/* Volume Capacity Filter */}
               <Slider
                 className="max-w-md"
-                defaultValue={volumeCapacity}
+                value={filters.volumeCapacity}
                 label="Volume Capacity (l)"
                 maxValue={10}
                 minValue={0}
                 step={0.1}
-                onChange={(value) => setVolumeCapacity(value as [number, number])}
+                onChange={(value) => handleFilterChange("volumeCapacity", value as [number, number])}
               />
 
               {/* Drone Weight Filter */}
               <Slider
                 className="max-w-md"
-                defaultValue={droneWeight}
+                value={filters.droneWeight}
                 label="Drone Weight (kg)"
                 maxValue={10}
                 minValue={0}
                 step={0.1}
-                onChange={(value) => setDroneWeight(value as [number, number])}
+                onChange={(value) => handleFilterChange("droneWeight", value as [number, number])}
               />
             </div>
 
@@ -258,9 +285,9 @@ export default function SearchDronesPage() {
                 variant="light"
                 color="danger"
                 className="mr-4"
-                onPress={handleClearFilters}
+                onPress={handleResetFilters}
               >
-                Clear Filters
+                Reset Filters
               </Button>
               <Button
                 variant="solid"
