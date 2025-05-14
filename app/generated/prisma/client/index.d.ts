@@ -2478,12 +2478,10 @@ export namespace Prisma {
 
   export type SupplierAvgAggregateOutputType = {
     id: number | null
-    cnpj: number | null
   }
 
   export type SupplierSumAggregateOutputType = {
     id: number | null
-    cnpj: number | null
   }
 
   export type SupplierMinAggregateOutputType = {
@@ -2491,7 +2489,7 @@ export namespace Prisma {
     name: string | null
     email: string | null
     password: string | null
-    cnpj: number | null
+    cnpj: string | null
   }
 
   export type SupplierMaxAggregateOutputType = {
@@ -2499,7 +2497,7 @@ export namespace Prisma {
     name: string | null
     email: string | null
     password: string | null
-    cnpj: number | null
+    cnpj: string | null
   }
 
   export type SupplierCountAggregateOutputType = {
@@ -2514,12 +2512,10 @@ export namespace Prisma {
 
   export type SupplierAvgAggregateInputType = {
     id?: true
-    cnpj?: true
   }
 
   export type SupplierSumAggregateInputType = {
     id?: true
-    cnpj?: true
   }
 
   export type SupplierMinAggregateInputType = {
@@ -2638,7 +2634,7 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    cnpj: number
+    cnpj: string
     _count: SupplierCountAggregateOutputType | null
     _avg: SupplierAvgAggregateOutputType | null
     _sum: SupplierSumAggregateOutputType | null
@@ -2712,7 +2708,7 @@ export namespace Prisma {
       name: string
       email: string
       password: string
-      cnpj: number
+      cnpj: string
     }, ExtArgs["result"]["supplier"]>
     composites: {}
   }
@@ -3141,7 +3137,7 @@ export namespace Prisma {
     readonly name: FieldRef<"Supplier", 'String'>
     readonly email: FieldRef<"Supplier", 'String'>
     readonly password: FieldRef<"Supplier", 'String'>
-    readonly cnpj: FieldRef<"Supplier", 'Int'>
+    readonly cnpj: FieldRef<"Supplier", 'String'>
   }
     
 
@@ -7309,7 +7305,7 @@ export namespace Prisma {
     name?: StringFilter<"Supplier"> | string
     email?: StringFilter<"Supplier"> | string
     password?: StringFilter<"Supplier"> | string
-    cnpj?: IntFilter<"Supplier"> | number
+    cnpj?: StringFilter<"Supplier"> | string
     DroneInstance?: DroneInstanceListRelationFilter
   }
 
@@ -7325,7 +7321,7 @@ export namespace Prisma {
   export type SupplierWhereUniqueInput = Prisma.AtLeast<{
     id?: number
     email?: string
-    cnpj?: number
+    cnpj?: string
     AND?: SupplierWhereInput | SupplierWhereInput[]
     OR?: SupplierWhereInput[]
     NOT?: SupplierWhereInput | SupplierWhereInput[]
@@ -7355,7 +7351,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"Supplier"> | string
     email?: StringWithAggregatesFilter<"Supplier"> | string
     password?: StringWithAggregatesFilter<"Supplier"> | string
-    cnpj?: IntWithAggregatesFilter<"Supplier"> | number
+    cnpj?: StringWithAggregatesFilter<"Supplier"> | string
   }
 
   export type OrderWhereInput = {
@@ -7629,7 +7625,7 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    cnpj: number
+    cnpj: string
     DroneInstance?: DroneInstanceCreateNestedManyWithoutSupplierInput
   }
 
@@ -7638,7 +7634,7 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    cnpj: number
+    cnpj: string
     DroneInstance?: DroneInstanceUncheckedCreateNestedManyWithoutSupplierInput
   }
 
@@ -7646,7 +7642,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    cnpj?: IntFieldUpdateOperationsInput | number
+    cnpj?: StringFieldUpdateOperationsInput | string
     DroneInstance?: DroneInstanceUpdateManyWithoutSupplierNestedInput
   }
 
@@ -7655,7 +7651,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    cnpj?: IntFieldUpdateOperationsInput | number
+    cnpj?: StringFieldUpdateOperationsInput | string
     DroneInstance?: DroneInstanceUncheckedUpdateManyWithoutSupplierNestedInput
   }
 
@@ -7664,14 +7660,14 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    cnpj: number
+    cnpj: string
   }
 
   export type SupplierUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    cnpj?: IntFieldUpdateOperationsInput | number
+    cnpj?: StringFieldUpdateOperationsInput | string
   }
 
   export type SupplierUncheckedUpdateManyInput = {
@@ -7679,7 +7675,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    cnpj?: IntFieldUpdateOperationsInput | number
+    cnpj?: StringFieldUpdateOperationsInput | string
   }
 
   export type OrderCreateInput = {
@@ -8038,7 +8034,6 @@ export namespace Prisma {
 
   export type SupplierAvgOrderByAggregateInput = {
     id?: SortOrder
-    cnpj?: SortOrder
   }
 
   export type SupplierMaxOrderByAggregateInput = {
@@ -8059,7 +8054,6 @@ export namespace Prisma {
 
   export type SupplierSumOrderByAggregateInput = {
     id?: SortOrder
-    cnpj?: SortOrder
   }
 
   export type DateTimeFilter<$PrismaModel = never> = {
@@ -8996,7 +8990,7 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    cnpj: number
+    cnpj: string
   }
 
   export type SupplierUncheckedCreateWithoutDroneInstanceInput = {
@@ -9004,7 +8998,7 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    cnpj: number
+    cnpj: string
   }
 
   export type SupplierCreateOrConnectWithoutDroneInstanceInput = {
@@ -9084,7 +9078,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    cnpj?: IntFieldUpdateOperationsInput | number
+    cnpj?: StringFieldUpdateOperationsInput | string
   }
 
   export type SupplierUncheckedUpdateWithoutDroneInstanceInput = {
@@ -9092,7 +9086,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    cnpj?: IntFieldUpdateOperationsInput | number
+    cnpj?: StringFieldUpdateOperationsInput | string
   }
 
   export type DroneModelUpsertWithoutDroneInstanceInput = {
