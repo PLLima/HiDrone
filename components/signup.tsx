@@ -8,9 +8,8 @@ import {
   ModalFooter,
 } from "@heroui/react";
 
-import { title } from "@/components/primitives";
 import React, { FormEvent } from "react";
-import { Form, Input, Select, SelectItem, Checkbox, Button } from "@heroui/react";
+import { Form, Input, Button } from "@heroui/react";
 import { ClientData, registerClient } from "@/app/server/user";
 import { hash } from "bcryptjs";
 
@@ -25,6 +24,7 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
   const [password, setPassword] = React.useState<string>("");
   const [repeat_password, setRepeatPassword] = React.useState<string>("");
   const [submitted, setSubmitted] = React.useState<ClientData | null>(null);
+  const [isLoading, setIsLoading] = React.useState(false);
   const [errors, setErrors] = React.useState<Errors>({});
   const [touched, setTouched] = React.useState<{ password: boolean; repeat_password: boolean }>({
     password: false,
@@ -55,6 +55,7 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
   };
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
+    setIsLoading(true);
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries()) as Record<string, string>;
@@ -69,6 +70,7 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
     }
 
     if (Object.keys(newErrors).length > 0) {
+      setIsLoading(false);
       setErrors(newErrors);
       return;
     }
@@ -87,6 +89,7 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
     if (registered === false) {
       // Set an error message for the email field
       newErrors.email = "An account with this email already exists.";
+      setIsLoading(false);
       setErrors(newErrors);
       return; // Prevent modal from closing
     }
@@ -98,12 +101,20 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
     // Clear errors and submit
     setErrors({});
     setSubmitted(formattedData as ClientData);
-
+    setIsLoading(false);
     window.location.reload();
   }
 
+  const clearVariables = () => {
+    setPassword("");
+    setRepeatPassword("");
+    setSubmitted(null);
+    setErrors({});
+    setTouched({ password: false, repeat_password: false });
+  }
+
   return (
-    <Modal isOpen={isOpen} onOpenChange={(isOpen) => !isOpen && onClose()} backdrop="blur" size="xs">
+    <Modal isOpen={isOpen} onOpenChange={(isOpen) => !isOpen && onClose()} onClose={() => clearVariables()} backdrop="blur" size="xs">
       <ModalContent>
         <>
           <ModalHeader className="text-4xl font-bold text-center">Sign Up</ModalHeader>
@@ -111,31 +122,18 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
             <Form
               className="w-full justify-center items-center space-y-4"
               onSubmit={onSubmit}
+              validationErrors={errors}
+              autoComplete="on"
             >
               <div className="flex flex-col gap-4 max-w-md">
                 <Input
                   isRequired
-                  errorMessage={({ validationDetails }) => {
-                    if (validationDetails.valueMissing) {
-                      return "Please enter your name";
-                    }
-                    return errors.name;
-                  }}
                   label="Name"
                   name="name"
                 />
 
                 <Input
                   isRequired
-                  errorMessage={({ validationDetails }) => {
-                    if (validationDetails.valueMissing) {
-                      return "Please enter your email";
-                    }
-                    if (validationDetails.typeMismatch) {
-                      return "Please enter a valid email address";
-                    }
-                    return errors.email; // Show email error if it exists
-                  }}
                   label="Email"
                   name="email"
                   type="email"
@@ -177,7 +175,7 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                   <Button
                     type="button"
                     className="w-1/3"
-                    onPress={onClose}
+                    onPress={() => {clearVariables();onClose();}}
                     color="danger"
                     variant="light"
                   >
@@ -187,6 +185,7 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                     type="submit"
                     className="flex-1"
                     color="primary"
+                    isLoading={isLoading}
                     isDisabled={
                       !!getPasswordError(password) ||
                       !!getRepeatPasswordError(password, repeat_password)
