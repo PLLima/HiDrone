@@ -16,7 +16,12 @@ const mockDrones = Array.from({ length: 12 }, (_, index) => ({
 // Drone Card Component
 const DroneCard = ({ drone, onClick }: { drone: { id: string; model: string; neighborhood: string; image: string }; onClick: (id: string) => void }) => {
   return (
-    <Card isHoverable onClick={() => onClick(drone.id)} className="w-full h-full">
+    <Card
+      isHoverable
+      isPressable                // <-- make it render as a button
+      onPress={() => onClick(drone.id)}  // <-- use onPress instead of onClick
+      className="w-full h-full cursor-pointer"
+    >
       <CardHeader className="p-0">
         <Image
           alt={drone.model}
@@ -25,8 +30,8 @@ const DroneCard = ({ drone, onClick }: { drone: { id: string; model: string; nei
         />
       </CardHeader>
       <CardBody className="p-4">
-        <h3 className="text-xl font-bold">{drone.model}</h3>
-        <p className="text-base text-default-500">{drone.neighborhood}</p>
+        <h3 className="text-lg font-bold">{drone.model}</h3>
+        <p className="text-sm text-default-500">{drone.neighborhood}</p>
       </CardBody>
     </Card>
   );
