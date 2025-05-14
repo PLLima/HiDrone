@@ -89,5 +89,5 @@ export async function findUser(email: string) {
       },
     });
   }
-  return existingUser;
+  return JSON.parse(JSON.stringify(existingUser));
 }
