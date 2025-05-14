@@ -1,93 +1,92 @@
 "use client";
 
-import React, { FormEvent } from "react";
-import { Form, Input, Button } from "@heroui/react";
+import React, { useState } from "react";
+import { Modal, ModalContent, ModalHeader, ModalBody, Button, Image } from "@heroui/react";
+import { Card, CardBody, CardHeader } from "@heroui/card";
+import { Accordion, AccordionItem } from "@heroui/react";
 
-// Define types for errors and submitted data
-type Errors = {
-  pickup?: string;
-  delivery?: string;
+// Mock data for drones (same data for all drones for now)
+const mockDrones = Array.from({ length: 12 }, (_, index) => ({
+  id: `drone-${index + 1}`,
+  model: "Drone Model X",
+  neighborhood: "Downtown",
+  image: "https://p.turbosquid.com/ts-thumb/6z/ddoFeQ/WQTTdbab/bb_8_final08/png/1457806753/600x600/fit_q87/fc7699e18c45c9c4475dce7aabb7f7bd78e20353/bb_8_final08.jpg",
+}));
+
+// Drone Card Component
+const DroneCard = ({ drone, onClick }: { drone: { id: string; model: string; neighborhood: string; image: string }; onClick: (id: string) => void }) => {
+  return (
+    <Card isHoverable onClick={() => onClick(drone.id)} className="w-full h-full">
+      <CardHeader className="p-0">
+        <Image
+          alt={drone.model}
+          className="w-full aspect-square object-cover rounded-xl"
+          src={drone.image}
+        />
+      </CardHeader>
+      <CardBody className="p-4">
+        <h3 className="text-xl font-bold">{drone.model}</h3>
+        <p className="text-base text-default-500">{drone.neighborhood}</p>
+      </CardBody>
+    </Card>
+  );
 };
 
-type SubmittedData = {
-  pickup: string;
-  delivery: string;
+// Drone Details Modal Component
+const DroneDetailsModal = ({ isOpen, onClose, droneId }: { isOpen: boolean; onClose: () => void; droneId: string | null }) => {
+  return (
+    <Modal isOpen={isOpen} onOpenChange={(open) => { if (!open) onClose(); }} backdrop="blur">
+      <ModalContent>
+        <>
+          <ModalHeader className="text-2xl font-bold">Drone Details</ModalHeader>
+          <ModalBody>
+            <p className="text-lg">Selected Drone ID: {droneId}</p>
+          </ModalBody>
+          <Button onPress={onClose} className="mt-4" color="primary">
+            Close
+          </Button>
+        </>
+      </ModalContent>
+    </Modal>
+  );
 };
 
-export default function RideRequestPage() {
-  const [submitted, setSubmitted] = React.useState<SubmittedData | null>(null);
-  const [errors, setErrors] = React.useState<Errors>({});
+// Main Search Drones Page
+export default function SearchDronesPage() {
+  const [selectedDroneId, setSelectedDroneId] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>): void => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries()) as Record<string, string>;
+  const handleCardClick = (id: string) => {
+    setSelectedDroneId(id);
+    setIsModalOpen(true);
+  };
 
-    // Custom validation checks
-    const newErrors: Errors = {};
-
-    if (!data.pickup) {
-      newErrors.pickup = "Please enter a pickup location";
-    }
-
-    if (!data.delivery) {
-      newErrors.delivery = "Please enter a delivery location";
-    }
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
-
-    // Clear errors and submit
-    setErrors({});
-    setSubmitted(data as SubmittedData);
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedDroneId(null);
   };
 
   return (
-    <div className="w-full flex flex-col items-center space-y-6">
-      <h1 className="text-4xl font-bold text-center">Hire Delivery</h1>
-      <Form
-        className="w-full justify-center items-center space-y-4"
-        validationErrors={errors}
-        onReset={() => setSubmitted(null)}
-        onSubmit={onSubmit}
-      >
-        <div className="flex flex-col gap-4 max-w-md">
-          <Input
-            errorMessage={({ validationDetails }) => {
-              if (validationDetails.valueMissing) {
-                return "Please enter a pickup location";
-              }
-              return errors.pickup;
-            }}
-            name="pickup"
-            label="Pickup location"
-            type="text"
-            autoComplete="street-address"
-          />
+    <section className="flex flex-col items-center justify-center gap-6 py-8 px-6 w-full max-w-screen-2xl mx-auto">
+      {/* Page Title */}
+      <h1 className="text-4xl font-bold">Find Drones</h1>
 
-          <Input
-            errorMessage={({ validationDetails }) => {
-              if (validationDetails.valueMissing) {
-                return "Please enter a delivery location";
-              }
-              return errors.delivery;
-            }}
-            name="delivery"
-            label="Delivery location"
-            type="text"
-            autoComplete="street-address"
-          />
+      {/* Filters Accordion */}
+      <Accordion variant="shadow" className="w-full max-w-6xl">
+        <AccordionItem title="Filters">
+          <p className="text-sm text-default-500">Filter options will go here.</p>
+        </AccordionItem>
+      </Accordion>
 
-          <div className="flex gap-4">
-            <Button className="w-full" color="primary" type="submit">
-              See drones avaliable
-            </Button>
-          </div>
-        </div>
+      {/* Drone Cards Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 w-full">
+        {mockDrones.map((drone) => (
+          <DroneCard key={drone.id} drone={drone} onClick={handleCardClick} />
+        ))}
+      </div>
 
-      </Form>
-    </div>
+      {/* Drone Details Modal */}
+      <DroneDetailsModal isOpen={isModalOpen} onClose={handleCloseModal} droneId={selectedDroneId} />
+    </section>
   );
 }

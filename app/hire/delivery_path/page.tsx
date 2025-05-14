@@ -14,7 +14,7 @@ type SubmittedData = {
   delivery: string;
 };
 
-export default function RideRequestPage() {
+export default function HireLayout() {
   const [submitted, setSubmitted] = React.useState<SubmittedData | null>(null);
   const [errors, setErrors] = React.useState<Errors>({});
 

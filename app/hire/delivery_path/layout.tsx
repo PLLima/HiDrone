@@ -1,4 +1,4 @@
-export default function HireLayout({
+export default function RideRequestLayout({
   children,
 }: {
   children: React.ReactNode;

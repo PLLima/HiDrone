@@ -1,13 +1,14 @@
-export default function HireLayout({
+export default function SearchDronesLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-      <div className="inline-block max-w-lg text-center justify-center">
+    <section className="flex flex-col items-center justify-center gap-6 py-8 px-6 w-full max-w-screen-2xl mx-auto">
+      <div className="w-full">
         {children}
       </div>
     </section>
+
   );
 }
