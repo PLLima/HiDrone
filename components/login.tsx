@@ -44,7 +44,7 @@ export const LogInModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =
     // Password validation
     const match = await compare(data.password, existingUser.password); 
     if (!match) {
-      newErrors.password = "Invalid password";
+      newErrors.password = "Incorrect password";
       setIsLoading(false);
       setErrors(newErrors);
       return;
