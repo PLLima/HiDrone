@@ -145,6 +145,34 @@ export default function SearchDronesPage() {
   const [selectedDroneId, setSelectedDroneId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // State for filters
+  const [city, setCity] = useState<string | null>(null);
+  const [material, setMaterial] = useState<string | null>(null);
+  const [weightCapacity, setWeightCapacity] = useState<[number, number]>([0, 10]);
+  const [volumeCapacity, setVolumeCapacity] = useState<[number, number]>([0, 10]);
+  const [droneWeight, setDroneWeight] = useState<[number, number]>([0, 10]);
+
+  // Handle "Clear Filters" button
+  const handleClearFilters = () => {
+    setCity(null);
+    setMaterial(null);
+    setWeightCapacity([0, 10]);
+    setVolumeCapacity([0, 10]);
+    setDroneWeight([0, 10]);
+  };
+
+  // Handle "Apply Filters" button
+  const handleApplyFilters = () => {
+    const filters = {
+      city,
+      material,
+      weightCapacity,
+      volumeCapacity,
+      droneWeight,
+    };
+    alert(`Applied Filters:\n${JSON.stringify(filters, null, 2)}`); // Debug popup
+  };
+
   const handleCardClick = (id: string) => {
     setSelectedDroneId(id);
     setIsModalOpen(true);
@@ -166,64 +194,83 @@ export default function SearchDronesPage() {
       {/* Filters Accordion */}
       <Accordion variant="shadow" className="w-full max-w-6xl">
         <AccordionItem title="Filters">
-            <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {/* City Filter */}
-              <Autocomplete className="max-w-xs" label="City">
-              {cities.map((city) => (
-                <AutocompleteItem key={city.key}>{city.label}</AutocompleteItem>
-              ))}
+              <Autocomplete
+                className="max-w-xs"
+                label="City"
+                onSelectionChange={(key) => setCity(key as string)}
+              >
+                {cities.map((city) => (
+                  <AutocompleteItem key={city.key}>{city.label}</AutocompleteItem>
+                ))}
               </Autocomplete>
 
               {/* Material Filter */}
-              <Autocomplete className="max-w-xs" label="Material">
-              {materials.map((material) => (
-                <AutocompleteItem key={material.key}>{material.label}</AutocompleteItem>
-              ))}
+              <Autocomplete
+                className="max-w-xs"
+                label="Material"
+                onSelectionChange={(key) => setMaterial(key as string)}
+              >
+                {materials.map((material) => (
+                  <AutocompleteItem key={material.key}>{material.label}</AutocompleteItem>
+                ))}
               </Autocomplete>
 
               {/* Weight Capacity Filter */}
               <Slider
-              className="max-w-md"
-              defaultValue={[0, 10]}
-              label="Weight Capacity (kg)"
-              maxValue={10}
-              minValue={0}
-              step={0.1}
+                className="max-w-md"
+                defaultValue={weightCapacity}
+                label="Weight Capacity (kg)"
+                maxValue={10}
+                minValue={0}
+                step={0.1}
+                onChange={(value) => setWeightCapacity(value as [number, number])}
               />
 
               {/* Volume Capacity Filter */}
               <Slider
-              className="max-w-md"
-              defaultValue={[0, 10]}
-              label="Volume Capacity (l)"
-              maxValue={10}
-              minValue={0}
-              step={0.1}
+                className="max-w-md"
+                defaultValue={volumeCapacity}
+                label="Volume Capacity (l)"
+                maxValue={10}
+                minValue={0}
+                step={0.1}
+                onChange={(value) => setVolumeCapacity(value as [number, number])}
               />
 
               {/* Drone Weight Filter */}
               <Slider
-              className="max-w-md"
-              defaultValue={[0, 10]}
-              label="Drone Weight (kg)"
-              maxValue={10}
-              minValue={0}
-              step={0.1}
+                className="max-w-md"
+                defaultValue={droneWeight}
+                label="Drone Weight (kg)"
+                maxValue={10}
+                minValue={0}
+                step={0.1}
+                onChange={(value) => setDroneWeight(value as [number, number])}
               />
             </div>
 
             {/* Buttons at the bottom */}
             <div className="flex justify-end mt-4">
-              <Button variant="light" color="danger" className="mr-4">
-              Clear Filters
+              <Button
+                variant="light"
+                color="danger"
+                className="mr-4"
+                onPress={handleClearFilters}
+              >
+                Clear Filters
               </Button>
-              <Button variant="solid" color="primary">
-              Apply Filters
+              <Button
+                variant="solid"
+                color="primary"
+                onPress={handleApplyFilters}
+              >
+                Apply Filters
               </Button>
             </div>
-            </div>
-          
+          </div>
         </AccordionItem>
       </Accordion>
 
@@ -235,7 +282,11 @@ export default function SearchDronesPage() {
       </div>
 
       {/* Drone Details Modal */}
-      <DroneDetailsModal isOpen={isModalOpen} onClose={handleCloseModal} droneId={selectedDroneId} />
+      <DroneDetailsModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        droneId={selectedDroneId}
+      />
     </section>
   );
 }
