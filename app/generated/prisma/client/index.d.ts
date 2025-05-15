@@ -1369,73 +1369,73 @@ export namespace Prisma {
   }
 
   export type ClientAvgAggregateOutputType = {
-    id: number | null
     credits: Decimal | null
+    id: number | null
   }
 
   export type ClientSumAggregateOutputType = {
-    id: number | null
     credits: Decimal | null
+    id: number | null
   }
 
   export type ClientMinAggregateOutputType = {
+    credits: Decimal | null
+    email: string | null
     id: number | null
     name: string | null
-    email: string | null
     password: string | null
-    credits: Decimal | null
   }
 
   export type ClientMaxAggregateOutputType = {
+    credits: Decimal | null
+    email: string | null
     id: number | null
     name: string | null
-    email: string | null
     password: string | null
-    credits: Decimal | null
   }
 
   export type ClientCountAggregateOutputType = {
+    credits: number
+    email: number
     id: number
     name: number
-    email: number
     password: number
-    credits: number
     _all: number
   }
 
 
   export type ClientAvgAggregateInputType = {
-    id?: true
     credits?: true
+    id?: true
   }
 
   export type ClientSumAggregateInputType = {
-    id?: true
     credits?: true
+    id?: true
   }
 
   export type ClientMinAggregateInputType = {
+    credits?: true
+    email?: true
     id?: true
     name?: true
-    email?: true
     password?: true
-    credits?: true
   }
 
   export type ClientMaxAggregateInputType = {
+    credits?: true
+    email?: true
     id?: true
     name?: true
-    email?: true
     password?: true
-    credits?: true
   }
 
   export type ClientCountAggregateInputType = {
+    credits?: true
+    email?: true
     id?: true
     name?: true
-    email?: true
     password?: true
-    credits?: true
     _all?: true
   }
 
@@ -1526,11 +1526,11 @@ export namespace Prisma {
   }
 
   export type ClientGroupByOutputType = {
+    credits: Decimal
+    email: string
     id: number
     name: string
-    email: string
     password: string
-    credits: Decimal
     _count: ClientCountAggregateOutputType | null
     _avg: ClientAvgAggregateOutputType | null
     _sum: ClientSumAggregateOutputType | null
@@ -1553,40 +1553,40 @@ export namespace Prisma {
 
 
   export type ClientSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    credits?: boolean
+    email?: boolean
     id?: boolean
     name?: boolean
-    email?: boolean
     password?: boolean
-    credits?: boolean
     Order?: boolean | Client$OrderArgs<ExtArgs>
     _count?: boolean | ClientCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["client"]>
 
   export type ClientSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    credits?: boolean
+    email?: boolean
     id?: boolean
     name?: boolean
-    email?: boolean
     password?: boolean
-    credits?: boolean
   }, ExtArgs["result"]["client"]>
 
   export type ClientSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    credits?: boolean
+    email?: boolean
     id?: boolean
     name?: boolean
-    email?: boolean
     password?: boolean
-    credits?: boolean
   }, ExtArgs["result"]["client"]>
 
   export type ClientSelectScalar = {
+    credits?: boolean
+    email?: boolean
     id?: boolean
     name?: boolean
-    email?: boolean
     password?: boolean
-    credits?: boolean
   }
 
-  export type ClientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "credits", ExtArgs["result"]["client"]>
+  export type ClientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"credits" | "email" | "id" | "name" | "password", ExtArgs["result"]["client"]>
   export type ClientInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Order?: boolean | Client$OrderArgs<ExtArgs>
     _count?: boolean | ClientCountOutputTypeDefaultArgs<ExtArgs>
@@ -1600,11 +1600,11 @@ export namespace Prisma {
       Order: Prisma.$OrderPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
+      credits: Prisma.Decimal
+      email: string
       id: number
       name: string
-      email: string
       password: string
-      credits: Prisma.Decimal
     }, ExtArgs["result"]["client"]>
     composites: {}
   }
@@ -1612,7 +1612,7 @@ export namespace Prisma {
   type ClientGetPayload<S extends boolean | null | undefined | ClientDefaultArgs> = $Result.GetResult<Prisma.$ClientPayload, S>
 
   type ClientCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<ClientFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
+    Omit<ClientFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
       select?: ClientCountAggregateInputType | true
     }
 
@@ -1688,8 +1688,8 @@ export namespace Prisma {
      * // Get first 10 Clients
      * const clients = await prisma.client.findMany({ take: 10 })
      * 
-     * // Only select the `id`
-     * const clientWithIdOnly = await prisma.client.findMany({ select: { id: true } })
+     * // Only select the `credits`
+     * const clientWithCreditsOnly = await prisma.client.findMany({ select: { credits: true } })
      * 
      */
     findMany<T extends ClientFindManyArgs>(args?: SelectSubset<T, ClientFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -1733,9 +1733,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Create many Clients and only return the `id`
-     * const clientWithIdOnly = await prisma.client.createManyAndReturn({
-     *   select: { id: true },
+     * // Create many Clients and only return the `credits`
+     * const clientWithCreditsOnly = await prisma.client.createManyAndReturn({
+     *   select: { credits: true },
      *   data: [
      *     // ... provide data here
      *   ]
@@ -1824,9 +1824,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more Clients and only return the `id`
-     * const clientWithIdOnly = await prisma.client.updateManyAndReturn({
-     *   select: { id: true },
+     * // Update zero or more Clients and only return the `credits`
+     * const clientWithCreditsOnly = await prisma.client.updateManyAndReturn({
+     *   select: { credits: true },
      *   where: {
      *     // ... provide filter here
      *   },
@@ -2029,11 +2029,11 @@ export namespace Prisma {
    * Fields of the Client model
    */
   interface ClientFieldRefs {
+    readonly credits: FieldRef<"Client", 'Decimal'>
+    readonly email: FieldRef<"Client", 'String'>
     readonly id: FieldRef<"Client", 'Int'>
     readonly name: FieldRef<"Client", 'String'>
-    readonly email: FieldRef<"Client", 'String'>
     readonly password: FieldRef<"Client", 'String'>
-    readonly credits: FieldRef<"Client", 'Decimal'>
   }
     
 
@@ -2058,7 +2058,6 @@ export namespace Prisma {
      * Filter, which Client to fetch.
      */
     where: ClientWhereUniqueInput
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -2081,7 +2080,6 @@ export namespace Prisma {
      * Filter, which Client to fetch.
      */
     where: ClientWhereUniqueInput
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -2134,7 +2132,6 @@ export namespace Prisma {
      * Filter by unique combinations of Clients.
      */
     distinct?: ClientScalarFieldEnum | ClientScalarFieldEnum[]
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -2187,7 +2184,6 @@ export namespace Prisma {
      * Filter by unique combinations of Clients.
      */
     distinct?: ClientScalarFieldEnum | ClientScalarFieldEnum[]
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -2235,7 +2231,6 @@ export namespace Prisma {
      */
     skip?: number
     distinct?: ClientScalarFieldEnum | ClientScalarFieldEnum[]
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -2258,7 +2253,6 @@ export namespace Prisma {
      * The data needed to create a Client.
      */
     data: XOR<ClientCreateInput, ClientUncheckedCreateInput>
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -2315,7 +2309,6 @@ export namespace Prisma {
      * Choose, which Client to update.
      */
     where: ClientWhereUniqueInput
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -2390,7 +2383,6 @@ export namespace Prisma {
      * In case the Client was found with the provided `where` argument, update it with this data.
      */
     update: XOR<ClientUpdateInput, ClientUncheckedUpdateInput>
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -2413,7 +2405,6 @@ export namespace Prisma {
      * Filter which Client to delete.
      */
     where: ClientWhereUniqueInput
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -2496,29 +2487,29 @@ export namespace Prisma {
   }
 
   export type SupplierMinAggregateOutputType = {
+    cnpj: string | null
+    email: string | null
     id: number | null
     name: string | null
-    email: string | null
     password: string | null
-    cnpj: string | null
     credits: Decimal | null
   }
 
   export type SupplierMaxAggregateOutputType = {
+    cnpj: string | null
+    email: string | null
     id: number | null
     name: string | null
-    email: string | null
     password: string | null
-    cnpj: string | null
     credits: Decimal | null
   }
 
   export type SupplierCountAggregateOutputType = {
+    cnpj: number
+    email: number
     id: number
     name: number
-    email: number
     password: number
-    cnpj: number
     credits: number
     _all: number
   }
@@ -2535,29 +2526,29 @@ export namespace Prisma {
   }
 
   export type SupplierMinAggregateInputType = {
+    cnpj?: true
+    email?: true
     id?: true
     name?: true
-    email?: true
     password?: true
-    cnpj?: true
     credits?: true
   }
 
   export type SupplierMaxAggregateInputType = {
+    cnpj?: true
+    email?: true
     id?: true
     name?: true
-    email?: true
     password?: true
-    cnpj?: true
     credits?: true
   }
 
   export type SupplierCountAggregateInputType = {
+    cnpj?: true
+    email?: true
     id?: true
     name?: true
-    email?: true
     password?: true
-    cnpj?: true
     credits?: true
     _all?: true
   }
@@ -2649,11 +2640,11 @@ export namespace Prisma {
   }
 
   export type SupplierGroupByOutputType = {
+    cnpj: string
+    email: string
     id: number
     name: string
-    email: string
     password: string
-    cnpj: string
     credits: Decimal
     _count: SupplierCountAggregateOutputType | null
     _avg: SupplierAvgAggregateOutputType | null
@@ -2677,44 +2668,44 @@ export namespace Prisma {
 
 
   export type SupplierSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    cnpj?: boolean
+    email?: boolean
     id?: boolean
     name?: boolean
-    email?: boolean
     password?: boolean
-    cnpj?: boolean
     credits?: boolean
     DroneInstance?: boolean | Supplier$DroneInstanceArgs<ExtArgs>
     _count?: boolean | SupplierCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["supplier"]>
 
   export type SupplierSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    cnpj?: boolean
+    email?: boolean
     id?: boolean
     name?: boolean
-    email?: boolean
     password?: boolean
-    cnpj?: boolean
     credits?: boolean
   }, ExtArgs["result"]["supplier"]>
 
   export type SupplierSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    cnpj?: boolean
+    email?: boolean
     id?: boolean
     name?: boolean
-    email?: boolean
     password?: boolean
-    cnpj?: boolean
     credits?: boolean
   }, ExtArgs["result"]["supplier"]>
 
   export type SupplierSelectScalar = {
+    cnpj?: boolean
+    email?: boolean
     id?: boolean
     name?: boolean
-    email?: boolean
     password?: boolean
-    cnpj?: boolean
     credits?: boolean
   }
 
-  export type SupplierOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "cnpj" | "credits", ExtArgs["result"]["supplier"]>
+  export type SupplierOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"cnpj" | "email" | "id" | "name" | "password" | "credits", ExtArgs["result"]["supplier"]>
   export type SupplierInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     DroneInstance?: boolean | Supplier$DroneInstanceArgs<ExtArgs>
     _count?: boolean | SupplierCountOutputTypeDefaultArgs<ExtArgs>
@@ -2728,11 +2719,11 @@ export namespace Prisma {
       DroneInstance: Prisma.$DroneInstancePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
+      cnpj: string
+      email: string
       id: number
       name: string
-      email: string
       password: string
-      cnpj: string
       credits: Prisma.Decimal
     }, ExtArgs["result"]["supplier"]>
     composites: {}
@@ -2741,7 +2732,7 @@ export namespace Prisma {
   type SupplierGetPayload<S extends boolean | null | undefined | SupplierDefaultArgs> = $Result.GetResult<Prisma.$SupplierPayload, S>
 
   type SupplierCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<SupplierFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
+    Omit<SupplierFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
       select?: SupplierCountAggregateInputType | true
     }
 
@@ -2817,8 +2808,8 @@ export namespace Prisma {
      * // Get first 10 Suppliers
      * const suppliers = await prisma.supplier.findMany({ take: 10 })
      * 
-     * // Only select the `id`
-     * const supplierWithIdOnly = await prisma.supplier.findMany({ select: { id: true } })
+     * // Only select the `cnpj`
+     * const supplierWithCnpjOnly = await prisma.supplier.findMany({ select: { cnpj: true } })
      * 
      */
     findMany<T extends SupplierFindManyArgs>(args?: SelectSubset<T, SupplierFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SupplierPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -2862,9 +2853,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Create many Suppliers and only return the `id`
-     * const supplierWithIdOnly = await prisma.supplier.createManyAndReturn({
-     *   select: { id: true },
+     * // Create many Suppliers and only return the `cnpj`
+     * const supplierWithCnpjOnly = await prisma.supplier.createManyAndReturn({
+     *   select: { cnpj: true },
      *   data: [
      *     // ... provide data here
      *   ]
@@ -2953,9 +2944,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more Suppliers and only return the `id`
-     * const supplierWithIdOnly = await prisma.supplier.updateManyAndReturn({
-     *   select: { id: true },
+     * // Update zero or more Suppliers and only return the `cnpj`
+     * const supplierWithCnpjOnly = await prisma.supplier.updateManyAndReturn({
+     *   select: { cnpj: true },
      *   where: {
      *     // ... provide filter here
      *   },
@@ -3158,11 +3149,11 @@ export namespace Prisma {
    * Fields of the Supplier model
    */
   interface SupplierFieldRefs {
+    readonly cnpj: FieldRef<"Supplier", 'String'>
+    readonly email: FieldRef<"Supplier", 'String'>
     readonly id: FieldRef<"Supplier", 'Int'>
     readonly name: FieldRef<"Supplier", 'String'>
-    readonly email: FieldRef<"Supplier", 'String'>
     readonly password: FieldRef<"Supplier", 'String'>
-    readonly cnpj: FieldRef<"Supplier", 'String'>
     readonly credits: FieldRef<"Supplier", 'Decimal'>
   }
     
@@ -3188,7 +3179,6 @@ export namespace Prisma {
      * Filter, which Supplier to fetch.
      */
     where: SupplierWhereUniqueInput
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -3211,7 +3201,6 @@ export namespace Prisma {
      * Filter, which Supplier to fetch.
      */
     where: SupplierWhereUniqueInput
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -3264,7 +3253,6 @@ export namespace Prisma {
      * Filter by unique combinations of Suppliers.
      */
     distinct?: SupplierScalarFieldEnum | SupplierScalarFieldEnum[]
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -3317,7 +3305,6 @@ export namespace Prisma {
      * Filter by unique combinations of Suppliers.
      */
     distinct?: SupplierScalarFieldEnum | SupplierScalarFieldEnum[]
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -3365,7 +3352,6 @@ export namespace Prisma {
      */
     skip?: number
     distinct?: SupplierScalarFieldEnum | SupplierScalarFieldEnum[]
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -3388,7 +3374,6 @@ export namespace Prisma {
      * The data needed to create a Supplier.
      */
     data: XOR<SupplierCreateInput, SupplierUncheckedCreateInput>
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -3445,7 +3430,6 @@ export namespace Prisma {
      * Choose, which Supplier to update.
      */
     where: SupplierWhereUniqueInput
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -3520,7 +3504,6 @@ export namespace Prisma {
      * In case the Supplier was found with the provided `where` argument, update it with this data.
      */
     update: XOR<SupplierUpdateInput, SupplierUncheckedUpdateInput>
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -3543,7 +3526,6 @@ export namespace Prisma {
      * Filter which Supplier to delete.
      */
     where: SupplierWhereUniqueInput
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -3934,7 +3916,7 @@ export namespace Prisma {
   type OrderGetPayload<S extends boolean | null | undefined | OrderDefaultArgs> = $Result.GetResult<Prisma.$OrderPayload, S>
 
   type OrderCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<OrderFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
+    Omit<OrderFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
       select?: OrderCountAggregateInputType | true
     }
 
@@ -4386,7 +4368,6 @@ export namespace Prisma {
      * Filter, which Order to fetch.
      */
     where: OrderWhereUniqueInput
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -4409,7 +4390,6 @@ export namespace Prisma {
      * Filter, which Order to fetch.
      */
     where: OrderWhereUniqueInput
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -4462,7 +4442,6 @@ export namespace Prisma {
      * Filter by unique combinations of Orders.
      */
     distinct?: OrderScalarFieldEnum | OrderScalarFieldEnum[]
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -4515,7 +4494,6 @@ export namespace Prisma {
      * Filter by unique combinations of Orders.
      */
     distinct?: OrderScalarFieldEnum | OrderScalarFieldEnum[]
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -4563,7 +4541,6 @@ export namespace Prisma {
      */
     skip?: number
     distinct?: OrderScalarFieldEnum | OrderScalarFieldEnum[]
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -4586,7 +4563,6 @@ export namespace Prisma {
      * The data needed to create a Order.
      */
     data: XOR<OrderCreateInput, OrderUncheckedCreateInput>
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -4647,7 +4623,6 @@ export namespace Prisma {
      * Choose, which Order to update.
      */
     where: OrderWhereUniqueInput
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -4726,7 +4701,6 @@ export namespace Prisma {
      * In case the Order was found with the provided `where` argument, update it with this data.
      */
     update: XOR<OrderUpdateInput, OrderUncheckedUpdateInput>
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -4749,7 +4723,6 @@ export namespace Prisma {
      * Filter which Order to delete.
      */
     where: OrderWhereUniqueInput
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -4998,8 +4971,8 @@ export namespace Prisma {
     region?: boolean
     supplierId?: boolean
     modelId?: boolean
-    supplier?: boolean | SupplierDefaultArgs<ExtArgs>
     model?: boolean | DroneModelDefaultArgs<ExtArgs>
+    supplier?: boolean | SupplierDefaultArgs<ExtArgs>
     Order?: boolean | DroneInstance$OrderArgs<ExtArgs>
     _count?: boolean | DroneInstanceCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["droneInstance"]>
@@ -5009,8 +4982,8 @@ export namespace Prisma {
     region?: boolean
     supplierId?: boolean
     modelId?: boolean
-    supplier?: boolean | SupplierDefaultArgs<ExtArgs>
     model?: boolean | DroneModelDefaultArgs<ExtArgs>
+    supplier?: boolean | SupplierDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["droneInstance"]>
 
   export type DroneInstanceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -5018,8 +4991,8 @@ export namespace Prisma {
     region?: boolean
     supplierId?: boolean
     modelId?: boolean
-    supplier?: boolean | SupplierDefaultArgs<ExtArgs>
     model?: boolean | DroneModelDefaultArgs<ExtArgs>
+    supplier?: boolean | SupplierDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["droneInstance"]>
 
   export type DroneInstanceSelectScalar = {
@@ -5031,25 +5004,25 @@ export namespace Prisma {
 
   export type DroneInstanceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "region" | "supplierId" | "modelId", ExtArgs["result"]["droneInstance"]>
   export type DroneInstanceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    supplier?: boolean | SupplierDefaultArgs<ExtArgs>
     model?: boolean | DroneModelDefaultArgs<ExtArgs>
+    supplier?: boolean | SupplierDefaultArgs<ExtArgs>
     Order?: boolean | DroneInstance$OrderArgs<ExtArgs>
     _count?: boolean | DroneInstanceCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DroneInstanceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    supplier?: boolean | SupplierDefaultArgs<ExtArgs>
     model?: boolean | DroneModelDefaultArgs<ExtArgs>
+    supplier?: boolean | SupplierDefaultArgs<ExtArgs>
   }
   export type DroneInstanceIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    supplier?: boolean | SupplierDefaultArgs<ExtArgs>
     model?: boolean | DroneModelDefaultArgs<ExtArgs>
+    supplier?: boolean | SupplierDefaultArgs<ExtArgs>
   }
 
   export type $DroneInstancePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "DroneInstance"
     objects: {
-      supplier: Prisma.$SupplierPayload<ExtArgs>
       model: Prisma.$DroneModelPayload<ExtArgs>
+      supplier: Prisma.$SupplierPayload<ExtArgs>
       Order: Prisma.$OrderPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -5064,7 +5037,7 @@ export namespace Prisma {
   type DroneInstanceGetPayload<S extends boolean | null | undefined | DroneInstanceDefaultArgs> = $Result.GetResult<Prisma.$DroneInstancePayload, S>
 
   type DroneInstanceCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<DroneInstanceFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
+    Omit<DroneInstanceFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
       select?: DroneInstanceCountAggregateInputType | true
     }
 
@@ -5451,8 +5424,8 @@ export namespace Prisma {
    */
   export interface Prisma__DroneInstanceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    supplier<T extends SupplierDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SupplierDefaultArgs<ExtArgs>>): Prisma__SupplierClient<$Result.GetResult<Prisma.$SupplierPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     model<T extends DroneModelDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DroneModelDefaultArgs<ExtArgs>>): Prisma__DroneModelClient<$Result.GetResult<Prisma.$DroneModelPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    supplier<T extends SupplierDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SupplierDefaultArgs<ExtArgs>>): Prisma__SupplierClient<$Result.GetResult<Prisma.$SupplierPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     Order<T extends DroneInstance$OrderArgs<ExtArgs> = {}>(args?: Subset<T, DroneInstance$OrderArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -5511,7 +5484,6 @@ export namespace Prisma {
      * Filter, which DroneInstance to fetch.
      */
     where: DroneInstanceWhereUniqueInput
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -5534,7 +5506,6 @@ export namespace Prisma {
      * Filter, which DroneInstance to fetch.
      */
     where: DroneInstanceWhereUniqueInput
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -5587,7 +5558,6 @@ export namespace Prisma {
      * Filter by unique combinations of DroneInstances.
      */
     distinct?: DroneInstanceScalarFieldEnum | DroneInstanceScalarFieldEnum[]
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -5640,7 +5610,6 @@ export namespace Prisma {
      * Filter by unique combinations of DroneInstances.
      */
     distinct?: DroneInstanceScalarFieldEnum | DroneInstanceScalarFieldEnum[]
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -5688,7 +5657,6 @@ export namespace Prisma {
      */
     skip?: number
     distinct?: DroneInstanceScalarFieldEnum | DroneInstanceScalarFieldEnum[]
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -5711,7 +5679,6 @@ export namespace Prisma {
      * The data needed to create a DroneInstance.
      */
     data: XOR<DroneInstanceCreateInput, DroneInstanceUncheckedCreateInput>
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -5772,7 +5739,6 @@ export namespace Prisma {
      * Choose, which DroneInstance to update.
      */
     where: DroneInstanceWhereUniqueInput
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -5851,7 +5817,6 @@ export namespace Prisma {
      * In case the DroneInstance was found with the provided `where` argument, update it with this data.
      */
     update: XOR<DroneInstanceUpdateInput, DroneInstanceUncheckedUpdateInput>
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -5874,7 +5839,6 @@ export namespace Prisma {
      * Filter which DroneInstance to delete.
      */
     where: DroneInstanceWhereUniqueInput
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -5949,48 +5913,48 @@ export namespace Prisma {
   export type DroneModelAvgAggregateOutputType = {
     id: number | null
     weight: Decimal | null
-    capacityWeight: Decimal | null
     capacityVolume: Decimal | null
+    capacityWeight: Decimal | null
   }
 
   export type DroneModelSumAggregateOutputType = {
     id: number | null
     weight: Decimal | null
-    capacityWeight: Decimal | null
     capacityVolume: Decimal | null
+    capacityWeight: Decimal | null
   }
 
   export type DroneModelMinAggregateOutputType = {
     id: number | null
     model: string | null
     weight: Decimal | null
-    capacityWeight: Decimal | null
-    capacityVolume: Decimal | null
     size: string | null
     composition: string | null
     image: string | null
+    capacityVolume: Decimal | null
+    capacityWeight: Decimal | null
   }
 
   export type DroneModelMaxAggregateOutputType = {
     id: number | null
     model: string | null
     weight: Decimal | null
-    capacityWeight: Decimal | null
-    capacityVolume: Decimal | null
     size: string | null
     composition: string | null
     image: string | null
+    capacityVolume: Decimal | null
+    capacityWeight: Decimal | null
   }
 
   export type DroneModelCountAggregateOutputType = {
     id: number
     model: number
     weight: number
-    capacityWeight: number
-    capacityVolume: number
     size: number
     composition: number
     image: number
+    capacityVolume: number
+    capacityWeight: number
     _all: number
   }
 
@@ -5998,48 +5962,48 @@ export namespace Prisma {
   export type DroneModelAvgAggregateInputType = {
     id?: true
     weight?: true
-    capacityWeight?: true
     capacityVolume?: true
+    capacityWeight?: true
   }
 
   export type DroneModelSumAggregateInputType = {
     id?: true
     weight?: true
-    capacityWeight?: true
     capacityVolume?: true
+    capacityWeight?: true
   }
 
   export type DroneModelMinAggregateInputType = {
     id?: true
     model?: true
     weight?: true
-    capacityWeight?: true
-    capacityVolume?: true
     size?: true
     composition?: true
     image?: true
+    capacityVolume?: true
+    capacityWeight?: true
   }
 
   export type DroneModelMaxAggregateInputType = {
     id?: true
     model?: true
     weight?: true
-    capacityWeight?: true
-    capacityVolume?: true
     size?: true
     composition?: true
     image?: true
+    capacityVolume?: true
+    capacityWeight?: true
   }
 
   export type DroneModelCountAggregateInputType = {
     id?: true
     model?: true
     weight?: true
-    capacityWeight?: true
-    capacityVolume?: true
     size?: true
     composition?: true
     image?: true
+    capacityVolume?: true
+    capacityWeight?: true
     _all?: true
   }
 
@@ -6133,11 +6097,11 @@ export namespace Prisma {
     id: number
     model: string
     weight: Decimal
-    capacityWeight: Decimal
-    capacityVolume: Decimal
     size: string
     composition: string
     image: string | null
+    capacityVolume: Decimal
+    capacityWeight: Decimal
     _count: DroneModelCountAggregateOutputType | null
     _avg: DroneModelAvgAggregateOutputType | null
     _sum: DroneModelSumAggregateOutputType | null
@@ -6163,11 +6127,11 @@ export namespace Prisma {
     id?: boolean
     model?: boolean
     weight?: boolean
-    capacityWeight?: boolean
-    capacityVolume?: boolean
     size?: boolean
     composition?: boolean
     image?: boolean
+    capacityVolume?: boolean
+    capacityWeight?: boolean
     DroneInstance?: boolean | DroneModel$DroneInstanceArgs<ExtArgs>
     _count?: boolean | DroneModelCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["droneModel"]>
@@ -6176,36 +6140,36 @@ export namespace Prisma {
     id?: boolean
     model?: boolean
     weight?: boolean
-    capacityWeight?: boolean
-    capacityVolume?: boolean
     size?: boolean
     composition?: boolean
     image?: boolean
+    capacityVolume?: boolean
+    capacityWeight?: boolean
   }, ExtArgs["result"]["droneModel"]>
 
   export type DroneModelSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     model?: boolean
     weight?: boolean
-    capacityWeight?: boolean
-    capacityVolume?: boolean
     size?: boolean
     composition?: boolean
     image?: boolean
+    capacityVolume?: boolean
+    capacityWeight?: boolean
   }, ExtArgs["result"]["droneModel"]>
 
   export type DroneModelSelectScalar = {
     id?: boolean
     model?: boolean
     weight?: boolean
-    capacityWeight?: boolean
-    capacityVolume?: boolean
     size?: boolean
     composition?: boolean
     image?: boolean
+    capacityVolume?: boolean
+    capacityWeight?: boolean
   }
 
-  export type DroneModelOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "model" | "weight" | "capacityWeight" | "capacityVolume" | "size" | "composition" | "image", ExtArgs["result"]["droneModel"]>
+  export type DroneModelOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "model" | "weight" | "size" | "composition" | "image" | "capacityVolume" | "capacityWeight", ExtArgs["result"]["droneModel"]>
   export type DroneModelInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     DroneInstance?: boolean | DroneModel$DroneInstanceArgs<ExtArgs>
     _count?: boolean | DroneModelCountOutputTypeDefaultArgs<ExtArgs>
@@ -6222,11 +6186,11 @@ export namespace Prisma {
       id: number
       model: string
       weight: Prisma.Decimal
-      capacityWeight: Prisma.Decimal
-      capacityVolume: Prisma.Decimal
       size: string
       composition: string
       image: string | null
+      capacityVolume: Prisma.Decimal
+      capacityWeight: Prisma.Decimal
     }, ExtArgs["result"]["droneModel"]>
     composites: {}
   }
@@ -6234,7 +6198,7 @@ export namespace Prisma {
   type DroneModelGetPayload<S extends boolean | null | undefined | DroneModelDefaultArgs> = $Result.GetResult<Prisma.$DroneModelPayload, S>
 
   type DroneModelCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<DroneModelFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
+    Omit<DroneModelFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
       select?: DroneModelCountAggregateInputType | true
     }
 
@@ -6654,11 +6618,11 @@ export namespace Prisma {
     readonly id: FieldRef<"DroneModel", 'Int'>
     readonly model: FieldRef<"DroneModel", 'String'>
     readonly weight: FieldRef<"DroneModel", 'Decimal'>
-    readonly capacityWeight: FieldRef<"DroneModel", 'Decimal'>
-    readonly capacityVolume: FieldRef<"DroneModel", 'Decimal'>
     readonly size: FieldRef<"DroneModel", 'String'>
     readonly composition: FieldRef<"DroneModel", 'String'>
     readonly image: FieldRef<"DroneModel", 'String'>
+    readonly capacityVolume: FieldRef<"DroneModel", 'Decimal'>
+    readonly capacityWeight: FieldRef<"DroneModel", 'Decimal'>
   }
     
 
@@ -6683,7 +6647,6 @@ export namespace Prisma {
      * Filter, which DroneModel to fetch.
      */
     where: DroneModelWhereUniqueInput
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -6706,7 +6669,6 @@ export namespace Prisma {
      * Filter, which DroneModel to fetch.
      */
     where: DroneModelWhereUniqueInput
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -6759,7 +6721,6 @@ export namespace Prisma {
      * Filter by unique combinations of DroneModels.
      */
     distinct?: DroneModelScalarFieldEnum | DroneModelScalarFieldEnum[]
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -6812,7 +6773,6 @@ export namespace Prisma {
      * Filter by unique combinations of DroneModels.
      */
     distinct?: DroneModelScalarFieldEnum | DroneModelScalarFieldEnum[]
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -6860,7 +6820,6 @@ export namespace Prisma {
      */
     skip?: number
     distinct?: DroneModelScalarFieldEnum | DroneModelScalarFieldEnum[]
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -6883,7 +6842,6 @@ export namespace Prisma {
      * The data needed to create a DroneModel.
      */
     data: XOR<DroneModelCreateInput, DroneModelUncheckedCreateInput>
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -6940,7 +6898,6 @@ export namespace Prisma {
      * Choose, which DroneModel to update.
      */
     where: DroneModelWhereUniqueInput
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -7015,7 +6972,6 @@ export namespace Prisma {
      * In case the DroneModel was found with the provided `where` argument, update it with this data.
      */
     update: XOR<DroneModelUpdateInput, DroneModelUncheckedUpdateInput>
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -7038,7 +6994,6 @@ export namespace Prisma {
      * Filter which DroneModel to delete.
      */
     where: DroneModelWhereUniqueInput
-    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -7113,30 +7068,22 @@ export namespace Prisma {
 
 
   export const ClientScalarFieldEnum: {
+    credits: 'credits',
+    email: 'email',
     id: 'id',
     name: 'name',
-    email: 'email',
-    password: 'password',
-    credits: 'credits'
+    password: 'password'
   };
 
   export type ClientScalarFieldEnum = (typeof ClientScalarFieldEnum)[keyof typeof ClientScalarFieldEnum]
 
 
-  export const RelationLoadStrategy: {
-    query: 'query',
-    join: 'join'
-  };
-
-  export type RelationLoadStrategy = (typeof RelationLoadStrategy)[keyof typeof RelationLoadStrategy]
-
-
   export const SupplierScalarFieldEnum: {
+    cnpj: 'cnpj',
+    email: 'email',
     id: 'id',
     name: 'name',
-    email: 'email',
     password: 'password',
-    cnpj: 'cnpj',
     credits: 'credits'
   };
 
@@ -7173,11 +7120,11 @@ export namespace Prisma {
     id: 'id',
     model: 'model',
     weight: 'weight',
-    capacityWeight: 'capacityWeight',
-    capacityVolume: 'capacityVolume',
     size: 'size',
     composition: 'composition',
-    image: 'image'
+    image: 'image',
+    capacityVolume: 'capacityVolume',
+    capacityWeight: 'capacityWeight'
   };
 
   export type DroneModelScalarFieldEnum = (typeof DroneModelScalarFieldEnum)[keyof typeof DroneModelScalarFieldEnum]
@@ -7229,16 +7176,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Int'
+   * Reference to a field of type 'Decimal'
    */
-  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+  export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
     
 
 
   /**
-   * Reference to a field of type 'Int[]'
+   * Reference to a field of type 'Decimal[]'
    */
-  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+  export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
     
 
 
@@ -7257,16 +7204,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Decimal'
+   * Reference to a field of type 'Int'
    */
-  export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
     
 
 
   /**
-   * Reference to a field of type 'Decimal[]'
+   * Reference to a field of type 'Int[]'
    */
-  export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
 
@@ -7319,41 +7266,41 @@ export namespace Prisma {
     AND?: ClientWhereInput | ClientWhereInput[]
     OR?: ClientWhereInput[]
     NOT?: ClientWhereInput | ClientWhereInput[]
+    credits?: DecimalFilter<"Client"> | Decimal | DecimalJsLike | number | string
+    email?: StringFilter<"Client"> | string
     id?: IntFilter<"Client"> | number
     name?: StringFilter<"Client"> | string
-    email?: StringFilter<"Client"> | string
     password?: StringFilter<"Client"> | string
-    credits?: DecimalFilter<"Client"> | Decimal | DecimalJsLike | number | string
     Order?: OrderListRelationFilter
   }
 
   export type ClientOrderByWithRelationInput = {
+    credits?: SortOrder
+    email?: SortOrder
     id?: SortOrder
     name?: SortOrder
-    email?: SortOrder
     password?: SortOrder
-    credits?: SortOrder
     Order?: OrderOrderByRelationAggregateInput
   }
 
   export type ClientWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
     email?: string
+    id?: number
     AND?: ClientWhereInput | ClientWhereInput[]
     OR?: ClientWhereInput[]
     NOT?: ClientWhereInput | ClientWhereInput[]
+    credits?: DecimalFilter<"Client"> | Decimal | DecimalJsLike | number | string
     name?: StringFilter<"Client"> | string
     password?: StringFilter<"Client"> | string
-    credits?: DecimalFilter<"Client"> | Decimal | DecimalJsLike | number | string
     Order?: OrderListRelationFilter
   }, "id" | "email">
 
   export type ClientOrderByWithAggregationInput = {
+    credits?: SortOrder
+    email?: SortOrder
     id?: SortOrder
     name?: SortOrder
-    email?: SortOrder
     password?: SortOrder
-    credits?: SortOrder
     _count?: ClientCountOrderByAggregateInput
     _avg?: ClientAvgOrderByAggregateInput
     _max?: ClientMaxOrderByAggregateInput
@@ -7365,40 +7312,40 @@ export namespace Prisma {
     AND?: ClientScalarWhereWithAggregatesInput | ClientScalarWhereWithAggregatesInput[]
     OR?: ClientScalarWhereWithAggregatesInput[]
     NOT?: ClientScalarWhereWithAggregatesInput | ClientScalarWhereWithAggregatesInput[]
+    credits?: DecimalWithAggregatesFilter<"Client"> | Decimal | DecimalJsLike | number | string
+    email?: StringWithAggregatesFilter<"Client"> | string
     id?: IntWithAggregatesFilter<"Client"> | number
     name?: StringWithAggregatesFilter<"Client"> | string
-    email?: StringWithAggregatesFilter<"Client"> | string
     password?: StringWithAggregatesFilter<"Client"> | string
-    credits?: DecimalWithAggregatesFilter<"Client"> | Decimal | DecimalJsLike | number | string
   }
 
   export type SupplierWhereInput = {
     AND?: SupplierWhereInput | SupplierWhereInput[]
     OR?: SupplierWhereInput[]
     NOT?: SupplierWhereInput | SupplierWhereInput[]
+    cnpj?: StringFilter<"Supplier"> | string
+    email?: StringFilter<"Supplier"> | string
     id?: IntFilter<"Supplier"> | number
     name?: StringFilter<"Supplier"> | string
-    email?: StringFilter<"Supplier"> | string
     password?: StringFilter<"Supplier"> | string
-    cnpj?: StringFilter<"Supplier"> | string
     credits?: DecimalFilter<"Supplier"> | Decimal | DecimalJsLike | number | string
     DroneInstance?: DroneInstanceListRelationFilter
   }
 
   export type SupplierOrderByWithRelationInput = {
+    cnpj?: SortOrder
+    email?: SortOrder
     id?: SortOrder
     name?: SortOrder
-    email?: SortOrder
     password?: SortOrder
-    cnpj?: SortOrder
     credits?: SortOrder
     DroneInstance?: DroneInstanceOrderByRelationAggregateInput
   }
 
   export type SupplierWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
-    email?: string
     cnpj?: string
+    email?: string
+    id?: number
     AND?: SupplierWhereInput | SupplierWhereInput[]
     OR?: SupplierWhereInput[]
     NOT?: SupplierWhereInput | SupplierWhereInput[]
@@ -7406,14 +7353,14 @@ export namespace Prisma {
     password?: StringFilter<"Supplier"> | string
     credits?: DecimalFilter<"Supplier"> | Decimal | DecimalJsLike | number | string
     DroneInstance?: DroneInstanceListRelationFilter
-  }, "id" | "email" | "cnpj">
+  }, "id" | "cnpj" | "email">
 
   export type SupplierOrderByWithAggregationInput = {
+    cnpj?: SortOrder
+    email?: SortOrder
     id?: SortOrder
     name?: SortOrder
-    email?: SortOrder
     password?: SortOrder
-    cnpj?: SortOrder
     credits?: SortOrder
     _count?: SupplierCountOrderByAggregateInput
     _avg?: SupplierAvgOrderByAggregateInput
@@ -7426,11 +7373,11 @@ export namespace Prisma {
     AND?: SupplierScalarWhereWithAggregatesInput | SupplierScalarWhereWithAggregatesInput[]
     OR?: SupplierScalarWhereWithAggregatesInput[]
     NOT?: SupplierScalarWhereWithAggregatesInput | SupplierScalarWhereWithAggregatesInput[]
+    cnpj?: StringWithAggregatesFilter<"Supplier"> | string
+    email?: StringWithAggregatesFilter<"Supplier"> | string
     id?: IntWithAggregatesFilter<"Supplier"> | number
     name?: StringWithAggregatesFilter<"Supplier"> | string
-    email?: StringWithAggregatesFilter<"Supplier"> | string
     password?: StringWithAggregatesFilter<"Supplier"> | string
-    cnpj?: StringWithAggregatesFilter<"Supplier"> | string
     credits?: DecimalWithAggregatesFilter<"Supplier"> | Decimal | DecimalJsLike | number | string
   }
 
@@ -7527,8 +7474,8 @@ export namespace Prisma {
     region?: JsonFilter<"DroneInstance">
     supplierId?: IntFilter<"DroneInstance"> | number
     modelId?: IntFilter<"DroneInstance"> | number
-    supplier?: XOR<SupplierScalarRelationFilter, SupplierWhereInput>
     model?: XOR<DroneModelScalarRelationFilter, DroneModelWhereInput>
+    supplier?: XOR<SupplierScalarRelationFilter, SupplierWhereInput>
     Order?: OrderListRelationFilter
   }
 
@@ -7537,8 +7484,8 @@ export namespace Prisma {
     region?: SortOrder
     supplierId?: SortOrder
     modelId?: SortOrder
-    supplier?: SupplierOrderByWithRelationInput
     model?: DroneModelOrderByWithRelationInput
+    supplier?: SupplierOrderByWithRelationInput
     Order?: OrderOrderByRelationAggregateInput
   }
 
@@ -7550,8 +7497,8 @@ export namespace Prisma {
     region?: JsonFilter<"DroneInstance">
     supplierId?: IntFilter<"DroneInstance"> | number
     modelId?: IntFilter<"DroneInstance"> | number
-    supplier?: XOR<SupplierScalarRelationFilter, SupplierWhereInput>
     model?: XOR<DroneModelScalarRelationFilter, DroneModelWhereInput>
+    supplier?: XOR<SupplierScalarRelationFilter, SupplierWhereInput>
     Order?: OrderListRelationFilter
   }, "id">
 
@@ -7584,11 +7531,11 @@ export namespace Prisma {
     id?: IntFilter<"DroneModel"> | number
     model?: StringFilter<"DroneModel"> | string
     weight?: DecimalFilter<"DroneModel"> | Decimal | DecimalJsLike | number | string
-    capacityWeight?: DecimalFilter<"DroneModel"> | Decimal | DecimalJsLike | number | string
-    capacityVolume?: DecimalFilter<"DroneModel"> | Decimal | DecimalJsLike | number | string
     size?: StringFilter<"DroneModel"> | string
     composition?: StringFilter<"DroneModel"> | string
     image?: StringNullableFilter<"DroneModel"> | string | null
+    capacityVolume?: DecimalFilter<"DroneModel"> | Decimal | DecimalJsLike | number | string
+    capacityWeight?: DecimalFilter<"DroneModel"> | Decimal | DecimalJsLike | number | string
     DroneInstance?: DroneInstanceListRelationFilter
   }
 
@@ -7596,11 +7543,11 @@ export namespace Prisma {
     id?: SortOrder
     model?: SortOrder
     weight?: SortOrder
-    capacityWeight?: SortOrder
-    capacityVolume?: SortOrder
     size?: SortOrder
     composition?: SortOrder
     image?: SortOrderInput | SortOrder
+    capacityVolume?: SortOrder
+    capacityWeight?: SortOrder
     DroneInstance?: DroneInstanceOrderByRelationAggregateInput
   }
 
@@ -7611,11 +7558,11 @@ export namespace Prisma {
     NOT?: DroneModelWhereInput | DroneModelWhereInput[]
     model?: StringFilter<"DroneModel"> | string
     weight?: DecimalFilter<"DroneModel"> | Decimal | DecimalJsLike | number | string
-    capacityWeight?: DecimalFilter<"DroneModel"> | Decimal | DecimalJsLike | number | string
-    capacityVolume?: DecimalFilter<"DroneModel"> | Decimal | DecimalJsLike | number | string
     size?: StringFilter<"DroneModel"> | string
     composition?: StringFilter<"DroneModel"> | string
     image?: StringNullableFilter<"DroneModel"> | string | null
+    capacityVolume?: DecimalFilter<"DroneModel"> | Decimal | DecimalJsLike | number | string
+    capacityWeight?: DecimalFilter<"DroneModel"> | Decimal | DecimalJsLike | number | string
     DroneInstance?: DroneInstanceListRelationFilter
   }, "id">
 
@@ -7623,11 +7570,11 @@ export namespace Prisma {
     id?: SortOrder
     model?: SortOrder
     weight?: SortOrder
-    capacityWeight?: SortOrder
-    capacityVolume?: SortOrder
     size?: SortOrder
     composition?: SortOrder
     image?: SortOrderInput | SortOrder
+    capacityVolume?: SortOrder
+    capacityWeight?: SortOrder
     _count?: DroneModelCountOrderByAggregateInput
     _avg?: DroneModelAvgOrderByAggregateInput
     _max?: DroneModelMaxOrderByAggregateInput
@@ -7642,131 +7589,131 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"DroneModel"> | number
     model?: StringWithAggregatesFilter<"DroneModel"> | string
     weight?: DecimalWithAggregatesFilter<"DroneModel"> | Decimal | DecimalJsLike | number | string
-    capacityWeight?: DecimalWithAggregatesFilter<"DroneModel"> | Decimal | DecimalJsLike | number | string
-    capacityVolume?: DecimalWithAggregatesFilter<"DroneModel"> | Decimal | DecimalJsLike | number | string
     size?: StringWithAggregatesFilter<"DroneModel"> | string
     composition?: StringWithAggregatesFilter<"DroneModel"> | string
     image?: StringNullableWithAggregatesFilter<"DroneModel"> | string | null
+    capacityVolume?: DecimalWithAggregatesFilter<"DroneModel"> | Decimal | DecimalJsLike | number | string
+    capacityWeight?: DecimalWithAggregatesFilter<"DroneModel"> | Decimal | DecimalJsLike | number | string
   }
 
   export type ClientCreateInput = {
-    name: string
-    email: string
-    password: string
     credits: Decimal | DecimalJsLike | number | string
+    email: string
+    name: string
+    password: string
     Order?: OrderCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateInput = {
+    credits: Decimal | DecimalJsLike | number | string
+    email: string
     id?: number
     name: string
-    email: string
     password: string
-    credits: Decimal | DecimalJsLike | number | string
     Order?: OrderUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientUpdateInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
     credits?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
     Order?: OrderUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateInput = {
+    credits?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    email?: StringFieldUpdateOperationsInput | string
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    credits?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     Order?: OrderUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type ClientCreateManyInput = {
+    credits: Decimal | DecimalJsLike | number | string
+    email: string
     id?: number
     name: string
-    email: string
     password: string
-    credits: Decimal | DecimalJsLike | number | string
   }
 
   export type ClientUpdateManyMutationInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
     credits?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
   }
 
   export type ClientUncheckedUpdateManyInput = {
+    credits?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    email?: StringFieldUpdateOperationsInput | string
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    credits?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
   export type SupplierCreateInput = {
-    name: string
-    email: string
-    password: string
     cnpj: string
+    email: string
+    name: string
+    password: string
     credits: Decimal | DecimalJsLike | number | string
     DroneInstance?: DroneInstanceCreateNestedManyWithoutSupplierInput
   }
 
   export type SupplierUncheckedCreateInput = {
+    cnpj: string
+    email: string
     id?: number
     name: string
-    email: string
     password: string
-    cnpj: string
     credits: Decimal | DecimalJsLike | number | string
     DroneInstance?: DroneInstanceUncheckedCreateNestedManyWithoutSupplierInput
   }
 
   export type SupplierUpdateInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
     cnpj?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
     credits?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     DroneInstance?: DroneInstanceUpdateManyWithoutSupplierNestedInput
   }
 
   export type SupplierUncheckedUpdateInput = {
+    cnpj?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    cnpj?: StringFieldUpdateOperationsInput | string
     credits?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     DroneInstance?: DroneInstanceUncheckedUpdateManyWithoutSupplierNestedInput
   }
 
   export type SupplierCreateManyInput = {
+    cnpj: string
+    email: string
     id?: number
     name: string
-    email: string
     password: string
-    cnpj: string
     credits: Decimal | DecimalJsLike | number | string
   }
 
   export type SupplierUpdateManyMutationInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
     cnpj?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
     credits?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
   export type SupplierUncheckedUpdateManyInput = {
+    cnpj?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    cnpj?: StringFieldUpdateOperationsInput | string
     credits?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
@@ -7858,8 +7805,8 @@ export namespace Prisma {
 
   export type DroneInstanceCreateInput = {
     region: JsonNullValueInput | InputJsonValue
-    supplier: SupplierCreateNestedOneWithoutDroneInstanceInput
     model: DroneModelCreateNestedOneWithoutDroneInstanceInput
+    supplier: SupplierCreateNestedOneWithoutDroneInstanceInput
     Order?: OrderCreateNestedManyWithoutDroneInstanceInput
   }
 
@@ -7873,8 +7820,8 @@ export namespace Prisma {
 
   export type DroneInstanceUpdateInput = {
     region?: JsonNullValueInput | InputJsonValue
-    supplier?: SupplierUpdateOneRequiredWithoutDroneInstanceNestedInput
     model?: DroneModelUpdateOneRequiredWithoutDroneInstanceNestedInput
+    supplier?: SupplierUpdateOneRequiredWithoutDroneInstanceNestedInput
     Order?: OrderUpdateManyWithoutDroneInstanceNestedInput
   }
 
@@ -7907,11 +7854,11 @@ export namespace Prisma {
   export type DroneModelCreateInput = {
     model: string
     weight: Decimal | DecimalJsLike | number | string
-    capacityWeight: Decimal | DecimalJsLike | number | string
-    capacityVolume: Decimal | DecimalJsLike | number | string
     size: string
     composition: string
     image?: string | null
+    capacityVolume: Decimal | DecimalJsLike | number | string
+    capacityWeight: Decimal | DecimalJsLike | number | string
     DroneInstance?: DroneInstanceCreateNestedManyWithoutModelInput
   }
 
@@ -7919,22 +7866,22 @@ export namespace Prisma {
     id?: number
     model: string
     weight: Decimal | DecimalJsLike | number | string
-    capacityWeight: Decimal | DecimalJsLike | number | string
-    capacityVolume: Decimal | DecimalJsLike | number | string
     size: string
     composition: string
     image?: string | null
+    capacityVolume: Decimal | DecimalJsLike | number | string
+    capacityWeight: Decimal | DecimalJsLike | number | string
     DroneInstance?: DroneInstanceUncheckedCreateNestedManyWithoutModelInput
   }
 
   export type DroneModelUpdateInput = {
     model?: StringFieldUpdateOperationsInput | string
     weight?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    capacityWeight?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    capacityVolume?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     size?: StringFieldUpdateOperationsInput | string
     composition?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    capacityVolume?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    capacityWeight?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     DroneInstance?: DroneInstanceUpdateManyWithoutModelNestedInput
   }
 
@@ -7942,11 +7889,11 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     model?: StringFieldUpdateOperationsInput | string
     weight?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    capacityWeight?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    capacityVolume?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     size?: StringFieldUpdateOperationsInput | string
     composition?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    capacityVolume?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    capacityWeight?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     DroneInstance?: DroneInstanceUncheckedUpdateManyWithoutModelNestedInput
   }
 
@@ -7954,43 +7901,43 @@ export namespace Prisma {
     id?: number
     model: string
     weight: Decimal | DecimalJsLike | number | string
-    capacityWeight: Decimal | DecimalJsLike | number | string
-    capacityVolume: Decimal | DecimalJsLike | number | string
     size: string
     composition: string
     image?: string | null
+    capacityVolume: Decimal | DecimalJsLike | number | string
+    capacityWeight: Decimal | DecimalJsLike | number | string
   }
 
   export type DroneModelUpdateManyMutationInput = {
     model?: StringFieldUpdateOperationsInput | string
     weight?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    capacityWeight?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    capacityVolume?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     size?: StringFieldUpdateOperationsInput | string
     composition?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    capacityVolume?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    capacityWeight?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
   export type DroneModelUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     model?: StringFieldUpdateOperationsInput | string
     weight?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    capacityWeight?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    capacityVolume?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     size?: StringFieldUpdateOperationsInput | string
     composition?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    capacityVolume?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    capacityWeight?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
+  export type DecimalFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -8008,15 +7955,15 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type DecimalFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
   }
 
   export type OrderListRelationFilter = {
@@ -8030,53 +7977,53 @@ export namespace Prisma {
   }
 
   export type ClientCountOrderByAggregateInput = {
+    credits?: SortOrder
+    email?: SortOrder
     id?: SortOrder
     name?: SortOrder
-    email?: SortOrder
     password?: SortOrder
-    credits?: SortOrder
   }
 
   export type ClientAvgOrderByAggregateInput = {
-    id?: SortOrder
     credits?: SortOrder
+    id?: SortOrder
   }
 
   export type ClientMaxOrderByAggregateInput = {
+    credits?: SortOrder
+    email?: SortOrder
     id?: SortOrder
     name?: SortOrder
-    email?: SortOrder
     password?: SortOrder
-    credits?: SortOrder
   }
 
   export type ClientMinOrderByAggregateInput = {
+    credits?: SortOrder
+    email?: SortOrder
     id?: SortOrder
     name?: SortOrder
-    email?: SortOrder
     password?: SortOrder
-    credits?: SortOrder
   }
 
   export type ClientSumOrderByAggregateInput = {
-    id?: SortOrder
     credits?: SortOrder
+    id?: SortOrder
   }
 
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+  export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
     _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedDecimalFilter<$PrismaModel>
+    _sum?: NestedDecimalFilter<$PrismaModel>
+    _min?: NestedDecimalFilter<$PrismaModel>
+    _max?: NestedDecimalFilter<$PrismaModel>
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -8097,20 +8044,20 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
-  export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
     _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedDecimalFilter<$PrismaModel>
-    _sum?: NestedDecimalFilter<$PrismaModel>
-    _min?: NestedDecimalFilter<$PrismaModel>
-    _max?: NestedDecimalFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type DroneInstanceListRelationFilter = {
@@ -8124,11 +8071,11 @@ export namespace Prisma {
   }
 
   export type SupplierCountOrderByAggregateInput = {
+    cnpj?: SortOrder
+    email?: SortOrder
     id?: SortOrder
     name?: SortOrder
-    email?: SortOrder
     password?: SortOrder
-    cnpj?: SortOrder
     credits?: SortOrder
   }
 
@@ -8138,20 +8085,20 @@ export namespace Prisma {
   }
 
   export type SupplierMaxOrderByAggregateInput = {
+    cnpj?: SortOrder
+    email?: SortOrder
     id?: SortOrder
     name?: SortOrder
-    email?: SortOrder
     password?: SortOrder
-    cnpj?: SortOrder
     credits?: SortOrder
   }
 
   export type SupplierMinOrderByAggregateInput = {
+    cnpj?: SortOrder
+    email?: SortOrder
     id?: SortOrder
     name?: SortOrder
-    email?: SortOrder
     password?: SortOrder
-    cnpj?: SortOrder
     credits?: SortOrder
   }
 
@@ -8327,14 +8274,14 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
-  export type SupplierScalarRelationFilter = {
-    is?: SupplierWhereInput
-    isNot?: SupplierWhereInput
-  }
-
   export type DroneModelScalarRelationFilter = {
     is?: DroneModelWhereInput
     isNot?: DroneModelWhereInput
+  }
+
+  export type SupplierScalarRelationFilter = {
+    is?: SupplierWhereInput
+    isNot?: SupplierWhereInput
   }
 
   export type DroneInstanceCountOrderByAggregateInput = {
@@ -8387,47 +8334,47 @@ export namespace Prisma {
     id?: SortOrder
     model?: SortOrder
     weight?: SortOrder
-    capacityWeight?: SortOrder
-    capacityVolume?: SortOrder
     size?: SortOrder
     composition?: SortOrder
     image?: SortOrder
+    capacityVolume?: SortOrder
+    capacityWeight?: SortOrder
   }
 
   export type DroneModelAvgOrderByAggregateInput = {
     id?: SortOrder
     weight?: SortOrder
-    capacityWeight?: SortOrder
     capacityVolume?: SortOrder
+    capacityWeight?: SortOrder
   }
 
   export type DroneModelMaxOrderByAggregateInput = {
     id?: SortOrder
     model?: SortOrder
     weight?: SortOrder
-    capacityWeight?: SortOrder
-    capacityVolume?: SortOrder
     size?: SortOrder
     composition?: SortOrder
     image?: SortOrder
+    capacityVolume?: SortOrder
+    capacityWeight?: SortOrder
   }
 
   export type DroneModelMinOrderByAggregateInput = {
     id?: SortOrder
     model?: SortOrder
     weight?: SortOrder
-    capacityWeight?: SortOrder
-    capacityVolume?: SortOrder
     size?: SortOrder
     composition?: SortOrder
     image?: SortOrder
+    capacityVolume?: SortOrder
+    capacityWeight?: SortOrder
   }
 
   export type DroneModelSumOrderByAggregateInput = {
     id?: SortOrder
     weight?: SortOrder
-    capacityWeight?: SortOrder
     capacityVolume?: SortOrder
+    capacityWeight?: SortOrder
   }
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -8462,16 +8409,16 @@ export namespace Prisma {
     connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
   }
 
-  export type StringFieldUpdateOperationsInput = {
-    set?: string
-  }
-
   export type DecimalFieldUpdateOperationsInput = {
     set?: Decimal | DecimalJsLike | number | string
     increment?: Decimal | DecimalJsLike | number | string
     decrement?: Decimal | DecimalJsLike | number | string
     multiply?: Decimal | DecimalJsLike | number | string
     divide?: Decimal | DecimalJsLike | number | string
+  }
+
+  export type StringFieldUpdateOperationsInput = {
+    set?: string
   }
 
   export type OrderUpdateManyWithoutClientNestedInput = {
@@ -8594,16 +8541,16 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type SupplierCreateNestedOneWithoutDroneInstanceInput = {
-    create?: XOR<SupplierCreateWithoutDroneInstanceInput, SupplierUncheckedCreateWithoutDroneInstanceInput>
-    connectOrCreate?: SupplierCreateOrConnectWithoutDroneInstanceInput
-    connect?: SupplierWhereUniqueInput
-  }
-
   export type DroneModelCreateNestedOneWithoutDroneInstanceInput = {
     create?: XOR<DroneModelCreateWithoutDroneInstanceInput, DroneModelUncheckedCreateWithoutDroneInstanceInput>
     connectOrCreate?: DroneModelCreateOrConnectWithoutDroneInstanceInput
     connect?: DroneModelWhereUniqueInput
+  }
+
+  export type SupplierCreateNestedOneWithoutDroneInstanceInput = {
+    create?: XOR<SupplierCreateWithoutDroneInstanceInput, SupplierUncheckedCreateWithoutDroneInstanceInput>
+    connectOrCreate?: SupplierCreateOrConnectWithoutDroneInstanceInput
+    connect?: SupplierWhereUniqueInput
   }
 
   export type OrderCreateNestedManyWithoutDroneInstanceInput = {
@@ -8620,20 +8567,20 @@ export namespace Prisma {
     connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
   }
 
-  export type SupplierUpdateOneRequiredWithoutDroneInstanceNestedInput = {
-    create?: XOR<SupplierCreateWithoutDroneInstanceInput, SupplierUncheckedCreateWithoutDroneInstanceInput>
-    connectOrCreate?: SupplierCreateOrConnectWithoutDroneInstanceInput
-    upsert?: SupplierUpsertWithoutDroneInstanceInput
-    connect?: SupplierWhereUniqueInput
-    update?: XOR<XOR<SupplierUpdateToOneWithWhereWithoutDroneInstanceInput, SupplierUpdateWithoutDroneInstanceInput>, SupplierUncheckedUpdateWithoutDroneInstanceInput>
-  }
-
   export type DroneModelUpdateOneRequiredWithoutDroneInstanceNestedInput = {
     create?: XOR<DroneModelCreateWithoutDroneInstanceInput, DroneModelUncheckedCreateWithoutDroneInstanceInput>
     connectOrCreate?: DroneModelCreateOrConnectWithoutDroneInstanceInput
     upsert?: DroneModelUpsertWithoutDroneInstanceInput
     connect?: DroneModelWhereUniqueInput
     update?: XOR<XOR<DroneModelUpdateToOneWithWhereWithoutDroneInstanceInput, DroneModelUpdateWithoutDroneInstanceInput>, DroneModelUncheckedUpdateWithoutDroneInstanceInput>
+  }
+
+  export type SupplierUpdateOneRequiredWithoutDroneInstanceNestedInput = {
+    create?: XOR<SupplierCreateWithoutDroneInstanceInput, SupplierUncheckedCreateWithoutDroneInstanceInput>
+    connectOrCreate?: SupplierCreateOrConnectWithoutDroneInstanceInput
+    upsert?: SupplierUpsertWithoutDroneInstanceInput
+    connect?: SupplierWhereUniqueInput
+    update?: XOR<XOR<SupplierUpdateToOneWithWhereWithoutDroneInstanceInput, SupplierUpdateWithoutDroneInstanceInput>, SupplierUncheckedUpdateWithoutDroneInstanceInput>
   }
 
   export type OrderUpdateManyWithoutDroneInstanceNestedInput = {
@@ -8710,15 +8657,15 @@ export namespace Prisma {
     deleteMany?: DroneInstanceScalarWhereInput | DroneInstanceScalarWhereInput[]
   }
 
-  export type NestedIntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
+  export type NestedDecimalFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -8735,7 +8682,18 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type NestedDecimalFilter<$PrismaModel = never> = {
+  export type NestedIntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
     notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
@@ -8743,7 +8701,29 @@ export namespace Prisma {
     lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedDecimalFilter<$PrismaModel>
+    _sum?: NestedDecimalFilter<$PrismaModel>
+    _min?: NestedDecimalFilter<$PrismaModel>
+    _max?: NestedDecimalFilter<$PrismaModel>
+  }
+
+  export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedStringFilter<$PrismaModel>
+    _max?: NestedStringFilter<$PrismaModel>
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -8771,39 +8751,6 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
-  export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedStringFilter<$PrismaModel>
-    _max?: NestedStringFilter<$PrismaModel>
-  }
-
-  export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedDecimalFilter<$PrismaModel>
-    _sum?: NestedDecimalFilter<$PrismaModel>
-    _min?: NestedDecimalFilter<$PrismaModel>
-    _max?: NestedDecimalFilter<$PrismaModel>
   }
 
   export type NestedDateTimeFilter<$PrismaModel = never> = {
@@ -9038,18 +8985,18 @@ export namespace Prisma {
   }
 
   export type ClientCreateWithoutOrderInput = {
-    name: string
-    email: string
-    password: string
     credits: Decimal | DecimalJsLike | number | string
+    email: string
+    name: string
+    password: string
   }
 
   export type ClientUncheckedCreateWithoutOrderInput = {
+    credits: Decimal | DecimalJsLike | number | string
+    email: string
     id?: number
     name: string
-    email: string
     password: string
-    credits: Decimal | DecimalJsLike | number | string
   }
 
   export type ClientCreateOrConnectWithoutOrderInput = {
@@ -9059,8 +9006,8 @@ export namespace Prisma {
 
   export type DroneInstanceCreateWithoutOrderInput = {
     region: JsonNullValueInput | InputJsonValue
-    supplier: SupplierCreateNestedOneWithoutDroneInstanceInput
     model: DroneModelCreateNestedOneWithoutDroneInstanceInput
+    supplier: SupplierCreateNestedOneWithoutDroneInstanceInput
   }
 
   export type DroneInstanceUncheckedCreateWithoutOrderInput = {
@@ -9087,18 +9034,18 @@ export namespace Prisma {
   }
 
   export type ClientUpdateWithoutOrderInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
     credits?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
   }
 
   export type ClientUncheckedUpdateWithoutOrderInput = {
+    credits?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    email?: StringFieldUpdateOperationsInput | string
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    credits?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
   export type DroneInstanceUpsertWithoutOrderInput = {
@@ -9114,8 +9061,8 @@ export namespace Prisma {
 
   export type DroneInstanceUpdateWithoutOrderInput = {
     region?: JsonNullValueInput | InputJsonValue
-    supplier?: SupplierUpdateOneRequiredWithoutDroneInstanceNestedInput
     model?: DroneModelUpdateOneRequiredWithoutDroneInstanceNestedInput
+    supplier?: SupplierUpdateOneRequiredWithoutDroneInstanceNestedInput
   }
 
   export type DroneInstanceUncheckedUpdateWithoutOrderInput = {
@@ -9125,52 +9072,52 @@ export namespace Prisma {
     modelId?: IntFieldUpdateOperationsInput | number
   }
 
-  export type SupplierCreateWithoutDroneInstanceInput = {
-    name: string
-    email: string
-    password: string
-    cnpj: string
-    credits: Decimal | DecimalJsLike | number | string
-  }
-
-  export type SupplierUncheckedCreateWithoutDroneInstanceInput = {
-    id?: number
-    name: string
-    email: string
-    password: string
-    cnpj: string
-    credits: Decimal | DecimalJsLike | number | string
-  }
-
-  export type SupplierCreateOrConnectWithoutDroneInstanceInput = {
-    where: SupplierWhereUniqueInput
-    create: XOR<SupplierCreateWithoutDroneInstanceInput, SupplierUncheckedCreateWithoutDroneInstanceInput>
-  }
-
   export type DroneModelCreateWithoutDroneInstanceInput = {
     model: string
     weight: Decimal | DecimalJsLike | number | string
-    capacityWeight: Decimal | DecimalJsLike | number | string
-    capacityVolume: Decimal | DecimalJsLike | number | string
     size: string
     composition: string
     image?: string | null
+    capacityVolume: Decimal | DecimalJsLike | number | string
+    capacityWeight: Decimal | DecimalJsLike | number | string
   }
 
   export type DroneModelUncheckedCreateWithoutDroneInstanceInput = {
     id?: number
     model: string
     weight: Decimal | DecimalJsLike | number | string
-    capacityWeight: Decimal | DecimalJsLike | number | string
-    capacityVolume: Decimal | DecimalJsLike | number | string
     size: string
     composition: string
     image?: string | null
+    capacityVolume: Decimal | DecimalJsLike | number | string
+    capacityWeight: Decimal | DecimalJsLike | number | string
   }
 
   export type DroneModelCreateOrConnectWithoutDroneInstanceInput = {
     where: DroneModelWhereUniqueInput
     create: XOR<DroneModelCreateWithoutDroneInstanceInput, DroneModelUncheckedCreateWithoutDroneInstanceInput>
+  }
+
+  export type SupplierCreateWithoutDroneInstanceInput = {
+    cnpj: string
+    email: string
+    name: string
+    password: string
+    credits: Decimal | DecimalJsLike | number | string
+  }
+
+  export type SupplierUncheckedCreateWithoutDroneInstanceInput = {
+    cnpj: string
+    email: string
+    id?: number
+    name: string
+    password: string
+    credits: Decimal | DecimalJsLike | number | string
+  }
+
+  export type SupplierCreateOrConnectWithoutDroneInstanceInput = {
+    where: SupplierWhereUniqueInput
+    create: XOR<SupplierCreateWithoutDroneInstanceInput, SupplierUncheckedCreateWithoutDroneInstanceInput>
   }
 
   export type OrderCreateWithoutDroneInstanceInput = {
@@ -9206,34 +9153,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type SupplierUpsertWithoutDroneInstanceInput = {
-    update: XOR<SupplierUpdateWithoutDroneInstanceInput, SupplierUncheckedUpdateWithoutDroneInstanceInput>
-    create: XOR<SupplierCreateWithoutDroneInstanceInput, SupplierUncheckedCreateWithoutDroneInstanceInput>
-    where?: SupplierWhereInput
-  }
-
-  export type SupplierUpdateToOneWithWhereWithoutDroneInstanceInput = {
-    where?: SupplierWhereInput
-    data: XOR<SupplierUpdateWithoutDroneInstanceInput, SupplierUncheckedUpdateWithoutDroneInstanceInput>
-  }
-
-  export type SupplierUpdateWithoutDroneInstanceInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    cnpj?: StringFieldUpdateOperationsInput | string
-    credits?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-  }
-
-  export type SupplierUncheckedUpdateWithoutDroneInstanceInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    cnpj?: StringFieldUpdateOperationsInput | string
-    credits?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-  }
-
   export type DroneModelUpsertWithoutDroneInstanceInput = {
     update: XOR<DroneModelUpdateWithoutDroneInstanceInput, DroneModelUncheckedUpdateWithoutDroneInstanceInput>
     create: XOR<DroneModelCreateWithoutDroneInstanceInput, DroneModelUncheckedCreateWithoutDroneInstanceInput>
@@ -9248,22 +9167,50 @@ export namespace Prisma {
   export type DroneModelUpdateWithoutDroneInstanceInput = {
     model?: StringFieldUpdateOperationsInput | string
     weight?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    capacityWeight?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    capacityVolume?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     size?: StringFieldUpdateOperationsInput | string
     composition?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    capacityVolume?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    capacityWeight?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
   export type DroneModelUncheckedUpdateWithoutDroneInstanceInput = {
     id?: IntFieldUpdateOperationsInput | number
     model?: StringFieldUpdateOperationsInput | string
     weight?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    capacityWeight?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    capacityVolume?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     size?: StringFieldUpdateOperationsInput | string
     composition?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    capacityVolume?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    capacityWeight?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+  }
+
+  export type SupplierUpsertWithoutDroneInstanceInput = {
+    update: XOR<SupplierUpdateWithoutDroneInstanceInput, SupplierUncheckedUpdateWithoutDroneInstanceInput>
+    create: XOR<SupplierCreateWithoutDroneInstanceInput, SupplierUncheckedCreateWithoutDroneInstanceInput>
+    where?: SupplierWhereInput
+  }
+
+  export type SupplierUpdateToOneWithWhereWithoutDroneInstanceInput = {
+    where?: SupplierWhereInput
+    data: XOR<SupplierUpdateWithoutDroneInstanceInput, SupplierUncheckedUpdateWithoutDroneInstanceInput>
+  }
+
+  export type SupplierUpdateWithoutDroneInstanceInput = {
+    cnpj?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    credits?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+  }
+
+  export type SupplierUncheckedUpdateWithoutDroneInstanceInput = {
+    cnpj?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    credits?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
   export type OrderUpsertWithWhereUniqueWithoutDroneInstanceInput = {

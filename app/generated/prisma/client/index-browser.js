@@ -121,24 +121,19 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 });
 
 exports.Prisma.ClientScalarFieldEnum = {
+  credits: 'credits',
+  email: 'email',
   id: 'id',
   name: 'name',
-  email: 'email',
-  password: 'password',
-  credits: 'credits'
-};
-
-exports.Prisma.RelationLoadStrategy = {
-  query: 'query',
-  join: 'join'
+  password: 'password'
 };
 
 exports.Prisma.SupplierScalarFieldEnum = {
+  cnpj: 'cnpj',
+  email: 'email',
   id: 'id',
   name: 'name',
-  email: 'email',
   password: 'password',
-  cnpj: 'cnpj',
   credits: 'credits'
 };
 
@@ -166,11 +161,11 @@ exports.Prisma.DroneModelScalarFieldEnum = {
   id: 'id',
   model: 'model',
   weight: 'weight',
-  capacityWeight: 'capacityWeight',
-  capacityVolume: 'capacityVolume',
   size: 'size',
   composition: 'composition',
-  image: 'image'
+  image: 'image',
+  capacityVolume: 'capacityVolume',
+  capacityWeight: 'capacityWeight'
 };
 
 exports.Prisma.SortOrder = {

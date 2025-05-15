@@ -8,7 +8,7 @@ import { Autocomplete, AutocompleteItem } from "@heroui/react";
 import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell } from "@heroui/table";
 import { Slider } from "@heroui/react";
 
-import { DroneFilters } from "@/app/server/supply";
+import { DroneFilters, DroneInstanceData, getDrones } from "@/app/server/supply";
 
 export const cities = [
   { label: "São Paulo", key: "sao_paulo" },
@@ -36,20 +36,21 @@ export const materials = [
 
 // Mock data for drones (same data for all drones for now)
 const mockDrones = Array.from({ length: 12 }, (_, index) => ({
-  id: `drone-${index + 1}`,
+  id: index + 1,
   supplier: "Drone Supplier Inc.",
   model: "Drone Model X",
-  region: "Downtown",
+  city: "New York",
+  neighborhood: "Downtown",
   image: "/drone.png",
-  drone_weight: "2.5",
+  drone_weight: 2.5,
   drone_dimentions: "2x2x2",
-  weight_capacity: "1.5",
-  volume_capacity: "2",
+  weight_capacity: 1.5,
+  volume_capacity: 2,
   material: "Carbon Fiber",
 }));
 
 // Drone Card Component
-const DroneCard = ({ drone, onClick }: { drone: { id: string; model: string; region: string; image: string }; onClick: (id: string) => void }) => {
+const DroneCard = ({ drone, onClick }: { drone: DroneInstanceData; onClick: (id: number) => void }) => {
   return (
     <Card
       isHoverable
@@ -66,25 +67,27 @@ const DroneCard = ({ drone, onClick }: { drone: { id: string; model: string; reg
       </CardHeader>
       <CardBody className="p-4">
         <h3 className="text-lg font-bold">{drone.model}</h3>
-        <p className="text-sm text-default-500">{drone.region}</p>
+        <p className="text-sm text-default-500">{drone.neighborhood ? drone.city.concat(", ", drone.neighborhood) : drone.city }</p>
       </CardBody>
     </Card>
   );
 };
 
 // Drone Details Modal Component
-const DroneDetailsModal = ({ isOpen, onClose, droneId }: { isOpen: boolean; onClose: () => void; droneId: string | null }) => {
+const DroneDetailsModal = ({ isOpen, onClose, drones, droneId }: { isOpen: boolean; onClose: () => void; drones: DroneInstanceData[] | null; droneId: number | null }) => {
+  if (!drones) return null;
+
   // Find the selected drone data
-  const drone = mockDrones.find((d) => d.id === droneId);
+  const drone = drones.find((d) => d.id === droneId);
 
   if (!drone) return null; // If no drone is selected, return nothing
 
   // Prepare rows for the table
   const rows = [
     { name: "Model", value: drone.model },
-    { name: "Region", value: drone.region },
+    { name: "Region", value: drone.neighborhood ? drone.city.concat(", ", drone.neighborhood) : drone.city },
     { name: "Weight Capacity", value: `${drone.weight_capacity} kg` },
-    { name: "Volume Capacity", value: `${drone.volume_capacity} l` },
+    { name: "Volume Capacity", value: `${drone.volume_capacity} L` },
     { name: "Drone Weight", value: `${drone.drone_weight} kg` },
     { name: "Drone Dimensions", value: `${drone.drone_dimentions} (m)` },
     { name: "Material", value: drone.material },
@@ -145,9 +148,9 @@ const DroneDetailsModal = ({ isOpen, onClose, droneId }: { isOpen: boolean; onCl
 const defaultFilters: DroneFilters = {
   city: null,
   material: null,
-  weightCapacity: [0, 10],
-  volumeCapacity: [0, 10],
-  droneWeight: [0, 10],
+  weightCapacity: [0, 100],
+  volumeCapacity: [0, 100],
+  droneWeight: [0, 100],
 };
 
 // Utility functions for localStorage
@@ -163,8 +166,19 @@ const saveFiltersToLocalStorage = (filters: DroneFilters) => {
 // Main Search Drones Page
 export default function SearchDronesPage() {
   const [filters, setFilters] = useState<DroneFilters>(defaultFilters);
-  const [selectedDroneId, setSelectedDroneId] = useState<string | null>(null);
+  const [selectedDroneId, setSelectedDroneId] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [drones, setDrones] = useState<DroneInstanceData[] | null>(null);
+
+  // Runs on every page request (server-side)
+  // useEffect(() => {
+  //   async function load() {
+  //     const drones = await getDrones();
+  //     setDrones(drones);
+  //   }
+  //   load()
+  // }
+  // , [])
 
   // Load filters when the accordion is opened
   const handleAccordionOpen = () => {
@@ -190,7 +204,7 @@ export default function SearchDronesPage() {
     setFilters(defaultFilters);
   };
 
-  const handleCardClick = (id: string) => {
+  const handleCardClick = (id: number) => {
     setSelectedDroneId(id);
     setIsModalOpen(true);
   };
@@ -243,7 +257,7 @@ export default function SearchDronesPage() {
                 className="max-w-md"
                 value={filters.weightCapacity}
                 label="Weight Capacity (kg)"
-                maxValue={10}
+                maxValue={100}
                 minValue={0}
                 step={0.1}
                 onChange={(value) => handleFilterChange("weightCapacity", value as [number, number])}
@@ -254,7 +268,7 @@ export default function SearchDronesPage() {
                 className="max-w-md"
                 value={filters.volumeCapacity}
                 label="Volume Capacity (l)"
-                maxValue={10}
+                maxValue={100}
                 minValue={0}
                 step={0.1}
                 onChange={(value) => handleFilterChange("volumeCapacity", value as [number, number])}
@@ -265,7 +279,7 @@ export default function SearchDronesPage() {
                 className="max-w-md"
                 value={filters.droneWeight}
                 label="Drone Weight (kg)"
-                maxValue={10}
+                maxValue={100}
                 minValue={0}
                 step={0.1}
                 onChange={(value) => handleFilterChange("droneWeight", value as [number, number])}
@@ -297,12 +311,13 @@ export default function SearchDronesPage() {
       {/* Drone Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 w-full">
         {mockDrones.map((drone) => (
-          <DroneCard key={drone.id} drone={drone} onClick={handleCardClick} />
+          <DroneCard key={(drone.id)} drone={drone} onClick={handleCardClick} />
         ))}
       </div>
 
       {/* Drone Details Modal */}
       <DroneDetailsModal
+        drones={mockDrones}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         droneId={selectedDroneId}

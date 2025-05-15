@@ -25,22 +25,34 @@ export type DroneFilters = {
 };
 
 export async function getDrones() {
-  const drones = await prisma.droneInstance.findMany({
-    relationLoadStrategy: 'join',
+  const drones = await (prisma as any).droneInstance.findMany({
     include: {
-        drone_instances: true,
-        suppliers: true
+        model: {
+            select: {
+                model: true,
+                image: true,
+                size: true,
+                composition: true,
+                weight: true,
+                capacityWeight: true,
+                capacityVolume: true
+            }
+        },
+        supplier: {
+            select: {
+                name: true
+            }
+        }
     },
   });
-  return drones;
+  return JSON.parse(JSON.stringify(drones));
 }
 
 export async function filterDrones(filters: DroneFilters) {
-  const drones = await prisma.droneInstance.findMany({
-    relationLoadStrategy: 'join',
+  const drones = await (prisma as any).droneInstance.findMany({
     include: {
-        drone_instances: true,
-        suppliers: true
+        droneModelId: true,
+        supplierId: true
     },
     where: {
       city: filters.city,

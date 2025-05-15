@@ -1,41 +1,38 @@
-// schema.prisma
-
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["relationJoins"]
   output   = "../app/generated/prisma/client"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL") // uses connection pooling
+  url      = env("DATABASE_URL")
 }
 
 model Client {
+  credits  Decimal
+  email    String  @unique
   id       Int     @id @default(autoincrement())
   name     String
-  email    String  @unique
   password String
-  credits  Decimal
   Order    Order[]
 
-  @@map(name: "clients")
+  @@map("clients")
 }
 
 model Supplier {
+  cnpj          String          @unique
+  email         String          @unique
   id            Int             @id @default(autoincrement())
   name          String
-  email         String          @unique
   password      String
-  cnpj          String          @unique
   credits       Decimal
   DroneInstance DroneInstance[]
 
-  @@map(name: "suppliers")
+  @@map("suppliers")
 }
 
 model Order {
-  id               Int      @id @default(autoincrement())
+  id               Int            @id @default(autoincrement())
   number           Int
   clientId         Int
   status           String
@@ -45,36 +42,34 @@ model Order {
   pickupLocation   Json
   deliveryLocation Json
   droneInstanceId  Int?
+  client           Client         @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  droneInstance    DroneInstance? @relation(fields: [droneInstanceId], references: [id])
 
-  client        Client         @relation(fields: [clientId], references: [id], onDelete: Cascade)
-  droneInstance DroneInstance? @relation(fields: [droneInstanceId], references: [id], onDelete: SetNull)
-
-  @@map(name: "orders")
+  @@map("orders")
 }
 
 model DroneInstance {
-  id         Int  @id @default(autoincrement())
+  id         Int        @id @default(autoincrement())
   region     Json
   supplierId Int
   modelId    Int
+  model      DroneModel @relation(fields: [modelId], references: [id], onDelete: Cascade)
+  supplier   Supplier   @relation(fields: [supplierId], references: [id], onDelete: Cascade)
+  Order      Order[]
 
-  supplier Supplier   @relation(fields: [supplierId], references: [id], onDelete: Cascade)
-  model    DroneModel @relation(fields: [modelId], references: [id], onDelete: Cascade)
-  Order    Order[]
-
-  @@map(name: "drone_instances")
+  @@map("drone_instances")
 }
 
 model DroneModel {
   id             Int             @id @default(autoincrement())
   model          String
   weight         Decimal
-  capacityWeight Decimal
-  capacityVolume Decimal
   size           String
   composition    String
   image          String?
+  capacityVolume Decimal
+  capacityWeight Decimal
   DroneInstance  DroneInstance[]
 
-  @@map(name: "drone_models")
+  @@map("drone_models")
 }
