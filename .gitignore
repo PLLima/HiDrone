@@ -34,6 +34,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-# Prisma
-app/generated/prisma/client/libquery_engine-debian-openssl-1.1.x.so.node
