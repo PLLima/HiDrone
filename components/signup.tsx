@@ -157,8 +157,8 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                 />
 
                 <Accordion>
-                  <AccordionItem key="1" title="Register your enterprise:">
-                    <div className="flex flex-col gap-4">
+                  <AccordionItem className="text-4xl font-bold text-center" key="1" title="Register your enterprise">
+                    <div className="flex flex-col gap-4 max-w-md">
                       <Checkbox
                         isSelected={registerEnterprise}
                         onValueChange={setRegisterEnterprise}
