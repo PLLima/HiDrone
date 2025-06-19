@@ -7,6 +7,7 @@ import { Accordion, AccordionItem } from "@heroui/react";
 import { Autocomplete, AutocompleteItem } from "@heroui/react";
 import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell } from "@heroui/table";
 import { Slider } from "@heroui/react";
+import { Tabs, Tab } from "@heroui/tabs";
 
 import { DroneFilters, DroneInstanceData, getDrones } from "@/app/server/supply";
 
@@ -215,6 +216,9 @@ export default function SearchDronesPage() {
   };
 
   return (
+ <Tabs aria-label="Drone selection steps" className="w-full max-w-screen-2xl mx-auto">
+  {/* Aba 1 - Seleção de drones */}
+  <Tab key="select-drones" title="Selecionar Drones">
     <section className="flex flex-col items-center justify-center gap-6 py-8 px-6 w-full max-w-screen-2xl mx-auto">
       {/* Page Title */}
       <div className="inline-block max-w-xl text-center justify-center">
@@ -323,5 +327,23 @@ export default function SearchDronesPage() {
         droneId={selectedDroneId}
       />
     </section>
-  );
-}
+	  </Tab>
+
+    {/* Aba 2 - Seleção de local */}
+    <Tab key="delivery-location" title="Selecionar Local de Entrega">
+      <section className="flex flex-col items-center justify-center gap-6 py-8 px-6">
+        <h2 className="text-2xl font-bold text-center">Escolha o Local de Entrega</h2>
+        <Autocomplete
+          className="max-w-xs"
+          label="Cidade de Entrega"
+          placeholder="Selecione a cidade"
+          onSelectionChange={(key) => console.log("Cidade selecionada:", key)}
+        >
+          {cities.map((city) => (
+            <AutocompleteItem key={city.key}>{city.label}</AutocompleteItem>
+          ))}
+        </Autocomplete>
+      </section>
+    </Tab>
+  </Tabs>
+);
