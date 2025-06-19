@@ -54,8 +54,8 @@ const DroneCard = ({ drone, onClick }: { drone: DroneInstanceData; onClick: (id:
   return (
     <Card
       isHoverable
-      isPressable                // <-- make it render as a button
-      onPress={() => onClick(drone.id)}  // <-- use onPress instead of onClick
+      isPressable
+      onPress={() => onClick(drone.id)}
       className="w-full h-full cursor-pointer"
     >
       <CardHeader className="p-0">
@@ -68,6 +68,25 @@ const DroneCard = ({ drone, onClick }: { drone: DroneInstanceData; onClick: (id:
       <CardBody className="p-4">
         <h3 className="text-lg font-bold">{drone.model}</h3>
         <p className="text-sm text-default-500">{drone.neighborhood ? drone.city.concat(", ", drone.neighborhood) : drone.city }</p>
+      </CardBody>
+    </Card>
+  );
+};
+
+// Card for adding a new drone
+const AddDroneCard = () => {
+  return (
+    <Card isHoverable isPressable className="w-full h-full cursor-pointer">
+      <CardHeader className="p-0">
+        <Image
+          alt="Add Drone"
+          className="w-full aspect-square object-cover rounded-xl"
+          src="/add-drone.png"
+        />
+      </CardHeader>
+      <CardBody className="p-4 text-center">
+        <h3 className="text-lg font-bold">Add New Drone</h3>
+        <p className="text-sm text-default-500">Click to add a new drone</p>
       </CardBody>
     </Card>
   );
@@ -218,7 +237,7 @@ export default function SearchDronesPage() {
     <section className="flex flex-col items-center justify-center gap-6 py-8 px-6 w-full max-w-screen-2xl mx-auto">
       {/* Page Title */}
       <div className="inline-block max-w-xl text-center justify-center">
-        <span className="text-4xl font-bold">Find Drones&nbsp;</span>
+        <span className="text-4xl font-bold">Your Drones&nbsp;</span>
         <br />
       </div>
 
@@ -310,6 +329,7 @@ export default function SearchDronesPage() {
 
       {/* Drone Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 w-full">
+        <AddDroneCard />
         {mockDrones.map((drone) => (
           <DroneCard key={(drone.id)} drone={drone} onClick={handleCardClick} />
         ))}
