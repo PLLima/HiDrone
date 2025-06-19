@@ -118,7 +118,7 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
 
   return (
     <Modal isOpen={isOpen} onOpenChange={(isOpen) => !isOpen && onClose()} onClose={clearVariables} backdrop="blur" size="xs">
-      <ModalContent>
+      <ModalContent  className="px-4">
         <>
           <ModalHeader className="text-4xl font-bold text-center">Sign Up</ModalHeader>
           <ModalBody>
