@@ -184,7 +184,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/home/pllima0909/Documents/Git/HiDrone/app/generated/prisma/client",
+      "value": "C:\\Users\\joaog\\Documentos\\GitHub\\HiDrone-main\\app\\generated\\prisma\\client",
       "fromEnvVar": null
     },
     "config": {
@@ -193,17 +193,16 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "debian-openssl-1.1.x",
+        "value": "windows",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/home/pllima0909/Documents/Git/HiDrone/prisma/schema.prisma",
+    "sourceFilePath": "C:\\Users\\joaog\\Documentos\\GitHub\\HiDrone-main\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
-    "schemaEnvPath": "../../../../.env"
+    "rootEnvPath": null
   },
   "relativePath": "../../../../prisma",
   "clientVersion": "6.7.0",

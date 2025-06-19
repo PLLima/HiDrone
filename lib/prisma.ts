@@ -1,4 +1,5 @@
-import { PrismaClient } from '@prisma/client/edge';
+import { PrismaClient } from '@prisma/client'
+// filepath: lib/prisma.ts; 
 import { withAccelerate } from '@prisma/extension-accelerate';
 
 let prisma: any;
