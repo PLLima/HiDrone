@@ -8,6 +8,7 @@ import { Autocomplete, AutocompleteItem } from "@heroui/react";
 import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell } from "@heroui/table";
 import { Slider } from "@heroui/react";
 import { PlusIcon } from "@/components/icons";  
+import {Input} from "@heroui/react";
 
 import { DroneFilters, DroneInstanceData, getDrones } from "@/app/server/supply";
 
@@ -172,7 +173,6 @@ const AddDroneModal = ({ isOpen, onClose}: { isOpen: boolean; onClose: () => voi
     { name: "Drone Weight", value: `${drone.drone_weight} kg` },
     { name: "Drone Dimensions", value: `${drone.drone_dimentions} (m)` },
     { name: "Material", value: drone.material },
-    { name: "Supplier", value: drone.supplier },
   ];
 
   return (
@@ -183,7 +183,7 @@ const AddDroneModal = ({ isOpen, onClose}: { isOpen: boolean; onClose: () => voi
           <ModalHeader className="text-2xl font-bold text-center">Add Drone</ModalHeader>
 
           {/* Modal Body */}
-          <ModalBody className="flex flex-col items-center gap-6">
+            <ModalBody className="flex flex-col items-center gap-6">
             {/* Drone Image */}
             <img
               src={drone.image}
@@ -195,41 +195,46 @@ const AddDroneModal = ({ isOpen, onClose}: { isOpen: boolean; onClose: () => voi
             <div className="flex flex-col gap-4 w-full max-w-md">
               {/* Model Autocomplete */}
               <Autocomplete
-                label="Model"
-                defaultSelectedKey={drone.model}
-                className="w-full"
-                // You can provide a list of models if available, here using mockDrones for demonstration
+              label="Model"
+              defaultSelectedKey={drone.model}
+              className="w-full"
+              // You can provide a list of models if available, here using mockDrones for demonstration
               >
-                {["Drone Model X", "Drone Model Y", "Drone Model Z"].map((model) => (
-                  <AutocompleteItem key={model}>{model}</AutocompleteItem>
-                ))}
+              {["Drone Model X", "Drone Model Y", "Drone Model Z"].map((model) => (
+                <AutocompleteItem key={model}>{model}</AutocompleteItem>
+              ))}
               </Autocomplete>
 
               {/* Region Input */}
-              <input
-                type="text"
-                className="w-full px-3 py-2 border rounded-md"
-                placeholder="Region (e.g., City, Neighborhood)"
-                defaultValue={drone.neighborhood ? `${drone.city}, ${drone.neighborhood}` : drone.city}
-              />
+              <Input label="City" type="city"/>
+              <Input label="Neighborhood" type="neighborhood"/>
             </div>
 
             {/* Drone Details Table */}
-            <Table aria-label="Drone Details Table" className="w-full max-w-md" isStriped hideHeader removeWrapper>
+            <Table
+              aria-label="Drone Details Table"
+              className="w-full max-w-md"
+              isStriped
+              hideHeader
+              removeWrapper
+              topContent={
+              <span className="text-lg font-semibold w-full text-center block">Model Info:</span>
+              }
+            >
               <TableHeader>
-                <TableColumn>Name</TableColumn>
-                <TableColumn>Value</TableColumn>
+              <TableColumn>Name</TableColumn>
+              <TableColumn>Value</TableColumn>
               </TableHeader>
               <TableBody items={rows}>
-                {(item) => (
-                  <TableRow key={item.name}>
-                    <TableCell className="font-bold">{item.name}</TableCell>
-                    <TableCell>{item.value}</TableCell>
-                  </TableRow>
-                )}
+              {(item) => (
+                <TableRow key={item.name}>
+                <TableCell className="font-bold">{item.name}</TableCell>
+                <TableCell>{item.value}</TableCell>
+                </TableRow>
+              )}
               </TableBody>
             </Table>
-          </ModalBody>
+            </ModalBody>
 
           {/* Modal Footer */}
           <div className="flex justify-center gap-4 p-4">
@@ -238,7 +243,7 @@ const AddDroneModal = ({ isOpen, onClose}: { isOpen: boolean; onClose: () => voi
                 Cancel
                 </Button>
                 <Button onPress={() => alert(`Drone ${drone.id} chosen!`)} color="primary" className="flex-[1.5]">
-                Choose this Drone
+                Add this Drone
                 </Button>
             </div>
           </div>
