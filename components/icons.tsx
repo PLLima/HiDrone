@@ -165,7 +165,7 @@ export const SearchIcon = (props: IconSvgProps) => (
 );
 
 export const PlusIcon: React.FC<IconSvgProps> = ({
-  size = 60,
+  size = 200,
   width,
   height,
   ...props

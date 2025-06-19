@@ -7,6 +7,7 @@ import { Accordion, AccordionItem } from "@heroui/react";
 import { Autocomplete, AutocompleteItem } from "@heroui/react";
 import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell } from "@heroui/table";
 import { Slider } from "@heroui/react";
+import { PlusIcon } from "@/components/icons";  
 
 import { DroneFilters, DroneInstanceData, getDrones } from "@/app/server/supply";
 
@@ -77,12 +78,8 @@ const DroneCard = ({ drone, onClick }: { drone: DroneInstanceData; onClick: (id:
 const AddDroneCard = () => {
   return (
     <Card isHoverable isPressable className="w-full h-full cursor-pointer">
-      <CardHeader className="p-0">
-        <Image
-          alt="Add Drone"
-          className="w-full aspect-square object-cover rounded-xl"
-          src="/add-drone.png"
-        />
+      <CardHeader className="p-0 flex justify-center items-center">
+        <PlusIcon className="w-2/3 aspect-square object-cover rounded-xl" />
       </CardHeader>
       <CardBody className="p-4 text-center">
         <h3 className="text-lg font-bold">Add New Drone</h3>
