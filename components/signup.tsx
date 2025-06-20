@@ -9,9 +9,11 @@ import {
   ModalFooter,
 } from "@heroui/react";
 import { Form, Input, Button, Checkbox } from "@heroui/react";
-import { ClientData, registerClient } from "@/app/server/user";
+import { ClientData, registerClient, registerSupplier } from "@/app/server/user";
 import { hash } from "bcryptjs";
 import { Tabs, Tab } from "@heroui/react";
+import { get } from "http";
+import { format } from "path";
 
 // Define types for errors and submitted data
 type Errors = {
@@ -132,11 +134,16 @@ const SupplierForm = ({
 }) => {
   const [password, setPassword] = React.useState("");
   const [repeatPassword, setRepeatPassword] = React.useState("");
-  const [touched, setTouched] = React.useState({ password: false, repeat_password: false });
+  const [touched, setTouched] = React.useState({enterpriseName: false, password: false, repeat_password: false, cnpj: false});
   const [errors, setErrors] = React.useState<{ password?: string; enterpriseName?: string; cnpj?: string }>({});
   const [registerEnterprise, setRegisterEnterprise] = React.useState(false);
   const [cnpj, setCnpj] = React.useState("");
   const [enterpriseName, setEnterpriseName] = React.useState("");
+
+  const getEnterpriseNameError = (value: string): string | null => {
+    if (!value) return "Please enter your enterprise name";
+    return null;
+  }
 
   const getPasswordError = (value: string): string | null => {
     if (value.length < 4) return "Password must be 4 characters or more";
@@ -149,13 +156,19 @@ const SupplierForm = ({
     return value1 !== value2 ? "Passwords do not match" : null;
   };
 
+  const getCnpjError = (value: string): string | null => {
+    if (!value.replace(/\D/g, "")) return "Please enter your CNPJ";
+    return null;
+  }
+
   const formatCnpj = (value: string): string => {
     const numericValue = value.replace(/\D/g, "");
     return numericValue
       .replace(/^(\d{2})(\d)/, "$1.$2")
       .replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3")
       .replace(/\.(\d{3})(\d)/, ".$1/$2")
-      .replace(/(\d{4})(\d)/, "$1-$2");
+      .replace(/(\d{4})(\d)/, "$1-$2")
+      .slice(0, 18);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -167,9 +180,8 @@ const SupplierForm = ({
     const passwordError = getPasswordError(password);
     if (passwordError) newErrors.password = passwordError;
     if (getRepeatPasswordError(password, repeatPassword)) newErrors.password = getRepeatPasswordError(password, repeatPassword) || "";
-    if (!enterpriseName) newErrors.enterpriseName = "Please enter your enterprise name";
-    if (!cnpj.replace(/\D/g, "")) newErrors.cnpj = "Please enter your CNPJ";
-    else if (!/^\d{14}$/.test(cnpj.replace(/\D/g, ""))) newErrors.cnpj = "CNPJ must be 14 digits";
+    if (getEnterpriseNameError(enterpriseName)) newErrors.enterpriseName = getEnterpriseNameError(enterpriseName) || "";
+    if (getCnpjError(cnpj)) newErrors.cnpj = getCnpjError(cnpj) || "";
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
       await onSubmit({ name, email, password, enterpriseName, cnpj });
@@ -181,13 +193,16 @@ const SupplierForm = ({
       <div className="flex flex-col gap-4 max-w-md">
         <Input
           isRequired
-          errorMessage={() => errors.enterpriseName}
+          errorMessage={touched.enterpriseName ? getEnterpriseNameError(enterpriseName) : null}
           label="Enterprise Name"
           name="enterpriseName"
           type="text"
           autoComplete="organization"
           value={enterpriseName}
-          onValueChange={setEnterpriseName}
+          onValueChange={(value) => {
+            setEnterpriseName(value);
+            setTouched((prev) => ({ ...prev, enterpriseName: true }));
+          }}
         />
 
         <Input isRequired label="Email" name="email" type="email" />
@@ -224,12 +239,15 @@ const SupplierForm = ({
         <Input
           isRequired
           value={cnpj}
-          onValueChange={(value) => setCnpj(formatCnpj(value))}
-          errorMessage={() => errors.cnpj}
+          errorMessage={touched.cnpj ? getCnpjError(cnpj) : null}
           label="CNPJ"
           name="cnpj"
           type="text"
           autoComplete="off"
+          onValueChange={(value) => {
+            setCnpj(formatCnpj(value));
+            setTouched((prev) => ({ ...prev, cnpj: true }));
+          }}
         />
 
         <div className="flex w-full gap-1">
@@ -321,7 +339,7 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
       cnpj: data.cnpj,
       credits: 0,
     };
-    const registered = await registerClient(formattedData);
+    const registered = await registerSupplier(formattedData);
     if (registered === false) {
       setErrors({ email: "An account with this email already exists." });
       setIsLoading(false);
