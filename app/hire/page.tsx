@@ -7,7 +7,7 @@ import { SetPath } from "./set_path";
 export default function SupplyPage() {
   return (
     <section className="flex flex-col items-center justify-center gap-0 py-2 px-6 w-full max-w-screen-2xl mx-auto">
-      <Tabs aria-label="Options">
+      <Tabs aria-label="Options" color="primary" >
         <Tab key="drone" title="Drone">
           <SearchDronesPage />
         </Tab>
