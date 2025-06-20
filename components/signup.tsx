@@ -13,6 +13,7 @@ import {
 import { Form, Input, Button, Checkbox } from "@heroui/react";
 import { ClientData, registerClient } from "@/app/server/user";
 import { hash } from "bcryptjs";
+import { Tabs, Tab } from "@heroui/react";
 
 // Define types for errors and submitted data
 type Errors = {
@@ -22,6 +23,171 @@ type Errors = {
   enterpriseName?: string;
   cnpj?: string;
 };
+
+// --- Define the forms separately ---
+
+const ClientForm = ({
+  onSubmit,
+  errors,
+  touched,
+  password,
+  setPassword,
+  repeat_password,
+  setRepeatPassword,
+  setTouched,
+  isLoading,
+  clearVariables,
+  onClose,
+  getPasswordError,
+  getRepeatPasswordError,
+}: any) => (
+  <Form className="w-full space-y-4" onSubmit={onSubmit} validationErrors={errors} autoComplete="on">
+    <div className="flex flex-col gap-4 max-w-md">
+      <Input isRequired label="Name" name="name" />
+      <Input isRequired label="Email" name="email" type="email" />
+
+      <Input
+        isRequired
+        errorMessage={touched.password ? getPasswordError(password) : null}
+        isInvalid={touched.password && getPasswordError(password) !== null}
+        label="Password"
+        name="password"
+        type="password"
+        autoComplete="new-password"
+        value={password}
+        onValueChange={(value) => {
+          setPassword(value);
+          setTouched((prev: any) => ({ ...prev, password: true }));
+        }}
+      />
+
+      <Input
+        isRequired
+        errorMessage={touched.repeat_password ? getRepeatPasswordError(password, repeat_password) : null}
+        isInvalid={touched.repeat_password && getRepeatPasswordError(password, repeat_password) !== null}
+        label="Repeat password"
+        type="password"
+        autoComplete="new-password"
+        value={repeat_password}
+        onValueChange={(value) => {
+          setRepeatPassword(value);
+          setTouched((prev: any) => ({ ...prev, repeat_password: true }));
+        }}
+      />
+
+      <div className="flex w-full gap-1">
+        <Button type="button" className="w-1/3" onPress={() => { clearVariables(); onClose(); }} color="danger" variant="light">Cancel</Button>
+        <Button
+          type="submit"
+          className="flex-1"
+          color="primary"
+          isLoading={isLoading}
+          isDisabled={
+            !!getPasswordError(password) ||
+            !!getRepeatPasswordError(password, repeat_password)
+          }
+        >
+          Submit
+        </Button>
+      </div>
+    </div>
+  </Form>
+);
+
+const SupplierForm = ({
+  onSubmit,
+  errors,
+  touched,
+  password,
+  setPassword,
+  repeat_password,
+  setRepeatPassword,
+  setTouched,
+  isLoading,
+  clearVariables,
+  onClose,
+  getPasswordError,
+  getRepeatPasswordError,
+  registerEnterprise,
+  setRegisterEnterprise,
+  cnpj,
+  setCnpj,
+  formatCnpj,
+}: any) => (
+  <Form className="w-full space-y-4" onSubmit={onSubmit} validationErrors={errors} autoComplete="on">
+    <div className="flex flex-col gap-4 max-w-md">
+      
+      <Input
+        isRequired
+        errorMessage={() => errors.enterpriseName}
+        label="Enterprise Name"
+        name="enterpriseName"
+        type="text"
+        autoComplete="organization"
+      />
+
+      <Input isRequired label="Email" name="email" type="email" />
+
+      <Input
+        isRequired
+        errorMessage={touched.password ? getPasswordError(password) : null}
+        isInvalid={touched.password && getPasswordError(password) !== null}
+        label="Password"
+        name="password"
+        type="password"
+        autoComplete="new-password"
+        value={password}
+        onValueChange={(value) => {
+          setPassword(value);
+          setTouched((prev: any) => ({ ...prev, password: true }));
+        }}
+      />
+
+      <Input
+        isRequired
+        errorMessage={touched.repeat_password ? getRepeatPasswordError(password, repeat_password) : null}
+        isInvalid={touched.repeat_password && getRepeatPasswordError(password, repeat_password) !== null}
+        label="Repeat password"
+        type="password"
+        autoComplete="new-password"
+        value={repeat_password}
+        onValueChange={(value) => {
+          setRepeatPassword(value);
+          setTouched((prev: any) => ({ ...prev, repeat_password: true }));
+        }}
+      />
+
+      <Input
+        isRequired
+        value={cnpj}
+        onValueChange={(value) => setCnpj(formatCnpj(value))}
+        errorMessage={() => errors.cnpj}
+        label="CNPJ"
+        name="cnpj"
+        type="text"
+        autoComplete="off"
+      />
+
+      <div className="flex w-full gap-1">
+        <Button type="button" className="w-1/3" onPress={() => { clearVariables(); onClose(); }} color="danger" variant="light">Cancel</Button>
+        <Button
+          type="submit"
+          className="flex-1"
+          color="primary"
+          isLoading={isLoading}
+          isDisabled={
+            !!getPasswordError(password) ||
+            !!getRepeatPasswordError(password, repeat_password)
+          }
+        >
+          Submit
+        </Button>
+      </div>
+    </div>
+  </Form>
+);
+
+// --- Main Modal Component ---
 
 export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   const [password, setPassword] = React.useState("");
@@ -118,94 +284,51 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
 
   return (
     <Modal isOpen={isOpen} onOpenChange={(isOpen) => !isOpen && onClose()} onClose={clearVariables} backdrop="blur" size="xs">
-      <ModalContent  className="px-4">
+      <ModalContent className="px-4">
         <>
           <ModalHeader className="text-4xl font-bold text-center">Sign Up</ModalHeader>
           <ModalBody>
-            <Form className="w-full space-y-4" onSubmit={onSubmit} validationErrors={errors} autoComplete="on">
-              <div className="flex flex-col gap-4 max-w-md">
-                <Input isRequired label="Name" name="name" />
-                <Input isRequired label="Email" name="email" type="email" />
-
-                <Input
-                  isRequired
-                  errorMessage={touched.password ? getPasswordError(password) : null}
-                  isInvalid={touched.password && getPasswordError(password) !== null}
-                  label="Password"
-                  name="password"
-                  type="password"
-                  autoComplete="new-password"
-                  value={password}
-                  onValueChange={(value) => {
-                    setPassword(value);
-                    setTouched((prev) => ({ ...prev, password: true }));
-                  }}
+            <Tabs aria-label="Sign up type" className="w-full" color="primary">
+              <Tab key="client" title="Client">
+                <ClientForm
+                  onSubmit={onSubmit}
+                  errors={errors}
+                  touched={touched}
+                  password={password}
+                  setPassword={setPassword}
+                  repeat_password={repeat_password}
+                  setRepeatPassword={setRepeatPassword}
+                  setTouched={setTouched}
+                  isLoading={isLoading}
+                  clearVariables={clearVariables}
+                  onClose={onClose}
+                  getPasswordError={getPasswordError}
+                  getRepeatPasswordError={getRepeatPasswordError}
                 />
-
-                <Input
-                  isRequired
-                  errorMessage={touched.repeat_password ? getRepeatPasswordError(password, repeat_password) : null}
-                  isInvalid={touched.repeat_password && getRepeatPasswordError(password, repeat_password) !== null}
-                  label="Repeat password"
-                  type="password"
-                  autoComplete="new-password"
-                  value={repeat_password}
-                  onValueChange={(value) => {
-                    setRepeatPassword(value);
-                    setTouched((prev) => ({ ...prev, repeat_password: true }));
-                  }}
+              </Tab>
+              <Tab key="supplier" title="Supplier">
+                <SupplierForm
+                  onSubmit={onSubmit}
+                  errors={errors}
+                  touched={touched}
+                  password={password}
+                  setPassword={setPassword}
+                  repeat_password={repeat_password}
+                  setRepeatPassword={setRepeatPassword}
+                  setTouched={setTouched}
+                  isLoading={isLoading}
+                  clearVariables={clearVariables}
+                  onClose={onClose}
+                  getPasswordError={getPasswordError}
+                  getRepeatPasswordError={getRepeatPasswordError}
+                  registerEnterprise={registerEnterprise}
+                  setRegisterEnterprise={setRegisterEnterprise}
+                  cnpj={cnpj}
+                  setCnpj={setCnpj}
+                  formatCnpj={formatCnpj}
                 />
-
-                <Accordion>
-                  <AccordionItem className="text-4xl font-bold text-center" key="1" title="Register your enterprise" classNames={{ indicator:"[&>svg]:w-5 [&>svg]:h-5"}}>
-                    <div className="flex flex-col gap-4 max-w-md">
-                      <Checkbox
-                        isSelected={registerEnterprise}
-                        onValueChange={setRegisterEnterprise}
-                      >
-                        Register as supplier 
-                      </Checkbox>
-                      <Input
-                        isRequired={registerEnterprise}
-                        isDisabled={!registerEnterprise}
-                        errorMessage={() => errors.enterpriseName}
-                        label="Enterprise Name"
-                        name="enterpriseName"
-                        type="text"
-                        autoComplete="organization"
-                      />
-                      <Input
-                        isRequired={registerEnterprise}
-                        isDisabled={!registerEnterprise}
-                        value={cnpj}
-                        onValueChange={(value) => setCnpj(formatCnpj(value))}
-                        errorMessage={() => errors.cnpj}
-                        label="CNPJ"
-                        name="cnpj"
-                        type="text"
-                        autoComplete="off"
-                      />
-                    </div>
-                  </AccordionItem>
-                </Accordion>
-
-                <div className="flex w-full gap-1">
-                  <Button type="button" className="w-1/3" onPress={() => { clearVariables(); onClose(); }} color="danger" variant="light">Cancel</Button>
-                  <Button
-                    type="submit"
-                    className="flex-1"
-                    color="primary"
-                    isLoading={isLoading}
-                    isDisabled={
-                      !!getPasswordError(password) ||
-                      !!getRepeatPasswordError(password, repeat_password)
-                    }
-                  >
-                    Submit
-                  </Button>
-                </div>
-              </div>
-            </Form>
+              </Tab>
+            </Tabs>
           </ModalBody>
           <ModalFooter className="h-4" />
         </>
