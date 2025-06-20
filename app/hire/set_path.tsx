@@ -20,20 +20,7 @@ export function SetPath() {
     return (
         <div className="flex flex-col items-center justify-center gap-6 w-full max-w-screen-2xl mx-auto">
             <h2 className="text-2xl font-bold text-center">Escolha o Local de Entrega</h2>
-            <Autocomplete
-              className="max-w-xs"
-              label="Delivery City"
-              onSelectionChange={(key) => {
-                if (key !== null) {
-                  console.log("Cidade selecionada:", key);
-                }
-              }}
-            >
-              {cities.map((city) => (
-                <AutocompleteItem key={city.key}>{city.label}</AutocompleteItem>
-              ))}
-            </Autocomplete>
-
+            
             <Input name="pickupAddress" label="Pickup Address"></Input>
             <Input name="deliveryAddress" label="Delivery Address"></Input>
 
