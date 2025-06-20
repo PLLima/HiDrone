@@ -7,8 +7,6 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Accordion,
-  AccordionItem,
 } from "@heroui/react";
 import { Form, Input, Button, Checkbox } from "@heroui/react";
 import { ClientData, registerClient } from "@/app/server/user";
