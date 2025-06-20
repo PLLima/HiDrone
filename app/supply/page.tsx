@@ -1,7 +1,7 @@
 "use client";
 
 import { Tabs, Tab, Card, CardBody } from "@heroui/react";
-import { MyDronesPage } from "./mydrones";
+import { MyDronesPage } from "./my_drones";
 
 export default function SupplyPage() {
   return (
