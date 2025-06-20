@@ -347,3 +347,4 @@ export default function SearchDronesPage() {
     </Tab>
   </Tabs>
 );
+}
