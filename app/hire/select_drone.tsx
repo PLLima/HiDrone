@@ -74,7 +74,15 @@ const DroneCard = ({ drone, onClick }: { drone: DroneInstanceData; onClick: (id:
 };
 
 // Drone Details Modal Component
-const DroneDetailsModal = ({ isOpen, onClose, drones, droneId }: { isOpen: boolean; onClose: () => void; drones: DroneInstanceData[] | null; droneId: number | null }) => {
+const DroneDetailsModal = ({ isOpen, onClose, drones, droneId, onChoose }: { 
+    isOpen: boolean; 
+    onClose: () => void; 
+    drones: DroneInstanceData[] | null; 
+    droneId: number | null;
+    onChoose: () => void;
+  }) => {
+
+
   if (!drones) return null;
 
   // Find the selected drone data
@@ -133,9 +141,9 @@ const DroneDetailsModal = ({ isOpen, onClose, drones, droneId }: { isOpen: boole
                 <Button onPress={onClose} color="danger" variant="light" className="flex-[0.5]">
                 Cancel
                 </Button>
-                <Button onPress={() => alert(`Drone ${drone.id} chosen!`)} color="primary" className="flex-[1.5]">
-                Choose this Drone
-                </Button>
+                  <Button onPress={onChoose} color="primary" className="flex-[1.5]">
+                    Choose this Drone
+                  </Button>
             </div>
           </div>
         </>
@@ -164,7 +172,7 @@ const saveFiltersToLocalStorage = (filters: DroneFilters) => {
 };
 
 // Main Search Drones Page
-export function SearchDronesPage() {
+export function SearchDronesPage( { onDroneSelect }: { onDroneSelect: (id: number) => void }) {
   const [filters, setFilters] = useState<DroneFilters>(defaultFilters);
   const [selectedDroneId, setSelectedDroneId] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -210,9 +218,20 @@ export function SearchDronesPage() {
   };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedDroneId(null);
+    if (selectedDroneId !== null) {
+      onDroneSelect(selectedDroneId);
+      setIsModalOpen(false);
+    }
+    // setIsModalOpen(false);
+    // setSelectedDroneId(null);
   };
+
+  const handleChooseDrone = () => {
+    if (selectedDroneId !== null) {
+      onDroneSelect(selectedDroneId);
+      setIsModalOpen(false);
+    }
+  }
 
   return (
     <div className="flex flex-col items-center justify-center gap-6 w-full max-w-screen-2xl mx-auto">
@@ -315,6 +334,7 @@ export function SearchDronesPage() {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         droneId={selectedDroneId}
+        onChoose={handleChooseDrone}
       />
     </div>
 );
