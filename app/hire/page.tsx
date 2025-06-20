@@ -11,7 +11,7 @@ export default function SupplyPage() {
         <Tab key="drones" title="Drones">
           <SearchDronesPage />
         </Tab>
-        <Tab key="orders" title="Orders">
+        <Tab key="route" title="Route">
           <SetPath />
         </Tab>
       </Tabs>
