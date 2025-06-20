@@ -1,4 +1,4 @@
-import { Autocomplete, AutocompleteItem } from "@heroui/react";
+import { Autocomplete, AutocompleteItem, Input, Button } from "@heroui/react";
 
 export const cities = [
   { label: "São Paulo", key: "sao_paulo" },
@@ -22,7 +22,7 @@ export function SetPath() {
             <h2 className="text-2xl font-bold text-center">Escolha o Local de Entrega</h2>
             <Autocomplete
               className="max-w-xs"
-              label="Cidade de Entrega"
+              label="Delivery City"
               onSelectionChange={(key) => {
                 if (key !== null) {
                   console.log("Cidade selecionada:", key);
@@ -33,6 +33,13 @@ export function SetPath() {
                 <AutocompleteItem key={city.key}>{city.label}</AutocompleteItem>
               ))}
             </Autocomplete>
+
+            <Input name="pickupAddress" label="Pickup Address"></Input>
+            <Input name="deliveryAddress" label="Delivery Address"></Input>
+
+            <Button color="primary" className="w-full max-w-xs">
+              Go to Payment
+            </Button>
         </div>
     );
 }
