@@ -2,6 +2,8 @@
 
 import { Tabs, Tab, Card, CardBody } from "@heroui/react";
 import { MyDronesPage } from "./my_drones";
+import "./orders";
+import OrdersHistoryTable from "./orders";
 
 export default function SupplyPage() {
   return (
@@ -12,9 +14,7 @@ export default function SupplyPage() {
         </Tab>
         <Tab key="orders" title="Orders">
           <Card>
-            <CardBody>
-              Not implemented yet. This tab will display the user's orders related to drone supply.
-            </CardBody>
+            <OrdersHistoryTable></OrdersHistoryTable>
           </Card>
         </Tab>
       </Tabs>
