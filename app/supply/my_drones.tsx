@@ -108,7 +108,6 @@ const DroneDetailsModal = ({ isOpen, onClose, drones, droneId }: { isOpen: boole
     { name: "Drone Weight", value: `${drone.drone_weight} kg` },
     { name: "Drone Dimensions", value: `${drone.drone_dimentions} (m)` },
     { name: "Material", value: drone.material },
-    { name: "Supplier", value: drone.supplier },
   ];
 
   return (
