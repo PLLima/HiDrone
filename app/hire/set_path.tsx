@@ -40,7 +40,7 @@ export function SetPath({
       return;
     }
 
-    if (!cityKey || pickup.trim() === "" || delivery.trim() === "") {
+    if (pickup.trim() === "" || delivery.trim() === "") {
       alert("Por favor, preencha todos os campos de endereço.");
       return;
     }
@@ -59,10 +59,10 @@ export function SetPath({
 
   return (
     <div className="flex flex-col items-center justify-center gap-6 w-full max-w-screen-2xl mx-auto">
-      <h2 className="text-2xl font-bold text-center">Escolha o Local de Entrega</h2>
+      <h2 className="text-2xl font-bold text-center">Choose Delivery Location</h2>
 
 
-      <Autocomplete
+      {/* <Autocomplete
         className="max-w-xs"
         label="Delivery City"
         inputValue={cityInputValue}
@@ -85,7 +85,7 @@ export function SetPath({
           <AutocompleteItem key={city.key}> {city.label} </AutocompleteItem>
         ))}
 
-      </Autocomplete>
+      </Autocomplete> */}
 
       <Input name="pickupAddress" label="Pickup Address" value={pickup} onValueChange={setPickup}></Input>
       <Input name="deliveryAddress" label="Delivery Address" value={delivery} onValueChange={setDelivery}></Input>

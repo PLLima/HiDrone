@@ -15,16 +15,16 @@ export default function Payment({
   
     return (
     <div className="flex flex-col items-center justify-center gap-6 w-full max-w-md mx-auto">
-      <h2 className="text-2xl font-bold text-center">Pagamento</h2>
+      <h2 className="text-2xl font-bold text-center">Payment</h2>
 
-      <Input name="cardNumber" label="Número do Cartão" fullWidth />
-      <Input name="cardName" label="Nome no Cartão" fullWidth />
-      <Input name="expiry" label="Validade (MM/AA)" fullWidth />
+      <Input name="cardNumber" label="Card Number" fullWidth />
+      <Input name="cardName" label="Card Name" fullWidth />
+      <Input name="expiry" label="Expiry (YY/MM)" fullWidth />
       <Input name="cvv" label="CVV" fullWidth />
-      <Input name="price" label="Preço" isReadOnly value={`R$ ${total},00`} fullWidth />
+      <Input name="price" label="Price" isReadOnly value={`R$ ${total},00`} fullWidth />
 
       <Button color="primary" className="w-full mt-4">
-        Confirmar Pagamento
+        Continue Payment
       </Button>
     </div>
   );
