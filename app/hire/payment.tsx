@@ -22,7 +22,7 @@ export default function Payment({
       <Input name="expiry" label="Expiry (YY/MM)" isDisabled fullWidth />
       <Input name="cvv" label="CVV" isDisabled fullWidth />
       <div className="w-full text-center text-l text-default-700 mt-2" title={`Total: R$ ${total},00`}>
-        <strong>Preço:</strong> R$ {total},00
+        <strong>Price:</strong> R$ {total},00
       </div>
 
       <Button color="primary" className="w-full mt-4">
