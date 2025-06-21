@@ -15,7 +15,7 @@ export default function Home() {
         <h1 className={title({ color: "violet" }) + " text-5xl md:text-6xl font-bold"}>
           Rent drones for package delivery
         </h1>
-        <p className="mt-4 text-lg md:text-xl text-gray-600">
+        <p className="mt-4 text-lg md:text-xl text-white-600">
           Flexible drone rental for your delivery needs
         </p>
 
