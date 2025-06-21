@@ -51,7 +51,7 @@ const OrdersHistoryTable: React.FC = () => {
   const onView = (orderId: string) => alert(`Viewing order ${orderId}`);
 
   return (
-    <Table aria-label="Orders History Table">
+    <Table aria-label="Orders History Table" isHeaderSticky>
       <TableHeader>
         {columns.map((col) => (
           <TableColumn key={col.key}>
