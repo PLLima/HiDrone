@@ -34,9 +34,9 @@ export default function Home() {
       {/* Imagem à direita */}
       <div className="w-full md:w-1/2 flex justify-center">
         <img
-          src="/drone_home.png" // Altere esse caminho para o real
+          src="/drone_home(2).png" // Altere esse caminho para o real
           alt="Drone delivery"
-          className="max-w-full h-auto"
+          className="max-w-full h-auto rounded-2x1 shadow-x1"
         />
       </div>
     </section>
