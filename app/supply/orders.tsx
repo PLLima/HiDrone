@@ -1,28 +1,25 @@
 import React, { useState } from 'react';
 import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableCell,
-  TableColumn,
-  Chip,
-  Tooltip,
+  Table, TableHeader, TableBody, TableRow, TableCell, TableColumn, Chip, Tooltip,
 } from '@heroui/react';
 import {
-  EyeIcon,
-  XIcon,
-  AcceptIcon,
-  ChevronUpIcon,
-  ChevronDownIcon,
-  ChevronRightIcon,
+  EyeIcon, XIcon, AcceptIcon, ChevronUpIcon, ChevronDownIcon, ChevronRightIcon,
 } from '@/components/icons';
 
 const statusColorMap = {
   Pending: 'default',
+  Waiting: 'warning',
   'In Flight': 'primary',
   Completed: 'success',
   Rejected: 'danger',
+} as const;
+
+const statusTooltipMap = {
+  Pending: 'Customer awaiting confirmation.',
+  Waiting: 'Package waiting for drone loading.',
+  'In Flight': 'Order is on its way.',
+  Completed: 'Order successfully completed.',
+  Rejected: 'Order rejected by supplier.',
 } as const;
 
 type OrderStatus = keyof typeof statusColorMap;
@@ -37,12 +34,19 @@ type Order = {
   status: OrderStatus;
 };
 
-const initialOrders: Order[] = [
-  { id: '1', date: '2025-06-19', clientName: 'Alice Smith', pickupLocation: 'Warehouse A', deliveryLocation: '123 Main St', droneModel: 'DJI Phantom 4', status: 'Pending' },
-  { id: '2', date: '2025-06-18', clientName: 'Bob Johnson', pickupLocation: 'Warehouse B', deliveryLocation: '456 Oak Ave', droneModel: 'Parrot Anafi', status: 'In Flight' },
-  { id: '3', date: '2025-06-17', clientName: 'Carol Lee', pickupLocation: 'Warehouse C', deliveryLocation: '789 Pine Rd', droneModel: 'DJI Mavic Air', status: 'Completed' },
-  { id: '4', date: '2025-06-16', clientName: 'David Kim', pickupLocation: 'Warehouse D', deliveryLocation: '321 Maple Ln', droneModel: 'Autel Evo II', status: 'Rejected' },
-];
+const initialOrders: Order[] = Array.from({ length: 20 }).map((_, i) => {
+  const statuses: OrderStatus[] = ['Pending', 'Waiting', 'In Flight', 'Completed', 'Rejected'];
+  const status = statuses[i % statuses.length];
+  return {
+    id: String(i + 1),
+    date: `2025-06-${(20 - i).toString().padStart(2, '0')}`,
+    clientName: `Client ${i + 1}`,
+    pickupLocation: `Warehouse ${String.fromCharCode(65 + (i % 5))}`,
+    deliveryLocation: `${100 + i} Example St`,
+    droneModel: ['DJI Phantom 4', 'Parrot Anafi', 'DJI Mavic Air', 'Autel Evo II'][i % 4],
+    status,
+  };
+});
 
 const OrdersHistoryTable: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>(initialOrders);
@@ -73,11 +77,14 @@ const OrdersHistoryTable: React.FC = () => {
   const onReject = (id: string) => alert(`Rejected ${id}`);
   const onView = (id: string) => alert(`Viewing ${id}`);
 
+  const tableLeftPadding = '1rem';
+  const tableRightPadding = '3rem';
+
   const headerCell = (label: string, key: keyof Order, align?: 'start' | 'center' | 'end') => (
     <TableColumn
       align={align}
       onClick={() => handleSort(key)}
-      style={{ cursor: 'pointer' }}
+      style={{ cursor: 'pointer', paddingLeft: tableLeftPadding, paddingRight: tableRightPadding }}
     >
       <div className="inline-flex items-center gap-1">
         <span>{label}</span>
@@ -91,11 +98,11 @@ const OrdersHistoryTable: React.FC = () => {
       <TableHeader>
         {headerCell('Date', 'date')}
         {headerCell('Client', 'clientName')}
-        <TableColumn>Pickup</TableColumn>
-        <TableColumn>Delivery</TableColumn>
-        <TableColumn>Drone Model</TableColumn>
-        <TableColumn>Status</TableColumn>
-        <TableColumn>Actions</TableColumn>
+        <TableColumn style={{ paddingLeft: tableLeftPadding, paddingRight: tableRightPadding }}>Pickup</TableColumn>
+        <TableColumn style={{ paddingLeft: tableLeftPadding, paddingRight: tableRightPadding }}>Delivery</TableColumn>
+        <TableColumn style={{ paddingLeft: tableLeftPadding, paddingRight: tableRightPadding }}>Drone Model</TableColumn>
+        {headerCell('Status', 'status')}
+        <TableColumn style={{ paddingLeft: tableLeftPadding, paddingRight: tableRightPadding }}>Actions</TableColumn>
       </TableHeader>
 
       <TableBody>
@@ -107,7 +114,11 @@ const OrdersHistoryTable: React.FC = () => {
             <TableCell>{o.deliveryLocation}</TableCell>
             <TableCell>{o.droneModel}</TableCell>
             <TableCell>
-              <Chip size="sm" variant="flat" color={statusColorMap[o.status]}> {o.status}</Chip>
+              <Tooltip content={statusTooltipMap[o.status]}>
+                <Chip size="sm" variant="flat" color={statusColorMap[o.status]}>
+                  {o.status}
+                </Chip>
+              </Tooltip>
             </TableCell>
             <TableCell align="right">
               <div className="flex items-center justify-end gap-2">
