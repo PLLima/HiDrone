@@ -26,13 +26,10 @@ export function SetPath({
   selectedDroneId: number | null;
   setDistanceCost: (cost: number) => void;
 }) {
-
-
   const [pickup, setPickup] = useState("");
   const [delivery, setDelivery] = useState("");
   const [cityKey, setCityKey] = useState<string | null>(null);
   const [cityInputValue, setCityInputValue] = useState("");
-
 
   const handleGoToPayment = () => {
     if (selectedDroneId === null) {
@@ -51,16 +48,15 @@ export function SetPath({
     goToPayment();
   };
 
-  const filteredCities = cities.filter((city =>
+  const filteredCities = cities.filter((city) =>
     city.label.toLowerCase().includes(cityInputValue.toLowerCase())
-  ));
-
-
+  );
 
   return (
     <div className="flex flex-col items-center justify-center gap-6 w-full max-w-screen-2xl mx-auto">
-      <h2 className="text-2xl font-bold text-center">Choose Delivery Location</h2>
-
+      <h2 className="text-2xl font-bold text-center">
+        Choose Delivery Location
+      </h2>
 
       {/* <Autocomplete
         className="max-w-xs"
@@ -87,10 +83,24 @@ export function SetPath({
 
       </Autocomplete> */}
 
-      <Input name="pickupAddress" label="Pickup Address" value={pickup} onValueChange={setPickup}></Input>
-      <Input name="deliveryAddress" label="Delivery Address" value={delivery} onValueChange={setDelivery}></Input>
+      <Input
+        name="pickupAddress"
+        label="Pickup Address"
+        value={pickup}
+        onValueChange={setPickup}
+      ></Input>
+      <Input
+        name="deliveryAddress"
+        label="Delivery Address"
+        value={delivery}
+        onValueChange={setDelivery}
+      ></Input>
 
-      <Button color="primary" className="w-full max-w-xs" onPress={handleGoToPayment}>
+      <Button
+        color="primary"
+        className="w-full max-w-xs"
+        onPress={handleGoToPayment}
+      >
         Go to Payment
       </Button>
     </div>

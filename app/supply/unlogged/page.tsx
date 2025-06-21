@@ -7,8 +7,16 @@ import { SignUpModal } from "@/components/signup";
 import React, { useEffect, useState } from "react";
 
 export default function SupplyPage() {
-  const { isOpen: isOpenLogin, onOpen: onOpenLogin, onClose: onCloseLogin } = useDisclosure();
-  const { isOpen: isOpenSignup, onOpen: onOpenSignup, onClose: onCloseSignup } = useDisclosure();
+  const {
+    isOpen: isOpenLogin,
+    onOpen: onOpenLogin,
+    onClose: onCloseLogin,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenSignup,
+    onOpen: onOpenSignup,
+    onClose: onCloseSignup,
+  } = useDisclosure();
 
   const [loggedName, setLoggedName] = useState<string | null>(null);
   const [enterpriseName, setEnterpriseName] = useState<string | null>(null);
@@ -53,7 +61,8 @@ export default function SupplyPage() {
     // If both are not null, show the information
     return (
       <span className={subtitle({})}>
-        Welcome, {loggedName}! You are managing the supply chain of {enterpriseName}.
+        Welcome, {loggedName}! You are managing the supply chain of{" "}
+        {enterpriseName}.
       </span>
     );
   };

@@ -1,5 +1,5 @@
 "use server";
-import prisma from '../../lib/prisma';
+import prisma from "../../lib/prisma";
 
 export type DroneInstanceData = {
   id: number;
@@ -27,22 +27,22 @@ export type DroneFilters = {
 export async function getDrones() {
   const drones = await (prisma as any).droneInstance.findMany({
     include: {
-        model: {
-            select: {
-                model: true,
-                image: true,
-                size: true,
-                composition: true,
-                weight: true,
-                capacityWeight: true,
-                capacityVolume: true
-            }
+      model: {
+        select: {
+          model: true,
+          image: true,
+          size: true,
+          composition: true,
+          weight: true,
+          capacityWeight: true,
+          capacityVolume: true,
         },
-        supplier: {
-            select: {
-                name: true
-            }
-        }
+      },
+      supplier: {
+        select: {
+          name: true,
+        },
+      },
     },
   });
   return JSON.parse(JSON.stringify(drones));
@@ -51,8 +51,8 @@ export async function getDrones() {
 export async function filterDrones(filters: DroneFilters) {
   const drones = await (prisma as any).droneInstance.findMany({
     include: {
-        droneModelId: true,
-        supplierId: true
+      droneModelId: true,
+      supplierId: true,
     },
     where: {
       city: filters.city,

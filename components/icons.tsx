@@ -3,19 +3,20 @@ import * as React from "react";
 import { IconSvgProps } from "@/types";
 
 export const ChevronRightIcon = (props: IconSvgProps) => (
-    <svg 
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      width={props.size || props.width || 24}
-      height={props.size || props.height || 24}
-    {...props}>
-      <polyline points="8 5 16 12 8 19" />
-    </svg>
-  );
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    width={props.size || props.width || 24}
+    height={props.size || props.height || 24}
+    {...props}
+  >
+    <polyline points="8 5 16 12 8 19" />
+  </svg>
+);
 
 export const ChevronUpIcon: React.FC<IconSvgProps> = (props) => (
   <svg
@@ -49,8 +50,9 @@ export const ChevronDownIcon: React.FC<IconSvgProps> = (props) => (
   </svg>
 );
 
-
-export const EyeIcon = (props: React.JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>) => {
+export const EyeIcon = (
+  props: React.JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>
+) => {
   return (
     <svg
       aria-hidden="true"
@@ -132,34 +134,38 @@ export const Logo: React.FC<IconSvgProps> = ({
     width={size || width}
     {...props}
   >
-    <path      
+    <path
       clipRule="evenodd"
       fill="currentColor"
-      fillRule="evenodd" 
-      d="M7,12a5,5,0,1,1,5-5H10a3,3,0,1,0-3,3Z"/>
-    <path       
+      fillRule="evenodd"
+      d="M7,12a5,5,0,1,1,5-5H10a3,3,0,1,0-3,3Z"
+    />
+    <path
       clipRule="evenodd"
       fill="currentColor"
-      fillRule="evenodd" 
-      d="M25,12V10a3,3,0,1,0-3-3H20a5,5,0,1,1,5,5Z"/>
-    <path       
+      fillRule="evenodd"
+      d="M25,12V10a3,3,0,1,0-3-3H20a5,5,0,1,1,5,5Z"
+    />
+    <path
       clipRule="evenodd"
       fill="currentColor"
-      fillRule="evenodd" 
-      d="M7,30A5,5,0,0,1,7,20v2a3,3,0,1,0,3,3h2A5.0055,5.0055,0,0,1,7,30Z"/>
-    <path       
+      fillRule="evenodd"
+      d="M7,30A5,5,0,0,1,7,20v2a3,3,0,1,0,3,3h2A5.0055,5.0055,0,0,1,7,30Z"
+    />
+    <path
       clipRule="evenodd"
       fill="currentColor"
-      fillRule="evenodd" 
-      d="M25,30a5.0055,5.0055,0,0,1-5-5h2a3,3,0,1,0,3-3V20a5,5,0,0,1,0,10Z"/>
-    <path       
+      fillRule="evenodd"
+      d="M25,30a5.0055,5.0055,0,0,1-5-5h2a3,3,0,1,0,3-3V20a5,5,0,0,1,0,10Z"
+    />
+    <path
       clipRule="evenodd"
       fill="currentColor"
-      fillRule="evenodd" 
-      d="M20,18.5859V13.4141L25.707,7.707a1,1,0,1,0-1.414-1.414l-4.4995,4.5a3.9729,3.9729,0,0,0-7.587,0L7.707,6.293a.9994.9994,0,0,0-1.414,0h0a.9994.9994,0,0,0,0,1.414L12,13.4141v5.1718L6.293,24.293a.9994.9994,0,0,0,0,1.414h0a.9994.9994,0,0,0,1.414,0l4.5-4.5a3.9729,3.9729,0,0,0,7.587,0l4.4995,4.5a1,1,0,0,0,1.414-1.414ZM18,20a2,2,0,0,1-4,0V12a2,2,0,0,1,4,0Z"/>
+      fillRule="evenodd"
+      d="M20,18.5859V13.4141L25.707,7.707a1,1,0,1,0-1.414-1.414l-4.4995,4.5a3.9729,3.9729,0,0,0-7.587,0L7.707,6.293a.9994.9994,0,0,0-1.414,0h0a.9994.9994,0,0,0,0,1.414L12,13.4141v5.1718L6.293,24.293a.9994.9994,0,0,0,0,1.414h0a.9994.9994,0,0,0,1.414,0l4.5-4.5a3.9729,3.9729,0,0,0,7.587,0l4.4995,4.5a1,1,0,0,0,1.414-1.414ZM18,20a2,2,0,0,1-4,0V12a2,2,0,0,1,4,0Z"
+    />
   </svg>
 );
-
 
 export const GithubIcon: React.FC<IconSvgProps> = ({
   size = 24,
@@ -294,11 +300,11 @@ export const PlusIcon: React.FC<IconSvgProps> = ({
     width={size || width}
     {...props}
   >
-  <path      
-    clipRule="evenodd"
-    fill="Gray"
-    fillRule="evenodd" 
-    d="M15,3C8.373,3,3,8.373,3,15c0,6.627,5.373,12,12,12s12-5.373,12-12C27,8.373,21.627,3,15,3z M21,16h-5v5 c0,0.553-0.448,1-1,1s-1-0.447-1-1v-5H9c-0.552,0-1-0.447-1-1s0.448-1,1-1h5V9c0-0.553,0.448-1,1-1s1,0.447,1,1v5h5 c0.552,0,1,0.447,1,1S21.552,16,21,16z"
+    <path
+      clipRule="evenodd"
+      fill="Gray"
+      fillRule="evenodd"
+      d="M15,3C8.373,3,3,8.373,3,15c0,6.627,5.373,12,12,12s12-5.373,12-12C27,8.373,21.627,3,15,3z M21,16h-5v5 c0,0.553-0.448,1-1,1s-1-0.447-1-1v-5H9c-0.552,0-1-0.447-1-1s0.448-1,1-1h5V9c0-0.553,0.448-1,1-1s1,0.447,1,1v5h5 c0.552,0,1,0.447,1,1S21.552,16,21,16z"
     />
   </svg>
-)
+);

@@ -9,7 +9,11 @@ import {
   ModalFooter,
 } from "@heroui/react";
 import { Form, Input, Button, Checkbox } from "@heroui/react";
-import { ClientData, registerClient, registerSupplier } from "@/app/server/user";
+import {
+  ClientData,
+  registerClient,
+  registerSupplier,
+} from "@/app/server/user";
 import { hash } from "bcryptjs";
 import { Tabs, Tab } from "@heroui/react";
 import { get } from "http";
@@ -33,21 +37,33 @@ const ClientForm = ({
   isLoading: boolean;
   onClose: () => void;
   clearVariables: () => void;
-  onSubmit: (data: { name: string; email: string; password: string }) => Promise<void>;
+  onSubmit: (data: {
+    name: string;
+    email: string;
+    password: string;
+  }) => Promise<void>;
 }) => {
   const [password, setPassword] = React.useState("");
   const [repeatPassword, setRepeatPassword] = React.useState("");
-  const [touched, setTouched] = React.useState({ password: false, repeat_password: false });
+  const [touched, setTouched] = React.useState({
+    password: false,
+    repeat_password: false,
+  });
   const [errors, setErrors] = React.useState<{ password?: string }>({});
 
   const getPasswordError = (value: string): string | null => {
     if (value.length < 4) return "Password must be 4 characters or more";
-    if ((value.match(/[A-Z]/g) || []).length < 1) return "Password needs at least 1 uppercase letter";
-    if ((value.match(/[^a-z]/gi) || []).length < 1) return "Password needs at least 1 symbol";
+    if ((value.match(/[A-Z]/g) || []).length < 1)
+      return "Password needs at least 1 uppercase letter";
+    if ((value.match(/[^a-z]/gi) || []).length < 1)
+      return "Password needs at least 1 symbol";
     return null;
   };
 
-  const getRepeatPasswordError = (value1: string, value2: string): string | null => {
+  const getRepeatPasswordError = (
+    value1: string,
+    value2: string
+  ): string | null => {
     return value1 !== value2 ? "Passwords do not match" : null;
   };
 
@@ -59,7 +75,9 @@ const ClientForm = ({
     const newErrors: { password?: string } = {};
     const passwordError = getPasswordError(password);
     if (passwordError) newErrors.password = passwordError;
-    if (getRepeatPasswordError(password, repeatPassword)) newErrors.password = getRepeatPasswordError(password, repeatPassword) || "";
+    if (getRepeatPasswordError(password, repeatPassword))
+      newErrors.password =
+        getRepeatPasswordError(password, repeatPassword) || "";
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
       await onSubmit({ name, email, password });
@@ -67,7 +85,12 @@ const ClientForm = ({
   };
 
   return (
-    <Form className="w-full space-y-4" onSubmit={handleSubmit} validationErrors={errors} autoComplete="on">
+    <Form
+      className="w-full space-y-4"
+      onSubmit={handleSubmit}
+      validationErrors={errors}
+      autoComplete="on"
+    >
       <div className="flex flex-col gap-4 max-w-md">
         <Input isRequired label="Name" name="name" />
         <Input isRequired label="Email" name="email" type="email" />
@@ -89,8 +112,15 @@ const ClientForm = ({
 
         <Input
           isRequired
-          errorMessage={touched.repeat_password ? getRepeatPasswordError(password, repeatPassword) : null}
-          isInvalid={touched.repeat_password && getRepeatPasswordError(password, repeatPassword) !== null}
+          errorMessage={
+            touched.repeat_password
+              ? getRepeatPasswordError(password, repeatPassword)
+              : null
+          }
+          isInvalid={
+            touched.repeat_password &&
+            getRepeatPasswordError(password, repeatPassword) !== null
+          }
           label="Repeat password"
           type="password"
           autoComplete="new-password"
@@ -102,7 +132,18 @@ const ClientForm = ({
         />
 
         <div className="flex w-full gap-1">
-          <Button type="button" className="w-1/3" onPress={() => { clearVariables(); onClose(); }} color="danger" variant="light">Cancel</Button>
+          <Button
+            type="button"
+            className="w-1/3"
+            onPress={() => {
+              clearVariables();
+              onClose();
+            }}
+            color="danger"
+            variant="light"
+          >
+            Cancel
+          </Button>
           <Button
             type="submit"
             className="flex-1"
@@ -130,12 +171,27 @@ const SupplierForm = ({
   isLoading: boolean;
   onClose: () => void;
   clearVariables: () => void;
-  onSubmit: (data: { name: string; email: string; password: string; enterpriseName: string; cnpj: string }) => Promise<void>;
+  onSubmit: (data: {
+    name: string;
+    email: string;
+    password: string;
+    enterpriseName: string;
+    cnpj: string;
+  }) => Promise<void>;
 }) => {
   const [password, setPassword] = React.useState("");
   const [repeatPassword, setRepeatPassword] = React.useState("");
-  const [touched, setTouched] = React.useState({enterpriseName: false, password: false, repeat_password: false, cnpj: false});
-  const [errors, setErrors] = React.useState<{ password?: string; enterpriseName?: string; cnpj?: string }>({});
+  const [touched, setTouched] = React.useState({
+    enterpriseName: false,
+    password: false,
+    repeat_password: false,
+    cnpj: false,
+  });
+  const [errors, setErrors] = React.useState<{
+    password?: string;
+    enterpriseName?: string;
+    cnpj?: string;
+  }>({});
   const [registerEnterprise, setRegisterEnterprise] = React.useState(false);
   const [cnpj, setCnpj] = React.useState("");
   const [enterpriseName, setEnterpriseName] = React.useState("");
@@ -143,23 +199,28 @@ const SupplierForm = ({
   const getEnterpriseNameError = (value: string): string | null => {
     if (!value) return "Please enter your enterprise name";
     return null;
-  }
+  };
 
   const getPasswordError = (value: string): string | null => {
     if (value.length < 4) return "Password must be 4 characters or more";
-    if ((value.match(/[A-Z]/g) || []).length < 1) return "Password needs at least 1 uppercase letter";
-    if ((value.match(/[^a-z]/gi) || []).length < 1) return "Password needs at least 1 symbol";
+    if ((value.match(/[A-Z]/g) || []).length < 1)
+      return "Password needs at least 1 uppercase letter";
+    if ((value.match(/[^a-z]/gi) || []).length < 1)
+      return "Password needs at least 1 symbol";
     return null;
   };
 
-  const getRepeatPasswordError = (value1: string, value2: string): string | null => {
+  const getRepeatPasswordError = (
+    value1: string,
+    value2: string
+  ): string | null => {
     return value1 !== value2 ? "Passwords do not match" : null;
   };
 
   const getCnpjError = (value: string): string | null => {
     if (!value.replace(/\D/g, "")) return "Please enter your CNPJ";
     return null;
-  }
+  };
 
   const formatCnpj = (value: string): string => {
     const numericValue = value.replace(/\D/g, "");
@@ -176,11 +237,18 @@ const SupplierForm = ({
     const formData = new FormData(e.currentTarget);
     const name = formData.get("name") as string;
     const email = formData.get("email") as string;
-    const newErrors: { password?: string; enterpriseName?: string; cnpj?: string } = {};
+    const newErrors: {
+      password?: string;
+      enterpriseName?: string;
+      cnpj?: string;
+    } = {};
     const passwordError = getPasswordError(password);
     if (passwordError) newErrors.password = passwordError;
-    if (getRepeatPasswordError(password, repeatPassword)) newErrors.password = getRepeatPasswordError(password, repeatPassword) || "";
-    if (getEnterpriseNameError(enterpriseName)) newErrors.enterpriseName = getEnterpriseNameError(enterpriseName) || "";
+    if (getRepeatPasswordError(password, repeatPassword))
+      newErrors.password =
+        getRepeatPasswordError(password, repeatPassword) || "";
+    if (getEnterpriseNameError(enterpriseName))
+      newErrors.enterpriseName = getEnterpriseNameError(enterpriseName) || "";
     if (getCnpjError(cnpj)) newErrors.cnpj = getCnpjError(cnpj) || "";
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
@@ -189,11 +257,20 @@ const SupplierForm = ({
   };
 
   return (
-    <Form className="w-full space-y-4" onSubmit={handleSubmit} validationErrors={errors} autoComplete="on">
+    <Form
+      className="w-full space-y-4"
+      onSubmit={handleSubmit}
+      validationErrors={errors}
+      autoComplete="on"
+    >
       <div className="flex flex-col gap-4 max-w-md">
         <Input
           isRequired
-          errorMessage={touched.enterpriseName ? getEnterpriseNameError(enterpriseName) : null}
+          errorMessage={
+            touched.enterpriseName
+              ? getEnterpriseNameError(enterpriseName)
+              : null
+          }
           label="Enterprise Name"
           name="enterpriseName"
           type="text"
@@ -224,8 +301,15 @@ const SupplierForm = ({
 
         <Input
           isRequired
-          errorMessage={touched.repeat_password ? getRepeatPasswordError(password, repeatPassword) : null}
-          isInvalid={touched.repeat_password && getRepeatPasswordError(password, repeatPassword) !== null}
+          errorMessage={
+            touched.repeat_password
+              ? getRepeatPasswordError(password, repeatPassword)
+              : null
+          }
+          isInvalid={
+            touched.repeat_password &&
+            getRepeatPasswordError(password, repeatPassword) !== null
+          }
           label="Repeat password"
           type="password"
           autoComplete="new-password"
@@ -251,7 +335,18 @@ const SupplierForm = ({
         />
 
         <div className="flex w-full gap-1">
-          <Button type="button" className="w-1/3" onPress={() => { clearVariables(); onClose(); }} color="danger" variant="light">Cancel</Button>
+          <Button
+            type="button"
+            className="w-1/3"
+            onPress={() => {
+              clearVariables();
+              onClose();
+            }}
+            color="danger"
+            variant="light"
+          >
+            Cancel
+          </Button>
           <Button
             type="submit"
             className="flex-1"
@@ -272,7 +367,13 @@ const SupplierForm = ({
 
 // --- Main Modal Component ---
 
-export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+export const SignUpModal = ({
+  isOpen,
+  onClose,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+}) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [submitted, setSubmitted] = React.useState<any>(null);
   const [errors, setErrors] = React.useState<Errors>({});
@@ -284,10 +385,15 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
   };
 
   // Handler for client form submission
-  const handleClientSubmit = async (data: { name: string; email: string; password: string }) => {
+  const handleClientSubmit = async (data: {
+    name: string;
+    email: string;
+    password: string;
+  }) => {
     setIsLoading(true);
     setErrors({});
-    const passwordError = data.password.length < 4 ? "Password must be 4 characters or more" : null;
+    const passwordError =
+      data.password.length < 4 ? "Password must be 4 characters or more" : null;
     if (passwordError) {
       setErrors({ password: passwordError });
       setIsLoading(false);
@@ -315,14 +421,24 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
   };
 
   // Handler for supplier form submission
-  const handleSupplierSubmit = async (data: { name: string; email: string; password: string; enterpriseName: string; cnpj: string }) => {
+  const handleSupplierSubmit = async (data: {
+    name: string;
+    email: string;
+    password: string;
+    enterpriseName: string;
+    cnpj: string;
+  }) => {
     setIsLoading(true);
     setErrors({});
-    const passwordError = data.password.length < 4 ? "Password must be 4 characters or more" : null;
-    const cnpjError = !/^\d{14}$/.test(data.cnpj.replace(/\D/g, "")) ? "CNPJ must be 14 digits" : null;
+    const passwordError =
+      data.password.length < 4 ? "Password must be 4 characters or more" : null;
+    const cnpjError = !/^\d{14}$/.test(data.cnpj.replace(/\D/g, ""))
+      ? "CNPJ must be 14 digits"
+      : null;
     const newErrors: Errors = {};
     if (passwordError) newErrors.password = passwordError;
-    if (!data.enterpriseName) newErrors.enterpriseName = "Please enter your enterprise name";
+    if (!data.enterpriseName)
+      newErrors.enterpriseName = "Please enter your enterprise name";
     if (!data.cnpj) newErrors.cnpj = "Please enter your CNPJ";
     else if (cnpjError) newErrors.cnpj = cnpjError;
     if (Object.keys(newErrors).length > 0) {
@@ -356,10 +472,18 @@ export const SignUpModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () 
   };
 
   return (
-    <Modal isOpen={isOpen} onOpenChange={(isOpen) => !isOpen && onClose()} onClose={clearVariables} backdrop="blur" size="xs">
+    <Modal
+      isOpen={isOpen}
+      onOpenChange={(isOpen) => !isOpen && onClose()}
+      onClose={clearVariables}
+      backdrop="blur"
+      size="xs"
+    >
       <ModalContent className="px-4">
         <>
-          <ModalHeader className="text-4xl font-bold text-center">Sign Up</ModalHeader>
+          <ModalHeader className="text-4xl font-bold text-center">
+            Sign Up
+          </ModalHeader>
           <ModalBody>
             <div className="flex flex-col items-center w-full">
               <Tabs

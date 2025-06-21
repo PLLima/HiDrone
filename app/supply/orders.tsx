@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Table,
   TableHeader,
@@ -8,7 +8,7 @@ import {
   TableColumn,
   Chip,
   Tooltip,
-} from '@heroui/react';
+} from "@heroui/react";
 import {
   EyeIcon,
   XIcon,
@@ -16,13 +16,13 @@ import {
   ChevronUpIcon,
   ChevronDownIcon,
   ChevronRightIcon,
-} from '@/components/icons';
+} from "@/components/icons";
 
 const statusColorMap = {
-  Pending: 'default',
-  'In Flight': 'primary',
-  Completed: 'success',
-  Rejected: 'danger',
+  Pending: "default",
+  "In Flight": "primary",
+  Completed: "success",
+  Rejected: "danger",
 } as const;
 
 type OrderStatus = keyof typeof statusColorMap;
@@ -38,15 +38,47 @@ type Order = {
 };
 
 const initialOrders: Order[] = [
-  { id: '1', date: '2025-06-19', clientName: 'Alice Smith', pickupLocation: 'Warehouse A', deliveryLocation: '123 Main St', droneModel: 'DJI Phantom 4', status: 'Pending' },
-  { id: '2', date: '2025-06-18', clientName: 'Bob Johnson', pickupLocation: 'Warehouse B', deliveryLocation: '456 Oak Ave', droneModel: 'Parrot Anafi', status: 'In Flight' },
-  { id: '3', date: '2025-06-17', clientName: 'Carol Lee', pickupLocation: 'Warehouse C', deliveryLocation: '789 Pine Rd', droneModel: 'DJI Mavic Air', status: 'Completed' },
-  { id: '4', date: '2025-06-16', clientName: 'David Kim', pickupLocation: 'Warehouse D', deliveryLocation: '321 Maple Ln', droneModel: 'Autel Evo II', status: 'Rejected' },
+  {
+    id: "1",
+    date: "2025-06-19",
+    clientName: "Alice Smith",
+    pickupLocation: "Warehouse A",
+    deliveryLocation: "123 Main St",
+    droneModel: "DJI Phantom 4",
+    status: "Pending",
+  },
+  {
+    id: "2",
+    date: "2025-06-18",
+    clientName: "Bob Johnson",
+    pickupLocation: "Warehouse B",
+    deliveryLocation: "456 Oak Ave",
+    droneModel: "Parrot Anafi",
+    status: "In Flight",
+  },
+  {
+    id: "3",
+    date: "2025-06-17",
+    clientName: "Carol Lee",
+    pickupLocation: "Warehouse C",
+    deliveryLocation: "789 Pine Rd",
+    droneModel: "DJI Mavic Air",
+    status: "Completed",
+  },
+  {
+    id: "4",
+    date: "2025-06-16",
+    clientName: "David Kim",
+    pickupLocation: "Warehouse D",
+    deliveryLocation: "321 Maple Ln",
+    droneModel: "Autel Evo II",
+    status: "Rejected",
+  },
 ];
 
 const OrdersHistoryTable: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>(initialOrders);
-  const [sortKey, setSortKey] = useState<keyof Order>('date');
+  const [sortKey, setSortKey] = useState<keyof Order>("date");
   const [ascending, setAscending] = useState<boolean>(false);
 
   const handleSort = (key: keyof Order) => {
@@ -64,7 +96,11 @@ const OrdersHistoryTable: React.FC = () => {
 
   const renderSortIcon = (key: keyof Order) => {
     if (sortKey === key) {
-      return ascending ? <ChevronUpIcon size={16} /> : <ChevronDownIcon size={16} />;
+      return ascending ? (
+        <ChevronUpIcon size={16} />
+      ) : (
+        <ChevronDownIcon size={16} />
+      );
     }
     return <ChevronRightIcon size={13} />;
   };
@@ -73,11 +109,15 @@ const OrdersHistoryTable: React.FC = () => {
   const onReject = (id: string) => alert(`Rejected ${id}`);
   const onView = (id: string) => alert(`Viewing ${id}`);
 
-  const headerCell = (label: string, key: keyof Order, align?: 'start' | 'center' | 'end') => (
+  const headerCell = (
+    label: string,
+    key: keyof Order,
+    align?: "start" | "center" | "end"
+  ) => (
     <TableColumn
       align={align}
       onClick={() => handleSort(key)}
-      style={{ cursor: 'pointer' }}
+      style={{ cursor: "pointer" }}
     >
       <div className="inline-flex items-center gap-1">
         <span>{label}</span>
@@ -89,8 +129,8 @@ const OrdersHistoryTable: React.FC = () => {
   return (
     <Table aria-label="Orders History" isHeaderSticky>
       <TableHeader>
-        {headerCell('Date', 'date')}
-        {headerCell('Client', 'clientName')}
+        {headerCell("Date", "date")}
+        {headerCell("Client", "clientName")}
         <TableColumn>Pickup</TableColumn>
         <TableColumn>Delivery</TableColumn>
         <TableColumn>Drone Model</TableColumn>
@@ -107,7 +147,10 @@ const OrdersHistoryTable: React.FC = () => {
             <TableCell>{o.deliveryLocation}</TableCell>
             <TableCell>{o.droneModel}</TableCell>
             <TableCell>
-              <Chip size="sm" variant="flat" color={statusColorMap[o.status]}> {o.status}</Chip>
+              <Chip size="sm" variant="flat" color={statusColorMap[o.status]}>
+                {" "}
+                {o.status}
+              </Chip>
             </TableCell>
             <TableCell align="right">
               <div className="flex items-center justify-end gap-2">
@@ -117,12 +160,18 @@ const OrdersHistoryTable: React.FC = () => {
                   </span>
                 </Tooltip>
                 <Tooltip content="Accept" color="success">
-                  <span className="cursor-pointer text-success" onClick={() => onAccept(o.id)}>
+                  <span
+                    className="cursor-pointer text-success"
+                    onClick={() => onAccept(o.id)}
+                  >
                     <AcceptIcon size={20} />
                   </span>
                 </Tooltip>
                 <Tooltip content="Reject" color="danger">
-                  <span className="cursor-pointer text-danger" onClick={() => onReject(o.id)}>
+                  <span
+                    className="cursor-pointer text-danger"
+                    onClick={() => onReject(o.id)}
+                  >
                     <XIcon size={20} />
                   </span>
                 </Tooltip>

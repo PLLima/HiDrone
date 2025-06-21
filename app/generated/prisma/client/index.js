@@ -213,6 +213,7 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -223,7 +224,7 @@ const config = {
   },
   "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../app/generated/prisma/client\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Client {\n  credits  Decimal\n  email    String  @unique\n  id       Int     @id @default(autoincrement())\n  name     String\n  password String\n  Order    Order[]\n\n  @@map(\"clients\")\n}\n\nmodel Supplier {\n  cnpj          String          @unique\n  email         String          @unique\n  id            Int             @id @default(autoincrement())\n  name          String\n  password      String\n  credits       Decimal\n  DroneInstance DroneInstance[]\n\n  @@map(\"suppliers\")\n}\n\nmodel Order {\n  id               Int            @id @default(autoincrement())\n  number           Int\n  clientId         Int\n  status           String\n  createdAt        DateTime\n  updatedAt        DateTime\n  price            Decimal\n  pickupLocation   Json\n  deliveryLocation Json\n  droneInstanceId  Int?\n  client           Client         @relation(fields: [clientId], references: [id], onDelete: Cascade)\n  droneInstance    DroneInstance? @relation(fields: [droneInstanceId], references: [id])\n\n  @@map(\"orders\")\n}\n\nmodel DroneInstance {\n  id         Int        @id @default(autoincrement())\n  region     Json\n  supplierId Int\n  modelId    Int\n  model      DroneModel @relation(fields: [modelId], references: [id], onDelete: Cascade)\n  supplier   Supplier   @relation(fields: [supplierId], references: [id], onDelete: Cascade)\n  Order      Order[]\n\n  @@map(\"drone_instances\")\n}\n\nmodel DroneModel {\n  id             Int             @id @default(autoincrement())\n  model          String\n  weight         Decimal\n  size           String\n  composition    String\n  image          String?\n  capacityVolume Decimal\n  capacityWeight Decimal\n  DroneInstance  DroneInstance[]\n\n  @@map(\"drone_models\")\n}\n",
   "inlineSchemaHash": "ce1c055eac80eeb89e83800570a432def7e09c3e6b4affd5dcdfbf0b5ac55503",
-  "copyEngine": false
+  "copyEngine": true
 }
 
 const fs = require('fs')
@@ -260,3 +261,9 @@ const PrismaClient = getPrismaClient(config)
 exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
 
+// file annotations for bundling tools to include these files
+path.join(__dirname, "libquery_engine-debian-openssl-1.1.x.so.node");
+path.join(process.cwd(), "app/generated/prisma/client/libquery_engine-debian-openssl-1.1.x.so.node")
+// file annotations for bundling tools to include these files
+path.join(__dirname, "schema.prisma");
+path.join(process.cwd(), "app/generated/prisma/client/schema.prisma")
