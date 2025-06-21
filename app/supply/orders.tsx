@@ -136,12 +136,3 @@ const OrdersHistoryTable: React.FC = () => {
 };
 
 export default OrdersHistoryTable;
-
-/*
-  Don't forget to add `ChevronRightIcon` in src/components/icons.tsx:
-  export const ChevronRightIcon = (props: IconSvgProps) => (
-    <svg ...>
-      <polyline points="8 5 16 12 8 19" />
-    </svg>
-  );
-*/
