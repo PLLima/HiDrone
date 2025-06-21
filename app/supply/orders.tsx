@@ -81,8 +81,34 @@ const OrdersHistoryTable: React.FC = () => {
   const onReject = (id: string) => alert(`Rejected ${id}`);
   const onView = (id: string) => alert(`Viewing ${id}`);
 
+  const viewerRole = 'supplier' as 'client' | 'supplier';
   const tableLeftPadding = '1rem';
   const tableRightPadding = '3rem';
+
+
+  const canAccept = (order: Order): boolean => {
+    if (order.status === 'Pending') return viewerRole === 'supplier';
+    if (order.status === 'Waiting') return true;
+    if (order.status === 'In Flight') return viewerRole === 'client';
+    return false;
+  };
+
+  const canReject = (order: Order) : boolean => {
+    return order.status === 'Pending' && viewerRole === 'supplier';
+  };
+
+  const getAcceptTooltip = (order: Order): string => {
+    switch (order.status) {
+      case 'Pending':
+        return 'Accept request';
+      case 'Waiting':
+        return 'Confirm drone received package';
+      case 'In Flight':
+        return 'Confirm receipt';
+      default:
+        return '';
+    }
+  };
 
   const headerCell = (label: string, key: keyof Order, align?: 'start' | 'center' | 'end') => (
     <TableColumn
@@ -124,31 +150,34 @@ const OrdersHistoryTable: React.FC = () => {
                 </Chip>
               </Tooltip>
             </TableCell>
+
             <TableCell align="right">
-              <div className="flex items-center justify-end gap-2">
+              <div className="flex items-center gap-2">
                 <Tooltip content="View">
                   <span className="cursor-pointer" onClick={() => onView(o.id)}>
                     <EyeIcon />
                   </span>
                 </Tooltip>
-                <Tooltip content="Accept" color="success">
-                  <span
-                    className="cursor-pointer text-success"
-                    onClick={() => onAccept(o.id)}
-                  >
-                    <AcceptIcon size={20} />
-                  </span>
-                </Tooltip>
-                <Tooltip content="Reject" color="danger">
-                  <span
-                    className="cursor-pointer text-danger"
-                    onClick={() => onReject(o.id)}
-                  >
-                    <XIcon size={20} />
-                  </span>
-                </Tooltip>
+
+                {canAccept(o) && (
+                  <Tooltip content={getAcceptTooltip(o)} color="success">
+                    <span className="cursor-pointer text-success" onClick={() => onAccept(o.id)}>
+                      <AcceptIcon size={20} />
+                    </span>
+                  </Tooltip>
+                )}
+
+                {canReject(o) && (
+                  <Tooltip content="Reject request" color="danger">
+                    <span className="cursor-pointer text-danger" onClick={() => onReject(o.id)}>
+                      <XIcon size={20} />
+                    </span>
+                  </Tooltip>
+                )}
               </div>
             </TableCell>
+
+
           </TableRow>
         ))}
       </TableBody>
