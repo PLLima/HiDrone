@@ -248,9 +248,7 @@ export function SearchDronesPage( { onDroneSelect }: { onDroneSelect: (id: numbe
                 selectedKey={filters.city}
                 onSelectionChange={(key) => handleFilterChange("city", key as string)}
               >
-                {cities.map((city) => (
-                  <AutocompleteItem key={city.key}>{city.label}</AutocompleteItem>
-                ))}
+                {cities.map((city) => (<AutocompleteItem key={city.key}>{city.label}</AutocompleteItem>))}
               </Autocomplete>
 
               {/* Material Filter */}
