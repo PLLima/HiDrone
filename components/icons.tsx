@@ -2,6 +2,123 @@ import * as React from "react";
 
 import { IconSvgProps } from "@/types";
 
+export const ChevronRightIcon = (props: IconSvgProps) => (
+    <svg 
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      width={props.size || props.width || 24}
+      height={props.size || props.height || 24}
+    {...props}>
+      <polyline points="8 5 16 12 8 19" />
+    </svg>
+  );
+
+export const ChevronUpIcon: React.FC<IconSvgProps> = (props) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    width={props.size || props.width || 24}
+    height={props.size || props.height || 24}
+    {...props}
+  >
+    <polyline points="18 15 12 9 6 15" />
+  </svg>
+);
+
+export const ChevronDownIcon: React.FC<IconSvgProps> = (props) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    width={props.size || props.width || 24}
+    height={props.size || props.height || 24}
+    {...props}
+  >
+    <polyline points="6 9 12 15 18 9" />
+  </svg>
+);
+
+
+export const EyeIcon = (props: React.JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>) => {
+  return (
+    <svg
+      aria-hidden="true"
+      fill="none"
+      focusable="false"
+      height="1em"
+      role="presentation"
+      viewBox="0 0 20 20"
+      width="1em"
+      {...props}
+    >
+      <path
+        d="M12.9833 10C12.9833 11.65 11.65 12.9833 10 12.9833C8.35 12.9833 7.01666 11.65 7.01666 10C7.01666 8.35 8.35 7.01666 10 7.01666C11.65 7.01666 12.9833 8.35 12.9833 10Z"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.5}
+      />
+      <path
+        d="M9.99999 16.8916C12.9417 16.8916 15.6833 15.1583 17.5917 12.1583C18.3417 10.9833 18.3417 9.00831 17.5917 7.83331C15.6833 4.83331 12.9417 3.09998 9.99999 3.09998C7.05833 3.09998 4.31666 4.83331 2.40833 7.83331C1.65833 9.00831 1.65833 10.9833 2.40833 12.1583C4.31666 15.1583 7.05833 16.8916 9.99999 16.8916Z"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.5}
+      />
+    </svg>
+  );
+};
+
+export const XIcon: React.FC<IconSvgProps> = (props) => (
+  <svg
+    aria-hidden="true"
+    fill="none"
+    focusable="false"
+    role="presentation"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={3}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    width={props.size || props.width || 24}
+    height={props.size || props.height || 24}
+    {...props}
+  >
+    <line x1="18" y1="6" x2="6" y2="18" />
+    <line x1="6" y1="6" x2="18" y2="18" />
+  </svg>
+);
+
+export const AcceptIcon: React.FC<IconSvgProps> = (props) => (
+  <svg
+    aria-hidden="true"
+    fill="none"
+    focusable="false"
+    role="presentation"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={3}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    width={props.size || props.width || 24}
+    height={props.size || props.height || 24}
+    {...props}
+  >
+    <polyline points="20 6 9 17 4 12" />
+  </svg>
+);
+
 export const Logo: React.FC<IconSvgProps> = ({
   size = 30,
   width,
