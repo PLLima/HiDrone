@@ -85,12 +85,12 @@ const OrdersHistoryTable: React.FC = () => {
                 </Tooltip>
                 <Tooltip content="Accept" color='success'>
                   <span className="cursor-pointer text-success active:opacity-50" onClick={() => onAccept(order.id)}>
-                    <AcceptIcon />
+                    <AcceptIcon size={20}/>
                   </span>
                 </Tooltip>
                 <Tooltip content="Reject" color="danger">
                   <span className="cursor-pointer text-danger active:opacity-50" onClick={() => onReject(order.id)}>
-                    <XIcon />
+                    <XIcon size={20}/>
                   </span>
                 </Tooltip>
               </div>

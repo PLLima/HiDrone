@@ -40,7 +40,7 @@ export const XIcon: React.FC<IconSvgProps> = (props) => (
     role="presentation"
     viewBox="0 0 24 24"
     stroke="currentColor"
-    strokeWidth={2}
+    strokeWidth={3}
     strokeLinecap="round"
     strokeLinejoin="round"
     width={props.size || props.width || 24}
@@ -60,7 +60,7 @@ export const AcceptIcon: React.FC<IconSvgProps> = (props) => (
     role="presentation"
     viewBox="0 0 24 24"
     stroke="currentColor"
-    strokeWidth={2}
+    strokeWidth={3}
     strokeLinecap="round"
     strokeLinejoin="round"
     width={props.size || props.width || 24}
