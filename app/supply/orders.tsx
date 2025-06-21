@@ -153,7 +153,7 @@ const OrdersHistoryTable: React.FC = () => {
 
             <TableCell align="right">
               <div className="flex items-center gap-2">
-                <Tooltip content="View">
+                <Tooltip content="Go to order page">
                   <span className="cursor-pointer" onClick={() => onView(o.id)}>
                     <EyeIcon />
                   </span>
