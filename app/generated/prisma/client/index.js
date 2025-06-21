@@ -35,12 +35,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.7.0
- * Query Engine version: 3cff47a7f5d65c3ea74883f1d736e41d68ce91ed
+ * Prisma Client JS version: 6.10.1
+ * Query Engine version: 9b628578b3b7cae625e8c927178f15a170e74a9c
  */
 Prisma.prismaVersion = {
-  client: "6.7.0",
-  engine: "3cff47a7f5d65c3ea74883f1d736e41d68ce91ed"
+  client: "6.10.1",
+  engine: "9b628578b3b7cae625e8c927178f15a170e74a9c"
 }
 
 Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError;
@@ -185,7 +185,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\joaog\\Documentos\\GitHub\\HiDrone-main\\app\\generated\\prisma\\client",
+      "value": "/home/pllima0909/Documents/Git/HiDrone/app/generated/prisma/client",
       "fromEnvVar": null
     },
     "config": {
@@ -194,25 +194,25 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "debian-openssl-1.1.x",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\joaog\\Documentos\\GitHub\\HiDrone-main\\prisma\\schema.prisma",
+    "sourceFilePath": "/home/pllima0909/Documents/Git/HiDrone/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null
+    "rootEnvPath": null,
+    "schemaEnvPath": "../../../../.env"
   },
   "relativePath": "../../../../prisma",
-  "clientVersion": "6.7.0",
-  "engineVersion": "3cff47a7f5d65c3ea74883f1d736e41d68ce91ed",
+  "clientVersion": "6.10.1",
+  "engineVersion": "9b628578b3b7cae625e8c927178f15a170e74a9c",
   "datasourceNames": [
     "db"
   ],
   "activeProvider": "postgresql",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -223,7 +223,7 @@ const config = {
   },
   "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../app/generated/prisma/client\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Client {\n  credits  Decimal\n  email    String  @unique\n  id       Int     @id @default(autoincrement())\n  name     String\n  password String\n  Order    Order[]\n\n  @@map(\"clients\")\n}\n\nmodel Supplier {\n  cnpj          String          @unique\n  email         String          @unique\n  id            Int             @id @default(autoincrement())\n  name          String\n  password      String\n  credits       Decimal\n  DroneInstance DroneInstance[]\n\n  @@map(\"suppliers\")\n}\n\nmodel Order {\n  id               Int            @id @default(autoincrement())\n  number           Int\n  clientId         Int\n  status           String\n  createdAt        DateTime\n  updatedAt        DateTime\n  price            Decimal\n  pickupLocation   Json\n  deliveryLocation Json\n  droneInstanceId  Int?\n  client           Client         @relation(fields: [clientId], references: [id], onDelete: Cascade)\n  droneInstance    DroneInstance? @relation(fields: [droneInstanceId], references: [id])\n\n  @@map(\"orders\")\n}\n\nmodel DroneInstance {\n  id         Int        @id @default(autoincrement())\n  region     Json\n  supplierId Int\n  modelId    Int\n  model      DroneModel @relation(fields: [modelId], references: [id], onDelete: Cascade)\n  supplier   Supplier   @relation(fields: [supplierId], references: [id], onDelete: Cascade)\n  Order      Order[]\n\n  @@map(\"drone_instances\")\n}\n\nmodel DroneModel {\n  id             Int             @id @default(autoincrement())\n  model          String\n  weight         Decimal\n  size           String\n  composition    String\n  image          String?\n  capacityVolume Decimal\n  capacityWeight Decimal\n  DroneInstance  DroneInstance[]\n\n  @@map(\"drone_models\")\n}\n",
   "inlineSchemaHash": "ce1c055eac80eeb89e83800570a432def7e09c3e6b4affd5dcdfbf0b5ac55503",
-  "copyEngine": true
+  "copyEngine": false
 }
 
 const fs = require('fs')
@@ -260,9 +260,3 @@ const PrismaClient = getPrismaClient(config)
 exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
 
-// file annotations for bundling tools to include these files
-path.join(__dirname, "query_engine-windows.dll.node");
-path.join(process.cwd(), "app/generated/prisma/client/query_engine-windows.dll.node")
-// file annotations for bundling tools to include these files
-path.join(__dirname, "schema.prisma");
-path.join(process.cwd(), "app/generated/prisma/client/schema.prisma")
