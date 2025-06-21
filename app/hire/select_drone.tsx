@@ -1,14 +1,32 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Modal, ModalContent, ModalHeader, ModalBody, Button, Image } from "@heroui/react";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  Button,
+  Image,
+} from "@heroui/react";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Accordion, AccordionItem } from "@heroui/react";
 import { Autocomplete, AutocompleteItem } from "@heroui/react";
-import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell } from "@heroui/table";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableColumn,
+  TableRow,
+  TableCell,
+} from "@heroui/table";
 import { Slider } from "@heroui/react";
 
-import { DroneFilters, DroneInstanceData, getDrones } from "@/app/server/supply";
+import {
+  DroneFilters,
+  DroneInstanceData,
+  getDrones,
+} from "@/app/server/supply";
 
 export const cities = [
   { label: "São Paulo", key: "sao_paulo" },
@@ -50,12 +68,18 @@ const mockDrones = Array.from({ length: 12 }, (_, index) => ({
 }));
 
 // Drone Card Component
-const DroneCard = ({ drone, onClick }: { drone: DroneInstanceData; onClick: (id: number) => void }) => {
+const DroneCard = ({
+  drone,
+  onClick,
+}: {
+  drone: DroneInstanceData;
+  onClick: (id: number) => void;
+}) => {
   return (
     <Card
       isHoverable
-      isPressable                // <-- make it render as a button
-      onPress={() => onClick(drone.id)}  // <-- use onPress instead of onClick
+      isPressable // <-- make it render as a button
+      onPress={() => onClick(drone.id)} // <-- use onPress instead of onClick
       className="w-full h-full cursor-pointer"
     >
       <CardHeader className="p-0">
@@ -67,22 +91,30 @@ const DroneCard = ({ drone, onClick }: { drone: DroneInstanceData; onClick: (id:
       </CardHeader>
       <CardBody className="p-4">
         <h3 className="text-lg font-bold">{drone.model}</h3>
-        <p className="text-sm text-default-500">{drone.neighborhood ? drone.city.concat(", ", drone.neighborhood) : drone.city }</p>
+        <p className="text-sm text-default-500">
+          {drone.neighborhood
+            ? drone.city.concat(", ", drone.neighborhood)
+            : drone.city}
+        </p>
       </CardBody>
     </Card>
   );
 };
 
 // Drone Details Modal Component
-const DroneDetailsModal = ({ isOpen, onClose, drones, droneId, onChoose }: { 
-    isOpen: boolean; 
-    onClose: () => void; 
-    drones: DroneInstanceData[] | null; 
-    droneId: number | null;
-    onChoose: () => void;
-  }) => {
-
-
+const DroneDetailsModal = ({
+  isOpen,
+  onClose,
+  drones,
+  droneId,
+  onChoose,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  drones: DroneInstanceData[] | null;
+  droneId: number | null;
+  onChoose: () => void;
+}) => {
   if (!drones) return null;
 
   // Find the selected drone data
@@ -93,7 +125,12 @@ const DroneDetailsModal = ({ isOpen, onClose, drones, droneId, onChoose }: {
   // Prepare rows for the table
   const rows = [
     { name: "Model", value: drone.model },
-    { name: "Region", value: drone.neighborhood ? drone.city.concat(", ", drone.neighborhood) : drone.city },
+    {
+      name: "Region",
+      value: drone.neighborhood
+        ? drone.city.concat(", ", drone.neighborhood)
+        : drone.city,
+    },
     { name: "Weight Capacity", value: `${drone.weight_capacity} kg` },
     { name: "Volume Capacity", value: `${drone.volume_capacity} L` },
     { name: "Drone Weight", value: `${drone.drone_weight} kg` },
@@ -103,11 +140,19 @@ const DroneDetailsModal = ({ isOpen, onClose, drones, droneId, onChoose }: {
   ];
 
   return (
-    <Modal isOpen={isOpen} onOpenChange={(open) => { if (!open) onClose(); }} backdrop="blur">
+    <Modal
+      isOpen={isOpen}
+      onOpenChange={(open) => {
+        if (!open) onClose();
+      }}
+      backdrop="blur"
+    >
       <ModalContent>
         <>
           {/* Modal Header */}
-          <ModalHeader className="text-2xl font-bold text-center">Drone Details</ModalHeader>
+          <ModalHeader className="text-2xl font-bold text-center">
+            Drone Details
+          </ModalHeader>
 
           {/* Modal Body */}
           <ModalBody className="flex flex-col items-center gap-6">
@@ -119,7 +164,13 @@ const DroneDetailsModal = ({ isOpen, onClose, drones, droneId, onChoose }: {
             />
 
             {/* Drone Details Table */}
-            <Table aria-label="Drone Details Table" className="w-full max-w-md" isStriped hideHeader removeWrapper>
+            <Table
+              aria-label="Drone Details Table"
+              className="w-full max-w-md"
+              isStriped
+              hideHeader
+              removeWrapper
+            >
               <TableHeader>
                 <TableColumn>Name</TableColumn>
                 <TableColumn>Value</TableColumn>
@@ -138,12 +189,17 @@ const DroneDetailsModal = ({ isOpen, onClose, drones, droneId, onChoose }: {
           {/* Modal Footer */}
           <div className="flex justify-center gap-4 p-4">
             <div className="flex w-full gap-4">
-                <Button onPress={onClose} color="danger" variant="light" className="flex-[0.5]">
+              <Button
+                onPress={onClose}
+                color="danger"
+                variant="light"
+                className="flex-[0.5]"
+              >
                 Cancel
-                </Button>
-                  <Button onPress={onChoose} color="primary" className="flex-[1.5]">
-                    Choose this Drone
-                  </Button>
+              </Button>
+              <Button onPress={onChoose} color="primary" className="flex-[1.5]">
+                Choose this Drone
+              </Button>
             </div>
           </div>
         </>
@@ -172,7 +228,11 @@ const saveFiltersToLocalStorage = (filters: DroneFilters) => {
 };
 
 // Main Search Drones Page
-export function SearchDronesPage( { onDroneSelect }: { onDroneSelect: (id: number) => void }) {
+export function SearchDronesPage({
+  onDroneSelect,
+}: {
+  onDroneSelect: (id: number) => void;
+}) {
   const [filters, setFilters] = useState<DroneFilters>(defaultFilters);
   const [selectedDroneId, setSelectedDroneId] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -231,7 +291,7 @@ export function SearchDronesPage( { onDroneSelect }: { onDroneSelect: (id: numbe
       onDroneSelect(selectedDroneId);
       setIsModalOpen(false);
     }
-  }
+  };
 
   return (
     <div className="flex flex-col items-center justify-center gap-6 w-full max-w-screen-2xl mx-auto">
@@ -246,9 +306,15 @@ export function SearchDronesPage( { onDroneSelect }: { onDroneSelect: (id: numbe
                 className="max-w-xs"
                 label="City"
                 selectedKey={filters.city}
-                onSelectionChange={(key) => handleFilterChange("city", key as string)}
+                onSelectionChange={(key) =>
+                  handleFilterChange("city", key as string)
+                }
               >
-                {cities.map((city) => (<AutocompleteItem key={city.key}>{city.label}</AutocompleteItem>))}
+                {cities.map((city) => (
+                  <AutocompleteItem key={city.key}>
+                    {city.label}
+                  </AutocompleteItem>
+                ))}
               </Autocomplete>
 
               {/* Material Filter */}
@@ -256,10 +322,14 @@ export function SearchDronesPage( { onDroneSelect }: { onDroneSelect: (id: numbe
                 className="max-w-xs"
                 label="Material"
                 selectedKey={filters.material}
-                onSelectionChange={(key) => handleFilterChange("material", key as string)}
+                onSelectionChange={(key) =>
+                  handleFilterChange("material", key as string)
+                }
               >
                 {materials.map((material) => (
-                  <AutocompleteItem key={material.key}>{material.label}</AutocompleteItem>
+                  <AutocompleteItem key={material.key}>
+                    {material.label}
+                  </AutocompleteItem>
                 ))}
               </Autocomplete>
 
@@ -271,7 +341,12 @@ export function SearchDronesPage( { onDroneSelect }: { onDroneSelect: (id: numbe
                 maxValue={100}
                 minValue={0}
                 step={0.1}
-                onChange={(value) => handleFilterChange("weightCapacity", value as [number, number])}
+                onChange={(value) =>
+                  handleFilterChange(
+                    "weightCapacity",
+                    value as [number, number]
+                  )
+                }
               />
 
               {/* Volume Capacity Filter */}
@@ -282,7 +357,12 @@ export function SearchDronesPage( { onDroneSelect }: { onDroneSelect: (id: numbe
                 maxValue={100}
                 minValue={0}
                 step={0.1}
-                onChange={(value) => handleFilterChange("volumeCapacity", value as [number, number])}
+                onChange={(value) =>
+                  handleFilterChange(
+                    "volumeCapacity",
+                    value as [number, number]
+                  )
+                }
               />
 
               {/* Drone Weight Filter */}
@@ -293,7 +373,9 @@ export function SearchDronesPage( { onDroneSelect }: { onDroneSelect: (id: numbe
                 maxValue={100}
                 minValue={0}
                 step={0.1}
-                onChange={(value) => handleFilterChange("droneWeight", value as [number, number])}
+                onChange={(value) =>
+                  handleFilterChange("droneWeight", value as [number, number])
+                }
               />
             </div>
 
@@ -322,7 +404,7 @@ export function SearchDronesPage( { onDroneSelect }: { onDroneSelect: (id: numbe
       {/* Drone Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 w-full">
         {mockDrones.map((drone) => (
-          <DroneCard key={(drone.id)} drone={drone} onClick={handleCardClick} />
+          <DroneCard key={drone.id} drone={drone} onClick={handleCardClick} />
         ))}
       </div>
 
@@ -335,5 +417,5 @@ export function SearchDronesPage( { onDroneSelect }: { onDroneSelect: (id: numbe
         onChoose={handleChooseDrone}
       />
     </div>
-);
+  );
 }

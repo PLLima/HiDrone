@@ -19,15 +19,24 @@ type Errors = {
   password?: string;
 };
 
-export const LogInModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+export const LogInModal = ({
+  isOpen,
+  onClose,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+}) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [errors, setErrors] = React.useState<Errors>({});
 
-  async function handleSubmit (e: FormEvent<HTMLFormElement>){
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     setIsLoading(true);
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries()) as Record<string, string>;
+    const data = Object.fromEntries(formData.entries()) as Record<
+      string,
+      string
+    >;
 
     // Custom validation checks
     const newErrors: Errors = {};
@@ -42,7 +51,7 @@ export const LogInModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =
     }
 
     // Password validation
-    const match = await compare(data.password, existingUser.password); 
+    const match = await compare(data.password, existingUser.password);
     if (!match) {
       newErrors.password = "Incorrect password";
       setIsLoading(false);
@@ -58,17 +67,25 @@ export const LogInModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =
     setIsLoading(false);
     onClose();
     window.location.reload();
-  };
+  }
 
   const clearVariables = () => {
     setErrors({});
   };
 
   return (
-    <Modal isOpen={isOpen} onOpenChange={(isOpen) => !isOpen && onClose()} onClose={() => clearVariables()} backdrop="blur" size="xs">
+    <Modal
+      isOpen={isOpen}
+      onOpenChange={(isOpen) => !isOpen && onClose()}
+      onClose={() => clearVariables()}
+      backdrop="blur"
+      size="xs"
+    >
       <ModalContent>
         <>
-          <ModalHeader className="text-4xl font-bold text-center">Log In</ModalHeader>
+          <ModalHeader className="text-4xl font-bold text-center">
+            Log In
+          </ModalHeader>
           <ModalBody>
             <Form
               className="w-full justify-center items-center space-y-4"
@@ -77,12 +94,20 @@ export const LogInModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =
             >
               <div className="flex flex-col gap-4 max-w-md">
                 <Input type="email" name="email" label="Email" isRequired />
-                <Input name="password" type="password" label="Password" isRequired />
+                <Input
+                  name="password"
+                  type="password"
+                  label="Password"
+                  isRequired
+                />
                 <div className="flex w-full gap-1">
                   <Button
                     type="button"
                     className="w-1/3"
-                    onPress={() => {clearVariables(); onClose();}}
+                    onPress={() => {
+                      clearVariables();
+                      onClose();
+                    }}
                     color="danger"
                     variant="light"
                   >

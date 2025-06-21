@@ -12,7 +12,11 @@ export default function Home() {
     <section className="flex flex-col md:flex-row items-center justify-between gap-10 py-8 md:py-16 px-4 md:px-20">
       {/* Texto à esquerda */}
       <div className="flex flex-col items-start max-w-xl text-left">
-        <h1 className={title({ color: "violet" }) + " text-5xl md:text-6xl font-bold"}>
+        <h1
+          className={
+            title({ color: "violet" }) + " text-5xl md:text-6xl font-bold"
+          }
+        >
           Rent drones for package delivery
         </h1>
         <p className="mt-4 text-lg md:text-xl text-white-600">

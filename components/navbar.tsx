@@ -1,6 +1,5 @@
 "use client";
 
-
 import {
   Navbar as HeroUINavbar,
   NavbarContent,
@@ -23,12 +22,26 @@ import { GithubIcon, Logo } from "@/components/icons";
 import { LogInModal } from "./login";
 import { SignUpModal } from "./signup";
 
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, useDisclosure} from "@heroui/react";
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  useDisclosure,
+} from "@heroui/react";
 
 export const Navbar = () => {
   const [loggedName, setLoggedName] = useState<string | null>(null);
-  const { isOpen: isOpenLogin, onOpen: onOpenLogin, onClose: onCloseLogin } = useDisclosure();
-  const { isOpen: isOpenSignup, onOpen: onOpenSignup, onClose: onCloseSignup } = useDisclosure();
+  const {
+    isOpen: isOpenLogin,
+    onOpen: onOpenLogin,
+    onClose: onCloseLogin,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenSignup,
+    onOpen: onOpenSignup,
+    onClose: onCloseSignup,
+  } = useDisclosure();
 
   useEffect(() => {
     // Retrieve the logged_name_debug value from localStorage
@@ -40,10 +53,10 @@ export const Navbar = () => {
     <HeroUINavbar maxWidth="xl" position="sticky">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
-            <NextLink className="flex justify-start items-center gap-2" href="/">
+          <NextLink className="flex justify-start items-center gap-2" href="/">
             <Logo />
             <p className="font-bold text-inherit">HIDRONE</p>
-            </NextLink>
+          </NextLink>
         </NavbarBrand>
         <ul className="hidden lg:flex gap-4 justify-start ml-2">
           {siteConfig.navItems.map((item) => (
@@ -87,9 +100,9 @@ export const Navbar = () => {
                   className="text-danger"
                   color="danger"
                   onPress={() => {
-                  localStorage.removeItem("logged_name_debug");
-                  setLoggedName(null);
-                  window.location.reload();
+                    localStorage.removeItem("logged_name_debug");
+                    setLoggedName(null);
+                    window.location.reload();
                   }}
                 >
                   Log Out
@@ -100,11 +113,11 @@ export const Navbar = () => {
             // Display "Log in" and "Sign up" buttons if no logged name
             <div className="flex gap-2">
               <Button
-              // When clicked, open the login modal
-              onPress={onOpenLogin}
-              variant="light"
+                // When clicked, open the login modal
+                onPress={onOpenLogin}
+                variant="light"
               >
-              Log in
+                Log in
               </Button>
               <LogInModal isOpen={isOpenLogin} onClose={onCloseLogin} />
               <Button variant="ghost" color="primary" onPress={onOpenSignup}>
@@ -133,8 +146,8 @@ export const Navbar = () => {
                   index === 2
                     ? "primary"
                     : index === siteConfig.navMenuItems.length - 1
-                    ? "danger"
-                    : "foreground"
+                      ? "danger"
+                      : "foreground"
                 }
                 href="#"
                 size="lg"
