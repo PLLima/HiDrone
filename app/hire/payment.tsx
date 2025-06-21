@@ -3,17 +3,16 @@
 import { Input, Button } from "@heroui/react";
 
 export default function Payment({
-    droneId,
-    distanceCost,
+  droneId,
+  distanceCost,
 }: {
-    droneId: number | null;
-    distanceCost: number;
+  droneId: number | null;
+  distanceCost: number;
 }) {
-    
-    const basePrice = droneId ? droneId * 10 : 0;
-    const total = basePrice + distanceCost;
-  
-    return (
+  const basePrice = droneId ? droneId * 10 : 0;
+  const total = basePrice + distanceCost;
+
+  return (
     <div className="flex flex-col items-center justify-center gap-6 w-full max-w-md mx-auto">
       <h2 className="text-2xl font-bold text-center">Payment</h2>
 
@@ -21,7 +20,10 @@ export default function Payment({
       <Input name="cardName" label="Card Name" isDisabled fullWidth />
       <Input name="expiry" label="Expiry (YY/MM)" isDisabled fullWidth />
       <Input name="cvv" label="CVV" isDisabled fullWidth />
-      <div className="w-full text-center text-l text-default-700 mt-2" title={`Total: R$ ${total},00`}>
+      <div
+        className="w-full text-center text-l text-default-700 mt-2"
+        title={`Total: R$ ${total},00`}
+      >
         <strong>Price:</strong> R$ {total},00
       </div>
 
@@ -31,4 +33,3 @@ export default function Payment({
     </div>
   );
 }
-

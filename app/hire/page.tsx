@@ -6,7 +6,6 @@ import { SearchDronesPage } from "./select_drone";
 import { SetPath } from "./set_path";
 import Payment from "./payment";
 
-
 export default function SupplyPage() {
   const [selectedTab, setSelectedTab] = useState("drone");
   const [selectedDroneId, setSelectedDroneId] = useState<number | null>(null);

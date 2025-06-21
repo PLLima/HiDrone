@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Table, TableHeader, TableBody, TableRow, TableCell, TableColumn, Chip, Tooltip,
 } from '@heroui/react';
@@ -50,7 +50,7 @@ const initialOrders: Order[] = Array.from({ length: 20 }).map((_, i) => {
 
 const OrdersHistoryTable: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>(initialOrders);
-  const [sortKey, setSortKey] = useState<keyof Order>('date');
+  const [sortKey, setSortKey] = useState<keyof Order>("date");
   const [ascending, setAscending] = useState<boolean>(false);
 
   const handleSort = (key: keyof Order) => {
@@ -68,7 +68,11 @@ const OrdersHistoryTable: React.FC = () => {
 
   const renderSortIcon = (key: keyof Order) => {
     if (sortKey === key) {
-      return ascending ? <ChevronUpIcon size={16} /> : <ChevronDownIcon size={16} />;
+      return ascending ? (
+        <ChevronUpIcon size={16} />
+      ) : (
+        <ChevronDownIcon size={16} />
+      );
     }
     return <ChevronRightIcon size={13} />;
   };
@@ -128,12 +132,18 @@ const OrdersHistoryTable: React.FC = () => {
                   </span>
                 </Tooltip>
                 <Tooltip content="Accept" color="success">
-                  <span className="cursor-pointer text-success" onClick={() => onAccept(o.id)}>
+                  <span
+                    className="cursor-pointer text-success"
+                    onClick={() => onAccept(o.id)}
+                  >
                     <AcceptIcon size={20} />
                   </span>
                 </Tooltip>
                 <Tooltip content="Reject" color="danger">
-                  <span className="cursor-pointer text-danger" onClick={() => onReject(o.id)}>
+                  <span
+                    className="cursor-pointer text-danger"
+                    onClick={() => onReject(o.id)}
+                  >
                     <XIcon size={20} />
                   </span>
                 </Tooltip>
