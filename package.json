@@ -29,6 +29,7 @@
     "@react-aria/visually-hidden": "3.8.22",
     "bcryptjs": "^3.0.2",
     "clsx": "2.1.1",
+    "eslint-plugin-next": "^0.0.0",
     "framer-motion": "11.13.1",
     "intl-messageformat": "10.7.16",
     "next": "15.3.1",
