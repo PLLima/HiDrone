@@ -239,14 +239,13 @@ export function SearchDronesPage({
   const [drones, setDrones] = useState<DroneInstanceData[] | null>(null);
 
   // Runs on every page request (server-side)
-  // useEffect(() => {
-  //   async function load() {
-  //     const drones = await getDrones();
-  //     setDrones(drones);
-  //   }
-  //   load()
-  // }
-  // , [])
+  useEffect(() => {
+    async function load() {
+      const drones = await getDrones();
+      setDrones(drones);
+    }
+    load();
+  }, []);
 
   // Load filters when the accordion is opened
   const handleAccordionOpen = () => {

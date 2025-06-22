@@ -7,6 +7,7 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
+  form,
 } from "@heroui/react";
 import { Form, Input, Button, Checkbox } from "@heroui/react";
 import {
@@ -41,7 +42,7 @@ const ClientForm = ({
     name: string;
     email: string;
     password: string;
-  }) => Promise<void>;
+  }) => Promise<string | null>;
 }) => {
   const [password, setPassword] = React.useState("");
   const [repeatPassword, setRepeatPassword] = React.useState("");
@@ -72,7 +73,7 @@ const ClientForm = ({
     const formData = new FormData(e.currentTarget);
     const name = formData.get("name") as string;
     const email = formData.get("email") as string;
-    const newErrors: { password?: string } = {};
+    const newErrors: { email?: string; password?: string } = {};
     const passwordError = getPasswordError(password);
     if (passwordError) newErrors.password = passwordError;
     if (getRepeatPasswordError(password, repeatPassword))
@@ -80,8 +81,10 @@ const ClientForm = ({
         getRepeatPasswordError(password, repeatPassword) || "";
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
-      await onSubmit({ name, email, password });
+      newErrors.email = await onSubmit({ name, email, password }) || "";
+      setErrors(newErrors);
     }
+    return "";
   };
 
   return (
@@ -172,12 +175,11 @@ const SupplierForm = ({
   onClose: () => void;
   clearVariables: () => void;
   onSubmit: (data: {
-    name: string;
     email: string;
     password: string;
     enterpriseName: string;
     cnpj: string;
-  }) => Promise<void>;
+  }) => Promise<string | null>;
 }) => {
   const [password, setPassword] = React.useState("");
   const [repeatPassword, setRepeatPassword] = React.useState("");
@@ -192,7 +194,6 @@ const SupplierForm = ({
     enterpriseName?: string;
     cnpj?: string;
   }>({});
-  const [registerEnterprise, setRegisterEnterprise] = React.useState(false);
   const [cnpj, setCnpj] = React.useState("");
   const [enterpriseName, setEnterpriseName] = React.useState("");
 
@@ -233,15 +234,17 @@ const SupplierForm = ({
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const name = formData.get("name") as string;
-    const email = formData.get("email") as string;
+    setErrors({});
     const newErrors: {
       password?: string;
       enterpriseName?: string;
+      email?: string;
       cnpj?: string;
     } = {};
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const enterpriseName = formData.get("enterpriseName") as string;
+    const email = formData.get("email") as string;
     const passwordError = getPasswordError(password);
     if (passwordError) newErrors.password = passwordError;
     if (getRepeatPasswordError(password, repeatPassword))
@@ -252,7 +255,10 @@ const SupplierForm = ({
     if (getCnpjError(cnpj)) newErrors.cnpj = getCnpjError(cnpj) || "";
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
-      await onSubmit({ name, email, password, enterpriseName, cnpj });
+      newErrors.cnpj =
+        (await onSubmit({ email, password, enterpriseName, cnpj })) || "";
+      newErrors.enterpriseName = newErrors.cnpj || "";
+      setErrors(newErrors);
     }
   };
 
@@ -323,7 +329,9 @@ const SupplierForm = ({
         <Input
           isRequired
           value={cnpj}
-          errorMessage={touched.cnpj ? getCnpjError(cnpj) : null}
+          errorMessage={
+            touched.cnpj ? (getCnpjError(cnpj) ? errors.cnpj : null) : null
+          }
           label="CNPJ"
           name="cnpj"
           type="text"
@@ -391,14 +399,6 @@ export const SignUpModal = ({
     password: string;
   }) => {
     setIsLoading(true);
-    setErrors({});
-    const passwordError =
-      data.password.length < 4 ? "Password must be 4 characters or more" : null;
-    if (passwordError) {
-      setErrors({ password: passwordError });
-      setIsLoading(false);
-      return;
-    }
     const hashedPassword = await hash(data.password, 10);
     const formattedData = {
       name: data.name,
@@ -408,9 +408,10 @@ export const SignUpModal = ({
     };
     const registered = await registerClient(formattedData);
     if (registered === false) {
-      setErrors({ email: "An account with this email already exists." });
+      errors.email = "An account with this email already exists.";
+      setErrors(errors);
       setIsLoading(false);
-      return;
+      return errors.email;
     }
     localStorage.setItem("logged_name_debug", data.name);
     localStorage.setItem("logged_email_debug", data.email);
@@ -418,37 +419,20 @@ export const SignUpModal = ({
     setSubmitted(formattedData);
     setIsLoading(false);
     window.location.reload();
+    return "";
   };
 
   // Handler for supplier form submission
   const handleSupplierSubmit = async (data: {
-    name: string;
+    enterpriseName: string;
     email: string;
     password: string;
-    enterpriseName: string;
     cnpj: string;
   }) => {
     setIsLoading(true);
-    setErrors({});
-    const passwordError =
-      data.password.length < 4 ? "Password must be 4 characters or more" : null;
-    const cnpjError = !/^\d{14}$/.test(data.cnpj.replace(/\D/g, ""))
-      ? "CNPJ must be 14 digits"
-      : null;
-    const newErrors: Errors = {};
-    if (passwordError) newErrors.password = passwordError;
-    if (!data.enterpriseName)
-      newErrors.enterpriseName = "Please enter your enterprise name";
-    if (!data.cnpj) newErrors.cnpj = "Please enter your CNPJ";
-    else if (cnpjError) newErrors.cnpj = cnpjError;
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      setIsLoading(false);
-      return;
-    }
     const hashedPassword = await hash(data.password, 10);
     const formattedData = {
-      name: data.name,
+      name: data.enterpriseName,
       email: data.email,
       password: hashedPassword,
       enterpriseName: data.enterpriseName,
@@ -457,18 +441,20 @@ export const SignUpModal = ({
     };
     const registered = await registerSupplier(formattedData);
     if (registered === false) {
-      setErrors({ email: "An account with this email already exists." });
+      errors.email = "An account with this email or CNPJ already exists.";
+      errors.cnpj = "An account with this email or CNPJ already exists.";
       setIsLoading(false);
-      return;
+      setErrors(errors)
+      return errors.cnpj;
     }
-    localStorage.setItem("logged_name_debug", data.name);
+    localStorage.setItem("logged_name_debug", data.enterpriseName);
     localStorage.setItem("logged_email_debug", data.email);
-    localStorage.setItem("enterprise_name_debug", data.enterpriseName);
     localStorage.setItem("cnpj_debug", data.cnpj.replace(/\D/g, ""));
     setErrors({});
     setSubmitted(formattedData);
     setIsLoading(false);
     window.location.reload();
+    return "";
   };
 
   return (

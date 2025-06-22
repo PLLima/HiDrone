@@ -46,7 +46,8 @@ export async function registerClient(client: ClientData) {
 async function checkSupplier(email: string, cnpj: string) {
   const existingUser = await (prisma as any).supplier.findUnique({
     where: {
-      OR: [{ email: email }, { cnpj: cnpj }],
+      email: email,
+      cnpj: cnpj,
     },
   });
   return existingUser ? true : false;
