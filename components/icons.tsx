@@ -2,6 +2,141 @@ import * as React from "react";
 
 import { IconSvgProps } from "@/types";
 
+/**
+ * Helper to render an outlined circle and an inner outlined shape.
+ */
+const withCircle = (children: React.ReactNode) => (
+  <>
+    <circle
+      cx="12"
+      cy="12"
+      r="10"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+    />
+    {children}
+  </>
+);
+
+// 1) PlayIcon
+export const PlayIcon: React.FC<IconSvgProps> = ({ size = 24, className = '', ...props }) => (
+  <svg
+    viewBox="0 0 24 24"
+    width={size}
+    height={size}
+    fill="none"
+    className={className}
+    {...props}
+  >
+    {withCircle(
+      <polygon
+        points="10 8 16 12 10 16"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    )}
+  </svg>
+);
+
+// 2) UpArrowIcon
+export const UpArrowIcon: React.FC<IconSvgProps> = ({ size = 24, className = '', ...props }) => (
+  <svg
+    viewBox="0 0 24 24"
+    width={size}
+    height={size}
+    fill="none"
+    className={className}
+    {...props}
+  >
+    {withCircle(
+      <polyline
+        points="8 12 12 8 16 12"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    )}
+  </svg>
+);
+
+// 3) DownArrowIcon
+export const DownArrowIcon: React.FC<IconSvgProps> = ({ size = 24, className = '', ...props }) => (
+  <svg
+    viewBox="0 0 24 24"
+    width={size}
+    height={size}
+    fill="none"
+    className={className}
+    {...props}
+  >
+    {withCircle(
+      <polyline
+        points="8 12 12 16 16 12"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    )}
+  </svg>
+);
+
+// 4) CheckIcon
+export const CheckIcon: React.FC<IconSvgProps> = ({ size = 24, className = '', ...props }) => (
+  <svg
+    viewBox="0 0 24 24"
+    width={size}
+    height={size}
+    fill="none"
+    className={className}
+    {...props}
+  >
+    {withCircle(
+      <polyline
+        points="16 10 11 15 8 13"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    )}
+  </svg>
+);
+
+interface CircleIconProps extends IconSvgProps {
+  /** aplica cor via className (text-primary-600 ou text-gray-300) */
+  className?: string;
+}
+
+export const CircleIcon: React.FC<CircleIconProps> = ({
+  size = 24,
+  className = '',
+  ...svgProps
+}) => (
+  <svg
+    viewBox="0 0 24 24"
+    width={size}
+    height={size}
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+    {...svgProps}
+  >
+    <circle cx="12" cy="12" r="10" />
+  </svg>
+);
+
 export const ChevronRightIcon = (props: IconSvgProps) => (
   <svg
     viewBox="0 0 24 24"
