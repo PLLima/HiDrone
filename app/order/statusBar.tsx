@@ -3,7 +3,7 @@
 import React from 'react';
 import { Progress } from '@heroui/react';
 import {
-  PlayIcon,
+  ExclamationIcon,
   UpArrowIcon,
   DownArrowIcon,
   CheckIcon,
@@ -34,7 +34,7 @@ export const statusBar: React.FC<TransactionProgressProps> = ({ status }) => {
             {/* Circle */}
             {(() => {
             const iconProps = { size: 25, className: colorClass };
-            if (index === 0) return <PlayIcon {...iconProps} />;
+            if (index === 0) return <ExclamationIcon {...iconProps} />;
             if (index === 1) return <UpArrowIcon {...iconProps} />;
             if (index === 2) return <DownArrowIcon {...iconProps} />;
             return <CheckIcon {...iconProps} />;

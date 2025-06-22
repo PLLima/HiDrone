@@ -19,6 +19,39 @@ const withCircle = (children: React.ReactNode) => (
   </>
 );
 
+// 1) ExclamationIcon
+export const ExclamationIcon: React.FC<IconSvgProps> = ({ size = 24, className = '', ...props }) => (
+  <svg
+    viewBox="0 0 24 24"
+    width={size}
+    height={size}
+    fill="none"
+    className={className}
+    {...props}
+  >
+    {withCircle(
+      <>
+        <line
+          x1="12"
+          y1="8"
+          x2="12"
+          y2="14"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+        />
+        <circle
+          cx="12"
+          cy="17"
+          r="1"
+          fill="currentColor"
+        />
+      </>
+    )}
+  </svg>
+);
+
+
 // 1) PlayIcon
 export const PlayIcon: React.FC<IconSvgProps> = ({ size = 24, className = '', ...props }) => (
   <svg
