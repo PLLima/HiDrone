@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { Progress } from '@heroui/react';
+import { Progress, Tooltip } from '@heroui/react';
 import {
   ExclamationIcon,
   UpDoubleArrowIcon,
@@ -15,8 +15,13 @@ export interface TransactionProgressProps {
   status: TransactionStatus;
 }
 
-// Define the ordered steps for the transaction
 const steps: TransactionStatus[] = ['Pending', 'Waiting', 'In Flight', 'Completed'];
+const tooltips = [
+  'Order created',
+  'Order accepted',
+  'Package picked up',
+  'Package arrived',
+];
 
 export const statusBar: React.FC<TransactionProgressProps> = ({ status }) => {
   const currentIndex = steps.indexOf(status);
@@ -29,17 +34,19 @@ export const statusBar: React.FC<TransactionProgressProps> = ({ status }) => {
         const filled = isPast || isCurrent;
         const colorClass = filled ? 'text-primary-600' : 'text-neutral-400';
 
+        const iconProps = { size: 25, className: colorClass };
+        let icon = null;
+        if (index === 0) icon = <ExclamationIcon {...iconProps} />;
+        else if (index === 1) icon = <CheckIcon {...iconProps} />;
+        else if (index === 2) icon = <UpDoubleArrowIcon {...iconProps} />;
+        else icon = <DownDoubleArrowIcon {...iconProps} />;
+
         return (
           <React.Fragment key={step}>
-            {/* Circle */}
-            {(() => {
-            const iconProps = { size: 25, className: colorClass };
-            if (index === 0) return <ExclamationIcon {...iconProps} />;
-            if (index === 1) return <CheckIcon {...iconProps} />;
-            if (index === 2) return <UpDoubleArrowIcon {...iconProps} />;
-            return <DownDoubleArrowIcon {...iconProps} />;
-          })()}
-
+            {/* Circle with Tooltip */}
+            <Tooltip content={tooltips[index]}>
+              {icon}
+            </Tooltip>
             {/* Render bar only if not the last circle */}
             {index < steps.length - 1 && (
               <Progress
