@@ -19,7 +19,6 @@ const withCircle = (children: React.ReactNode) => (
   </>
 );
 
-// 1) ExclamationIcon
 export const ExclamationIcon: React.FC<IconSvgProps> = ({ size = 24, className = '', ...props }) => (
   <svg
     viewBox="0 0 24 24"
@@ -52,7 +51,6 @@ export const ExclamationIcon: React.FC<IconSvgProps> = ({ size = 24, className =
 );
 
 
-// 1) PlayIcon
 export const PlayIcon: React.FC<IconSvgProps> = ({ size = 24, className = '', ...props }) => (
   <svg
     viewBox="0 0 24 24"
@@ -75,7 +73,71 @@ export const PlayIcon: React.FC<IconSvgProps> = ({ size = 24, className = '', ..
   </svg>
 );
 
-// 2) UpArrowIcon
+export const UpDoubleArrowIcon: React.FC<IconSvgProps> = ({ size = 24, className = '', ...props }) => (
+  <svg
+    viewBox="0 0 24 24"
+    width={size}
+    height={size}
+    fill="none"
+    className={className}
+    {...props}
+  >
+    {withCircle(
+      <>
+        <polyline
+          points="8 15 12 11 16 15"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <polyline
+          points="8 11 12 7 16 11"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </>
+    )}
+  </svg>
+);
+
+export const DownDoubleArrowIcon: React.FC<IconSvgProps> = ({ size = 24, className = '', ...props }) => (
+  <svg
+    viewBox="0 0 24 24"
+    width={size}
+    height={size}
+    fill="none"
+    className={className}
+    {...props}
+  >
+    {withCircle(
+      <>
+        <polyline
+          points="8 9 12 13 16 9"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <polyline
+          points="8 13 12 17 16 13"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </>
+    )}
+  </svg>
+);
+
+
 export const UpArrowIcon: React.FC<IconSvgProps> = ({ size = 24, className = '', ...props }) => (
   <svg
     viewBox="0 0 24 24"
@@ -121,7 +183,6 @@ export const DownArrowIcon: React.FC<IconSvgProps> = ({ size = 24, className = '
   </svg>
 );
 
-// 4) CheckIcon
 export const CheckIcon: React.FC<IconSvgProps> = ({ size = 24, className = '', ...props }) => (
   <svg
     viewBox="0 0 24 24"
