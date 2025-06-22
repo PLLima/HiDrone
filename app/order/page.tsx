@@ -1,9 +1,9 @@
-// src/pages/TransactionProgressPage.jsx
+"use client";
 
 import React from 'react';
 import StatusBar, { TransactionStatus } from './statusBar';
+import {Card, CardHeader, CardBody, CardFooter, Divider} from "@heroui/react";
 
-// Defina a variável status fora do componente para uso global nesta página
 const status: TransactionStatus = 'In Flight';
 
 // Function to return title and description according to the status
@@ -36,11 +36,6 @@ function getStatusDescription(status: TransactionStatus): { title: string; descr
             };
     }
 }
-
-
-/**
- * Debug page to preview the transaction progress bar
- */
 export default function TransactionProgressPage() {
     const { title, description } = getStatusDescription(status);
 
@@ -52,8 +47,61 @@ export default function TransactionProgressPage() {
                     {description}
                 </p>
             </div>
-            <div className="w-full">
+            <div className="w-full mb-6">
                 <StatusBar status={status} />
+            </div>
+            {/* Add spacing between the bar and the cards */}
+            <div className="h-8" />
+            <div className="flex gap-4">
+                <Card>
+                    <CardHeader className="flex gap-3">
+                      <div className="flex flex-col">
+                        <p className="text-md">HeroUI</p>
+                        <p className="text-small text-default-500">heroui.com</p>
+                      </div>
+                    </CardHeader>
+                    <Divider />
+                        <CardBody>
+                            <p>Make beautiful websites regardless of your design experience.</p>
+                        </CardBody>
+                    <Divider />
+                    <CardFooter>
+                        <p>Make beautiful websites regardless of your design experience.</p>
+                    </CardFooter>
+                </Card>
+
+                <Card>
+                    <CardHeader className="flex gap-3">
+                      <div className="flex flex-col">
+                        <span className="text-2xl font-bold">Action</span>
+                      </div>
+                    </CardHeader>
+                    <Divider />
+                        <CardBody>
+                            <p>Make beautiful websites regardless of your design experience.</p>
+                        </CardBody>
+                    <Divider />
+                    <CardFooter>
+                        <p>Make beautiful websites regardless of your design experience.</p>
+                    </CardFooter>
+                </Card>
+
+                <Card>
+                    <CardHeader className="flex gap-3">
+                      <div className="flex flex-col">
+                        <p className="text-md">HeroUI</p>
+                        <p className="text-small text-default-500">heroui.com</p>
+                      </div>
+                    </CardHeader>
+                    <Divider />
+                        <CardBody>
+                            <p>Make beautiful websites regardless of your design experience.</p>
+                        </CardBody>
+                    <Divider />
+                    <CardFooter>
+                        <p>Make beautiful websites regardless of your design experience.</p>
+                    </CardFooter>
+                </Card>
             </div>
         </div>
     );
