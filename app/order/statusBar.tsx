@@ -35,9 +35,9 @@ export const statusBar: React.FC<TransactionProgressProps> = ({ status }) => {
             {(() => {
             const iconProps = { size: 25, className: colorClass };
             if (index === 0) return <ExclamationIcon {...iconProps} />;
-            if (index === 1) return <UpDoubleArrowIcon {...iconProps} />;
-            if (index === 2) return <DownDoubleArrowIcon {...iconProps} />;
-            return <CheckIcon {...iconProps} />;
+            if (index === 1) return <CheckIcon {...iconProps} />;
+            if (index === 2) return <UpDoubleArrowIcon {...iconProps} />;
+            return <DownDoubleArrowIcon {...iconProps} />;
           })()}
 
             {/* Render bar only if not the last circle */}
