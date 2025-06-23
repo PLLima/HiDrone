@@ -185,7 +185,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/home/pllima0909/Documents/Git/HiDrone/app/generated/prisma-client",
+      "value": "C:\\Users\\joaog\\Documentos\\GitHub\\Eng Soft\\HiDrone\\app\\generated\\prisma-client",
       "fromEnvVar": null
     },
     "config": {
@@ -194,17 +194,16 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "debian-openssl-1.1.x",
+        "value": "windows",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/home/pllima0909/Documents/Git/HiDrone/prisma/schema.prisma",
+    "sourceFilePath": "C:\\Users\\joaog\\Documentos\\GitHub\\Eng Soft\\HiDrone\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
-    "schemaEnvPath": "../../../.env"
+    "rootEnvPath": null
   },
   "relativePath": "../../../prisma",
   "clientVersion": "6.10.1",
@@ -213,6 +212,7 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -223,7 +223,7 @@ const config = {
   },
   "inlineSchema": "// Define database connection via the `DATABASE_URL` env var\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\n// Define custom output path for generated Prisma Client\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../app/generated/prisma-client\"\n}\n\nmodel Client {\n  credits  Decimal\n  email    String  @unique\n  id       Int     @id @default(autoincrement())\n  name     String\n  password String\n  Order    Order[]\n\n  @@map(\"clients\")\n}\n\nmodel Supplier {\n  cnpj          String          @unique\n  email         String          @unique\n  id            Int             @id @default(autoincrement())\n  name          String\n  password      String\n  credits       Decimal\n  DroneInstance DroneInstance[]\n\n  @@map(\"suppliers\")\n}\n\nmodel Order {\n  id               Int            @id @default(autoincrement())\n  number           Int\n  clientId         Int\n  status           String\n  createdAt        DateTime\n  updatedAt        DateTime\n  price            Decimal\n  pickupLocation   Json\n  deliveryLocation Json\n  droneInstanceId  Int?\n  client           Client         @relation(fields: [clientId], references: [id], onDelete: Cascade)\n  droneInstance    DroneInstance? @relation(fields: [droneInstanceId], references: [id])\n\n  @@map(\"orders\")\n}\n\nmodel DroneInstance {\n  id         Int        @id @default(autoincrement())\n  region     Json\n  supplierId Int\n  modelId    Int\n  model      DroneModel @relation(fields: [modelId], references: [id], onDelete: Cascade)\n  supplier   Supplier   @relation(fields: [supplierId], references: [id], onDelete: Cascade)\n  Order      Order[]\n\n  @@map(\"drone_instances\")\n}\n\nmodel DroneModel {\n  id             Int             @id @default(autoincrement())\n  model          String\n  weight         Decimal\n  size           String\n  composition    String\n  image          String?\n  capacityVolume Decimal\n  capacityWeight Decimal\n  DroneInstance  DroneInstance[]\n\n  @@map(\"drone_models\")\n}\n",
   "inlineSchemaHash": "4bd617cc0dc478f64e72a880927491645ea688129b02c0083767d4ff23b36676",
-  "copyEngine": false
+  "copyEngine": true
 }
 
 const fs = require('fs')
@@ -260,3 +260,9 @@ const PrismaClient = getPrismaClient(config)
 exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
 
+// file annotations for bundling tools to include these files
+path.join(__dirname, "query_engine-windows.dll.node");
+path.join(process.cwd(), "app/generated/prisma-client/query_engine-windows.dll.node")
+// file annotations for bundling tools to include these files
+path.join(__dirname, "schema.prisma");
+path.join(process.cwd(), "app/generated/prisma-client/schema.prisma")

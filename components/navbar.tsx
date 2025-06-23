@@ -94,13 +94,30 @@ export const Navbar = () => {
                 <Button variant="bordered">{loggedName}</Button>
               </DropdownTrigger>
               <DropdownMenu aria-label="Static Actions" variant="faded">
-                <DropdownItem key="manage_account">Order History</DropdownItem>
+                <DropdownItem
+                  key="order_history"
+                  onPress={() => {
+                    const role = localStorage.getItem("logged_role_debug");
+                    if (role === "supplier") {
+                      window.location.href = "/order";
+                    } else {
+                      window.location.href = "/order_history";
+                    }
+                  }}
+                >
+                  Order History
+                </DropdownItem>
+
+
                 <DropdownItem
                   key="logout"
                   className="text-danger"
                   color="danger"
                   onPress={() => {
                     localStorage.removeItem("logged_name_debug");
+                    localStorage.removeItem("logged_email_debug");
+                    localStorage.removeItem("cnpj_debug");
+                    localStorage.removeItem("logged_role_debug");
                     setLoggedName(null);
                     window.location.reload();
                   }}
@@ -140,7 +157,7 @@ export const Navbar = () => {
       <NavbarMenu>
         <div className="mx-4 mt-2 flex flex-col gap-2">
           {siteConfig.navMenuItems.map((item, index) => (
-            <NavbarMenuItem key={`${item}-${index}`}>
+            <NavbarMenuItem key={`${item.label}-${index}`}>
               <Link
                 color={
                   index === 2
