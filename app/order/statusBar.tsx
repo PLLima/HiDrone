@@ -9,7 +9,7 @@ import {
   CheckIcon,
 } from '@/components/icons';
 
-export type TransactionStatus = 'Pending' | 'Waiting' | 'In Flight' | 'Completed';
+export type TransactionStatus = 'Pending' | 'Waiting' | 'In Flight' | 'Completed' | 'Rejected';
 
 export interface TransactionProgressProps {
   status: TransactionStatus;
