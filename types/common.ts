@@ -18,6 +18,7 @@ export type Order = {
   pickupLocation: string;
   deliveryLocation: string;
   droneModel: string;
+  paying_method: "Credit Card" | "Pix" | "Hidrone Credits";
   status: "Rejected" | "Pending" | "Waiting" | "In Flight" | "Completed";
 };
 
