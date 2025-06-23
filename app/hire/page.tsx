@@ -5,6 +5,7 @@ import { Tabs, Tab, Card, CardBody } from "@heroui/react";
 import { SearchDronesPage } from "./select_drone";
 import { SetPath } from "./set_path";
 import Payment from "./payment";
+import PaymentMethod from "./payment_method"; 
 
 export default function SupplyPage() {
   const [selectedTab, setSelectedTab] = useState("drone");
@@ -22,13 +23,23 @@ export default function SupplyPage() {
         <Tab key="drone" title="Drone">
           <SearchDronesPage onDroneSelect={(id) => setSelectedDroneId(id)} />
         </Tab>
+
         <Tab key="route" title="Route">
           <SetPath
-            goToPayment={() => setSelectedTab("payment")}
+            goToPaymentMethod={() => setSelectedTab("paymentMethod")}
             selectedDroneId={selectedDroneId}
             setDistanceCost={setDistanceCost}
           />
         </Tab>
+
+        <Tab key="paymentMethod" title="Payment Method">
+           <PaymentMethod 
+		    selectedDroneId={selectedDroneId}
+			distanceCost={distanceCost}
+			goToPayment={() => setSelectedTab("payment")}
+		   />
+        </Tab>
+
         <Tab key="payment" title="Payment">
           <Payment droneId={selectedDroneId} distanceCost={distanceCost} />
         </Tab>
