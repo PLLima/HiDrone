@@ -287,8 +287,12 @@ export function SearchDronesPage({
 
   const handleChooseDrone = () => {
     if (selectedDroneId !== null) {
-      onDroneSelect(selectedDroneId);
-      setIsModalOpen(false);
+      const chosenDrone = mockDrones.find(d => d.id === selectedDroneId);
+      if (chosenDrone) {
+        updateCreatingOrderDrone(chosenDrone);
+        onDroneSelect(selectedDroneId);
+        setIsModalOpen(false);
+      }
     }
   };
 
@@ -417,4 +421,11 @@ export function SearchDronesPage({
       />
     </div>
   );
+}
+
+function updateCreatingOrderDrone(drone: DroneInstanceData) {
+  const current = localStorage.getItem("creating_order");
+  let creatingOrder = current ? JSON.parse(current) : {};
+  creatingOrder.drone = drone;
+  localStorage.setItem("creating_order", JSON.stringify(creatingOrder));
 }
