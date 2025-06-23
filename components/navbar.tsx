@@ -94,7 +94,15 @@ export const Navbar = () => {
                 <Button variant="bordered">{loggedName}</Button>
               </DropdownTrigger>
               <DropdownMenu aria-label="Static Actions" variant="faded">
-                <DropdownItem key="manage_account">Order History</DropdownItem>
+                <DropdownItem
+                  key="order_history"
+                  onPress={() => {
+                    window.location.href = "/order_history";
+                  }}
+                >
+                  Order History
+                </DropdownItem>
+
                 <DropdownItem
                   key="logout"
                   className="text-danger"

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useRouter } from "next/navigation"
 import {
   Table, TableHeader, TableBody, TableRow, TableCell, TableColumn, Chip, Tooltip,
 } from '@heroui/react';
@@ -83,7 +84,16 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ viewerRole = 'client' }) => {
 
   const onAccept = (id: string) => alert(`Accepted ${id}`);
   const onReject = (id: string) => alert(`Rejected ${id}`);
-  const onView = (id: string) => alert(`Viewing ${id}`);
+  
+  const router = useRouter();
+  
+  const onView = (id: string) => {
+    const order = orders.find((o) => o.id === id);
+    if (!order) return;
+
+    localStorage.setItem("currentOrder", JSON.stringify(order));
+    router.push("../order/" /*+ id*/); //ou outra rota a ser definida 
+  };
 
   const tableLeftPadding = '1rem';
   const tableRightPadding = '3rem';

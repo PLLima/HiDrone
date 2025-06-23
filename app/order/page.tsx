@@ -1,8 +1,7 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import StatusBar, { TransactionStatus } from "./statusBar";
-import { Card, CardHeader, CardBody, CardFooter, Divider } from "@heroui/react";
 import { Listbox, ListboxItem } from "@heroui/react";
 import {
   PinIcon,
@@ -13,75 +12,94 @@ import {
   DroneIcon,
 } from "@/components/icons";
 
-// Simule aqui quem está vendo e o status atual
 type ViewerRole = "supplier" | "client";
-const viewAs: ViewerRole = "supplier";
-const status: TransactionStatus = "Pending";
 
-// Texto conforme status
-function getStatusDescription(status: TransactionStatus): {
-    title: string;
-    description: string;
-} {
-    switch (status) {
-        case "Pending":
-            return {
-                title: "Order received",
-                description: "Waiting for the supplier to respond to the proposal.",
-            };
-        case "Waiting":
-            return {
-                title: "Waiting",
-                description: "The drone is on its way to pick up the package.",
-            };
-        case "In Flight":
-            return {
-                title: "Drone en route",
-                description: "The drone is delivering the package to the destination.",
-            };
-        case "Completed":
-            return {
-                title: "Completed",
-                description: "The order has been successfully delivered!",
-            };
-        case "Rejected":
-            return {
-                title: "Rejected",
-                description: "The order has been canceled!",
-            };
-        default:
-            return {
-                title: "",
-                description: "",
-            };
-    }
-}
-
-// Lógica de permissão de ações
-function canAccept(status: TransactionStatus, viewAs: ViewerRole): boolean {
-  if (status === "Pending") return viewAs === "supplier";
-  if (status === "Waiting") return true; 
-  if (status === "In Flight") return viewAs === "client";
-  return false;
-}
-
-function canReject(status: TransactionStatus, viewAs: ViewerRole): boolean {
-  return status === "Pending" && viewAs === "supplier";
-}
-
-
-function getAcceptLabel(status: TransactionStatus, viewAs: ViewerRole): string {
-  if (status === "Pending") return "Accept request";
-  if (status === "Waiting") return "Confirm drone received package";
-  if (status === "In Flight" && viewAs === "client") return "Confirm receipt";
-  return "Confirm";
-}
-
+type OrderData = {
+  id: string;
+  clientName: string;
+  pickupLocation: string;
+  deliveryLocation: string;
+  droneModel: string;
+  status: TransactionStatus;
+};
 
 export default function TransactionProgressPage() {
+  const viewAs: ViewerRole = "supplier";
+
+  const [order, setOrder] = useState<OrderData | null>(null);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("currentOrder");
+    if (stored) {
+      try {
+        setOrder(JSON.parse(stored));
+      } catch (e) {
+        console.error("Invalid order in localStorage", e);
+      }
+    }
+  }, []);
+
+  const status: TransactionStatus = order?.status ?? "Pending";
+
+  // Texto conforme status
+  function getStatusDescription(status: TransactionStatus): {
+    title: string;
+    description: string;
+  } {
+    switch (status) {
+      case "Pending":
+        return {
+          title: "Order received",
+          description: "Waiting for the supplier to respond to the proposal.",
+        };
+      case "Waiting":
+        return {
+          title: "Waiting",
+          description: "The drone is on its way to pick up the package.",
+        };
+      case "In Flight":
+        return {
+          title: "Drone en route",
+          description: "The drone is delivering the package to the destination.",
+        };
+      case "Completed":
+        return {
+          title: "Completed",
+          description: "The order has been successfully delivered!",
+        };
+      case "Rejected":
+        return {
+          title: "Rejected",
+          description: "The order has been canceled!",
+        };
+      default:
+        return {
+          title: "",
+          description: "",
+        };
+    }
+  }
+
+  function canAccept(status: TransactionStatus, viewAs: ViewerRole): boolean {
+    if (status === "Pending") return viewAs === "supplier";
+    if (status === "Waiting") return true;
+    if (status === "In Flight") return viewAs === "client";
+    return false;
+  }
+
+  function canReject(status: TransactionStatus, viewAs: ViewerRole): boolean {
+    return status === "Pending" && viewAs === "supplier";
+  }
+
+  function getAcceptLabel(status: TransactionStatus, viewAs: ViewerRole): string {
+    if (status === "Pending") return "Accept request";
+    if (status === "Waiting") return "Confirm drone received package";
+    if (status === "In Flight" && viewAs === "client") return "Confirm receipt";
+    return "Confirm";
+  }
+
   const { title, description } = getStatusDescription(status);
 
-  // Gerar dinamicamente os botões de ação
   const actionItems: React.ReactNode[] = [];
 
   if (canAccept(status, viewAs)) {
@@ -149,20 +167,20 @@ export default function TransactionProgressPage() {
           <ListboxItem key="route-header">
             <span className="text-2xl font-bold block">Route</span>
           </ListboxItem>
-          <ListboxItem key="route-body">
+          <ListboxItem key="pickup-location">
             <div className="flex items-center gap-3">
               <IconWrapper className="bg-default-100 text-default-600">
                 <PinIcon size={60} className="text-default-500" />
               </IconWrapper>
-              <span>123 Main St, Springfield</span>
+              <span>{order?.pickupLocation ?? "Pickup Address"}</span>
             </div>
           </ListboxItem>
-          <ListboxItem key="route-footer">
+          <ListboxItem key="delivery-location">
             <div className="flex items-center gap-3">
               <IconWrapper className="bg-default-100 text-default-600">
                 <PinIcon size={60} className="text-default-500" />
               </IconWrapper>
-              <span>456 Elm St, Shelbyville</span>
+              <span>{order?.deliveryLocation ?? "Delivery Address"}</span>
             </div>
           </ListboxItem>
         </Listbox>
@@ -177,20 +195,20 @@ export default function TransactionProgressPage() {
           <ListboxItem key="hiring-header">
             <span className="text-2xl font-bold block">Hiring</span>
           </ListboxItem>
-          <ListboxItem key="route-body">
+          <ListboxItem key="client">
             <div className="flex items-center gap-3">
               <IconWrapper className="bg-default-100 text-default-600">
                 <PersonIcon size={20} className="text-default-500" />
               </IconWrapper>
-              <span>Francisco Cisco</span>
+              <span>{order?.clientName ?? "Client Name"}</span>
             </div>
           </ListboxItem>
-          <ListboxItem key="route-footer">
+          <ListboxItem key="drone">
             <div className="flex items-center gap-3">
               <IconWrapper className="bg-default-100 text-default-600">
                 <DroneIcon size={30} className="text-default-500" />
               </IconWrapper>
-              <span>DJI Phantom 4</span>
+              <span>{order?.droneModel ?? "Drone Model"}</span>
             </div>
           </ListboxItem>
         </Listbox>
