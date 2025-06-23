@@ -3,6 +3,7 @@
 import React from 'react';
 import StatusBar, { TransactionStatus } from './statusBar';
 import {Card, CardHeader, CardBody, CardFooter, Divider} from "@heroui/react";
+import {Listbox, ListboxItem} from "@heroui/react";
 
 const status: TransactionStatus = 'In Flight';
 
@@ -53,55 +54,53 @@ export default function TransactionProgressPage() {
             {/* Add spacing between the bar and the cards */}
             <div className="h-8" />
             <div className="flex gap-4">
-                <Card>
-                    <CardHeader className="flex gap-3">
-                      <div className="flex flex-col">
-                        <p className="text-md">HeroUI</p>
-                        <p className="text-small text-default-500">heroui.com</p>
-                      </div>
-                    </CardHeader>
-                    <Divider />
-                        <CardBody>
-                            <p>Make beautiful websites regardless of your design experience.</p>
-                        </CardBody>
-                    <Divider />
-                    <CardFooter>
+                <Listbox
+                        className="p-0 gap-0 divide-y divide-default-300/50 dark:divide-default-100/80 bg-content1 overflow-visible shadow-small rounded-medium"
+                        itemClasses={{
+                            base: "px-3 first:rounded-t-medium last:rounded-b-medium rounded-none gap-3 h-12 data-[hover=true]:bg-default-100/80",
+                        }}>
+                    <ListboxItem key="route-header" isDisabled>
+                        <span className="text-2xl font-bold block">Route</span>
+                    </ListboxItem>
+                    <ListboxItem key="route-body">
                         <p>Make beautiful websites regardless of your design experience.</p>
-                    </CardFooter>
-                </Card>
+                    </ListboxItem>
+                    <ListboxItem key="route-footer">
+                        <p>Make beautiful websites regardless of your design experience.</p>
+                    </ListboxItem>
+                </Listbox>
 
-                <Card>
-                    <CardHeader className="flex gap-3">
-                      <div className="flex flex-col">
-                        <span className="text-2xl font-bold">Action</span>
-                      </div>
-                    </CardHeader>
-                    <Divider />
-                        <CardBody>
-                            <p>Make beautiful websites regardless of your design experience.</p>
-                        </CardBody>
-                    <Divider />
-                    <CardFooter>
+                <Listbox
+                        className="p-0 gap-0 divide-y divide-default-300/50 dark:divide-default-100/80 bg-content1 overflow-visible shadow-small rounded-medium"
+                        itemClasses={{
+                            base: "px-3 first:rounded-t-medium last:rounded-b-medium rounded-none gap-3 h-12 data-[hover=true]:bg-default-100/80",
+                        }}>
+                    <ListboxItem key="action-header" isDisabled>
+                        <span className="text-2xl font-bold block">Action</span>
+                    </ListboxItem>
+                    <ListboxItem key="action-body">
                         <p>Make beautiful websites regardless of your design experience.</p>
-                    </CardFooter>
-                </Card>
+                    </ListboxItem>
+                    <ListboxItem key="action-footer">
+                        <p>Make beautiful websites regardless of your design experience.</p>
+                    </ListboxItem>
+                </Listbox>
 
-                <Card>
-                    <CardHeader className="flex gap-3">
-                      <div className="flex flex-col">
-                        <p className="text-md">HeroUI</p>
-                        <p className="text-small text-default-500">heroui.com</p>
-                      </div>
-                    </CardHeader>
-                    <Divider />
-                        <CardBody>
-                            <p>Make beautiful websites regardless of your design experience.</p>
-                        </CardBody>
-                    <Divider />
-                    <CardFooter>
+                <Listbox
+                        className="p-0 gap-0 divide-y divide-default-300/50 dark:divide-default-100/80 bg-content1 overflow-visible shadow-small rounded-medium"
+                        itemClasses={{
+                            base: "px-3 first:rounded-t-medium last:rounded-b-medium rounded-none gap-3 h-12 data-[hover=true]:bg-default-100/80",
+                        }}>
+                    <ListboxItem key="hiring-header" isDisabled>
+                        <span className="text-2xl font-bold block">Hiring</span>
+                    </ListboxItem>
+                    <ListboxItem key="hiring-body">
                         <p>Make beautiful websites regardless of your design experience.</p>
-                    </CardFooter>
-                </Card>
+                    </ListboxItem>
+                    <ListboxItem key="hiring-footer">
+                        <p>Make beautiful websites regardless of your design experience.</p>
+                    </ListboxItem>
+                </Listbox>
             </div>
         </div>
     );
