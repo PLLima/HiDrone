@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Key } from "react";
 import {
   Modal,
   ModalContent,
@@ -8,6 +8,7 @@ import {
   ModalBody,
   Button,
   Image,
+  select,
 } from "@heroui/react";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Accordion, AccordionItem } from "@heroui/react";
@@ -27,6 +28,8 @@ import { Input } from "@heroui/react";
 import {
   DroneFilters,
   DroneInstanceData,
+  DroneModelData,
+  getDroneModels,
   getDrones,
 } from "@/app/server/supply";
 
@@ -235,21 +238,39 @@ const DroneDetailsModal = ({
 // Drone Details Modal Component
 const AddDroneModal = ({
   isOpen,
+  droneModels,
   onClose,
 }: {
   isOpen: boolean;
+  droneModels: DroneModelData[] | null;
   onClose: () => void;
 }) => {
-  const drone = mockDrones[0]; // Use the first drone as a template for the modal
+  // No drone models to add from!
+  if (!droneModels) return null;
+
+  // State for selected model
+  const [selectedModel, setSelectedModel] = useState<DroneModelData>(droneModels[0]);
 
   // Prepare rows for the table
-  const rows = [
-    { name: "Weight Capacity", value: `${drone.weight_capacity} kg` },
-    { name: "Volume Capacity", value: `${drone.volume_capacity} L` },
-    { name: "Drone Weight", value: `${drone.drone_weight} kg` },
-    { name: "Drone Dimensions", value: `${drone.drone_dimentions} (m)` },
-    { name: "Material", value: drone.material },
+  let rows = [
+    { name: "Weight Capacity", value: `${selectedModel.capacityWeight} kg` },
+    { name: "Volume Capacity", value: `${selectedModel.capacityVolume} L` },
+    { name: "Drone Weight", value: `${selectedModel.weight} kg` },
+    { name: "Drone Dimensions", value: `${selectedModel.size} (m)` },
+    { name: "Material", value: selectedModel.composition },
   ];
+
+  // Handle selection change
+  const handleSelectionChange = (key: number) => {
+    setSelectedModel(droneModels[key]);
+    rows = [
+      { name: "Weight Capacity", value: `${droneModels[key].capacityWeight} kg` },
+      { name: "Volume Capacity", value: `${droneModels[key].capacityVolume} L` },
+      { name: "Drone Weight", value: `${droneModels[key].weight} kg` },
+      { name: "Drone Dimensions", value: `${droneModels[key].size} (m)` },
+      { name: "Material", value: droneModels[key].composition },
+    ];
+  };
 
   return (
     <Modal
@@ -270,8 +291,8 @@ const AddDroneModal = ({
           <ModalBody className="flex flex-col items-center gap-6">
             {/* Drone Image */}
             <img
-              src={drone.image}
-              alt={drone.model}
+              src={selectedModel.image}
+              alt={selectedModel.model}
               className="w-full max-w-md h-auto rounded-lg object-cover"
             />
 
@@ -280,14 +301,16 @@ const AddDroneModal = ({
               {/* Model Autocomplete */}
               <Autocomplete
                 label="Model"
-                defaultSelectedKey={drone.model}
+                defaultSelectedKey={droneModels[0].id}
+                defaultInputValue={droneModels[0].model}
                 className="w-full"
-                // You can provide a list of models if available, here using mockDrones for demonstration
+                defaultItems={droneModels}
+                onSelectionChange={(key) => handleSelectionChange(key as number - 1)}
               >
-                {["Drone Model X", "Drone Model Y", "Drone Model Z"].map(
-                  (model) => (
-                    <AutocompleteItem key={model}>{model}</AutocompleteItem>
-                  )
+                {(droneModel) => (
+                  <AutocompleteItem key={droneModel.id}>
+                    {droneModel.model}
+                  </AutocompleteItem>
                 )}
               </Autocomplete>
 
@@ -336,7 +359,7 @@ const AddDroneModal = ({
                 Cancel
               </Button>
               <Button
-                onPress={() => alert(`Drone ${drone.id} chosen!`)}
+                onPress={() => alert(`Drone ${selectedModel.id} chosen!`)}
                 color="primary"
                 className="flex-[1.5]"
               >
@@ -376,6 +399,9 @@ export function MyDronesPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isADModalOpen, setIsADModalOpen] = useState(false);
   const [drones, setDrones] = useState<DroneInstanceData[] | null>(null);
+  const [droneModels, setDroneModels] = useState<DroneModelData[] | null>(
+    null
+  )
 
   // Runs on every page request (server-side)
   // useEffect(() => {
@@ -421,7 +447,9 @@ export function MyDronesPage() {
     setSelectedDroneId(null);
   };
 
-  const handleAddDroneClick = () => {
+  async function handleAddDroneClick() {
+    const droneModels = await getDroneModels();
+    setDroneModels(droneModels.sort((a: any, b: any) => a.id - b.id));
     setIsADModalOpen(true);
   };
 
@@ -554,6 +582,7 @@ export function MyDronesPage() {
       />
       <AddDroneModal
         isOpen={isADModalOpen}
+        droneModels={droneModels}
         onClose={handleCloseAddDroneModal}
       />
     </div>

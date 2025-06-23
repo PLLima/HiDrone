@@ -1,6 +1,17 @@
 "use server";
 import prisma from "../../lib/prisma";
 
+export type DroneModelData = {
+  id: number;
+  model: string;
+  weight: number;
+  size: string;
+  composition: string;
+  image: string;
+  capacityVolume: number;
+  capacityWeight: number;
+}
+
 export type DroneInstanceData = {
   id: number;
   supplier: string;
@@ -23,6 +34,11 @@ export type DroneFilters = {
   volumeCapacity: [number, number];
   droneWeight: [number, number];
 };
+
+export async function getDroneModels() {
+  const models = await (prisma as any).droneModel.findMany();
+  return JSON.parse(JSON.stringify(models));
+}
 
 export async function getDrones() {
   const drones = await (prisma as any).droneInstance.findMany({
