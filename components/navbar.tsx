@@ -32,6 +32,8 @@ import {
 
 export const Navbar = () => {
   const [loggedName, setLoggedName] = useState<string | null>(null);
+  const [loggedRole, setLoggedRole] = useState<"client" | "supplier" | null>(null);
+
   const {
     isOpen: isOpenLogin,
     onOpen: onOpenLogin,
@@ -44,9 +46,14 @@ export const Navbar = () => {
   } = useDisclosure();
 
   useEffect(() => {
-    // Retrieve the logged_name_debug value from localStorage
     const storedName = localStorage.getItem("logged_name_debug");
+    const storedRole = localStorage.getItem("logged_role_debug");
     setLoggedName(storedName);
+    if (storedRole === "client" || storedRole === "supplier") {
+      setLoggedRole(storedRole);
+    } else {
+      setLoggedRole(null);
+    }
   }, []);
 
   return (
@@ -76,10 +83,7 @@ export const Navbar = () => {
         </ul>
       </NavbarContent>
 
-      <NavbarContent
-        className="hidden sm:flex basis-1/5 sm:basis-full"
-        justify="end"
-      >
+      <NavbarContent className="hidden sm:flex basis-1/5 sm:basis-full" justify="end">
         <NavbarItem className="hidden sm:flex gap-2">
           <Link isExternal aria-label="Github" href={siteConfig.links.github}>
             <GithubIcon className="text-default-500" />
@@ -88,26 +92,25 @@ export const Navbar = () => {
         </NavbarItem>
         <NavbarItem className="hidden lg:flex items-center gap-4">
           {loggedName ? (
-            // Display the logged name manu if it exists
             <Dropdown backdrop="blur">
               <DropdownTrigger>
                 <Button variant="bordered">{loggedName}</Button>
               </DropdownTrigger>
               <DropdownMenu aria-label="Static Actions" variant="faded">
-                <DropdownItem
-                  key="order_history"
-                  onPress={() => {
-                    const role = localStorage.getItem("logged_role_debug");
-                    if (role === "supplier") {
-                      window.location.href = "/order";
-                    } else {
-                      window.location.href = "/order_history";
-                    }
-                  }}
-                >
-                  Order History
-                </DropdownItem>
-
+                {loggedRole && (
+                  <DropdownItem
+                    key="order_history"
+                    onPress={() => {
+                      if (loggedRole === "supplier") {
+                        window.location.href = "/order";
+                      } else {
+                        window.location.href = "/order_history";
+                      }
+                    }}
+                  >
+                    Order History
+                  </DropdownItem>
+                )}
 
                 <DropdownItem
                   key="logout"
@@ -119,6 +122,7 @@ export const Navbar = () => {
                     localStorage.removeItem("cnpj_debug");
                     localStorage.removeItem("logged_role_debug");
                     setLoggedName(null);
+                    setLoggedRole(null);
                     window.location.reload();
                   }}
                 >
@@ -127,10 +131,8 @@ export const Navbar = () => {
               </DropdownMenu>
             </Dropdown>
           ) : (
-            // Display "Log in" and "Sign up" buttons if no logged name
             <div className="flex gap-2">
               <Button
-                // When clicked, open the login modal
                 onPress={onOpenLogin}
                 variant="light"
               >
@@ -163,8 +165,8 @@ export const Navbar = () => {
                   index === 2
                     ? "primary"
                     : index === siteConfig.navMenuItems.length - 1
-                      ? "danger"
-                      : "foreground"
+                    ? "danger"
+                    : "foreground"
                 }
                 href="#"
                 size="lg"
