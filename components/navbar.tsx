@@ -94,7 +94,7 @@ export const Navbar = () => {
                 <Button variant="bordered">{loggedName}</Button>
               </DropdownTrigger>
               <DropdownMenu aria-label="Static Actions" variant="faded">
-                <DropdownItem key="manage_account">Manage Account</DropdownItem>
+                <DropdownItem key="manage_account">Order History</DropdownItem>
                 <DropdownItem
                   key="logout"
                   className="text-danger"
