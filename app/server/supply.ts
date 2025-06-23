@@ -24,6 +24,11 @@ export type DroneFilters = {
   droneWeight: [number, number];
 };
 
+export async function getDroneModels() {
+  const models = await (prisma as any).droneModel.findMany();
+  return JSON.parse(JSON.stringify(models));
+}
+
 export async function getDrones() {
   const drones = await (prisma as any).droneInstance.findMany({
     include: {
