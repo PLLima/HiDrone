@@ -1,6 +1,17 @@
 "use server";
 import prisma from "../../lib/prisma";
 
+export type DroneModelData = {
+  id: number;
+  model: string;
+  weight: number;
+  size: string;
+  composition: string;
+  image: string;
+  capacityVolume: number;
+  capacityWeight: number;
+}
+
 export type DroneInstanceData = {
   id: number;
   supplier: string;
