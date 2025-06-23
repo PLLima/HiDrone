@@ -4,8 +4,9 @@ import React from 'react';
 import StatusBar, { TransactionStatus } from './statusBar';
 import {Card, CardHeader, CardBody, CardFooter, Divider} from "@heroui/react";
 import {Listbox, ListboxItem} from "@heroui/react";
+import { PinIcon, IconWrapper, XIcon, AcceptIcon, PersonIcon, DroneIcon } from '@/components/icons';
 
-const status: TransactionStatus = 'In Flight';
+const status: TransactionStatus = 'Pending';
 
 // Function to return title and description according to the status
 function getStatusDescription(status: TransactionStatus): { title: string; description: string } {
@@ -59,14 +60,24 @@ export default function TransactionProgressPage() {
                         itemClasses={{
                             base: "px-3 first:rounded-t-medium last:rounded-b-medium rounded-none gap-3 h-12 data-[hover=true]:bg-default-100/80",
                         }}>
-                    <ListboxItem key="route-header" isDisabled>
-                        <span className="text-2xl font-bold block">Route</span>
+                    <ListboxItem key="action-header" isDisabled>
+                        <span className="text-2xl font-bold block">Accept request?</span>
                     </ListboxItem>
                     <ListboxItem key="route-body">
-                        <p>Make beautiful websites regardless of your design experience.</p>
+                        <div className="flex items-center gap-3">
+                            <IconWrapper className="bg-success-100 text-success-600">
+                                <AcceptIcon size={25} className="text-success-500" />
+                            </IconWrapper>
+                            <span>Accept</span>
+                        </div>
                     </ListboxItem>
                     <ListboxItem key="route-footer">
-                        <p>Make beautiful websites regardless of your design experience.</p>
+                        <div className="flex items-center gap-3">
+                            <IconWrapper className="bg-danger-100 text-danger-600">
+                                <XIcon size={25} className="text-danger-500" />
+                            </IconWrapper>
+                            <span>Reject</span>
+                        </div>
                     </ListboxItem>
                 </Listbox>
 
@@ -75,14 +86,24 @@ export default function TransactionProgressPage() {
                         itemClasses={{
                             base: "px-3 first:rounded-t-medium last:rounded-b-medium rounded-none gap-3 h-12 data-[hover=true]:bg-default-100/80",
                         }}>
-                    <ListboxItem key="action-header" isDisabled>
-                        <span className="text-2xl font-bold block">Action</span>
+                    <ListboxItem key="route-header" isDisabled>
+                        <span className="text-2xl font-bold block">Route</span>
                     </ListboxItem>
-                    <ListboxItem key="action-body">
-                        <p>Make beautiful websites regardless of your design experience.</p>
+                    <ListboxItem key="route-body">
+                        <div className="flex items-center gap-3">
+                            <IconWrapper className="bg-default-100 text-default-600">
+                                <PinIcon size={60} className="text-default-500" />
+                            </IconWrapper>
+                            <span>123 Main St, Springfield</span>
+                        </div>
                     </ListboxItem>
-                    <ListboxItem key="action-footer">
-                        <p>Make beautiful websites regardless of your design experience.</p>
+                    <ListboxItem key="route-footer">
+                        <div className="flex items-center gap-3">
+                            <IconWrapper className="bg-default-100 text-default-600">
+                                <PinIcon size={60} className="text-default-500" />
+                            </IconWrapper>
+                            <span>456 Elm St, Shelbyville</span>
+                        </div>
                     </ListboxItem>
                 </Listbox>
 
@@ -94,11 +115,21 @@ export default function TransactionProgressPage() {
                     <ListboxItem key="hiring-header" isDisabled>
                         <span className="text-2xl font-bold block">Hiring</span>
                     </ListboxItem>
-                    <ListboxItem key="hiring-body">
-                        <p>Make beautiful websites regardless of your design experience.</p>
+                    <ListboxItem key="route-body">
+                        <div className="flex items-center gap-3">
+                            <IconWrapper className="bg-default-100 text-default-600">
+                                <PersonIcon size={20} className="text-default-500" />
+                            </IconWrapper>
+                            <span>Francisco Cisco</span>
+                        </div>
                     </ListboxItem>
-                    <ListboxItem key="hiring-footer">
-                        <p>Make beautiful websites regardless of your design experience.</p>
+                    <ListboxItem key="route-footer">
+                        <div className="flex items-center gap-3">
+                            <IconWrapper className="bg-default-100 text-default-600">
+                                <DroneIcon size={30} className="text-default-500" />
+                            </IconWrapper>
+                            <span>DJI Phantom 4</span>
+                        </div>
                     </ListboxItem>
                 </Listbox>
             </div>

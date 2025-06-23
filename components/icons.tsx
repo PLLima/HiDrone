@@ -32,6 +32,101 @@ const withCircle = (children: React.ReactNode) => (
   </>
 );
 
+export const DroneIcon: React.FC<IconSvgProps> = ({ size = 24, className = '', ...props }) => (
+  <svg
+    viewBox="0 0 24 24"
+    width={size}
+    height={size}
+    fill="none"
+    className={className}
+    {...props}
+  >
+    {/* Body (filled circle) */}
+    <circle
+      cx="12"
+      cy="14"
+      r="4"
+      fill="currentColor"
+    />
+
+    {/* Propellers (two horizontal lines) */}
+    <line
+      x1="6"
+      y1="8"
+      x2="10"
+      y2="8"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+    />
+    <line
+      x1="14"
+      y1="8"
+      x2="18"
+      y2="8"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+    />
+
+    {/* Connectors (diagonal lines) */}
+    <line
+      x1="8"
+      y1="8"
+      x2="10"
+      y2="12"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+    />
+    <line
+      x1="16"
+      y1="8"
+      x2="14"
+      y2="12"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+    />
+  </svg>
+);
+
+
+export const PersonIcon: React.FC<IconSvgProps> = ({ size = 24, className = '', ...props }) => (
+  <svg
+    viewBox="0 0 24 24"
+    width={size}
+    height={size}
+    fill="none"
+    className={className}
+    {...props}
+  >
+    {
+      <>
+        {/* Head */}
+        <circle
+          cx="12"
+          cy="8"
+          r="3"
+          fill="currentColor"
+          stroke="currentColor"
+          strokeWidth={4}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        {/* Shoulders / Torso */}
+        <path
+          d="M5 20c0-4 3-7 7-7s7 3 7 7Z"
+          fill="currentColor"
+          stroke="currentColor"
+          strokeWidth={4}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </>
+    }
+  </svg>
+);
 
 export const PinIcon: React.FC<IconSvgProps> = ({ size = 24, className = '', ...props }) => (
   <svg
@@ -42,14 +137,6 @@ export const PinIcon: React.FC<IconSvgProps> = ({ size = 24, className = '', ...
     className={className}
     {...props}
   >
-    <circle
-      cx="12"
-      cy="12"
-      r="10"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-    />
     <path
       d="M12 6a4 4 0 0 1 4 4c0 3-4 8-4 8s-4-5-4-8a4 4 0 0 1 4-4z"
       fill="none"
