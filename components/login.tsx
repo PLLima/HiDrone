@@ -41,6 +41,12 @@ export const LogInModal = ({
     // Custom validation checks
     const newErrors: Errors = {};
 
+    // Clear the submitted data
+    localStorage.removeItem("logged_name_debug");
+    localStorage.removeItem("logged_email_debug");
+    localStorage.removeItem("cnpj_debug");
+    localStorage.removeItem("logged_role_debug");
+
     // Search for registered user
     const existingUser = await findUser(data.email);
     if (!existingUser) {
@@ -62,6 +68,14 @@ export const LogInModal = ({
     // Store the submitted data
     localStorage.setItem("logged_email_debug", existingUser.email);
     localStorage.setItem("logged_name_debug", existingUser.name);
+
+    // If the user is a supplier, store the CNPJ
+    if (existingUser.cnpj) {
+      localStorage.setItem("cnpj_debug", existingUser.cnpj);
+      localStorage.setItem("logged_role_debug", "supplier");
+    } else {
+      localStorage.setItem("logged_role_debug", "client");
+    }
 
     // Close the modal and reload the page
     setIsLoading(false);

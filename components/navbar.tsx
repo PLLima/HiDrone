@@ -115,6 +115,9 @@ export const Navbar = () => {
                   color="danger"
                   onPress={() => {
                     localStorage.removeItem("logged_name_debug");
+                    localStorage.removeItem("logged_email_debug");
+                    localStorage.removeItem("cnpj_debug");
+                    localStorage.removeItem("logged_role_debug");
                     setLoggedName(null);
                     window.location.reload();
                   }}
