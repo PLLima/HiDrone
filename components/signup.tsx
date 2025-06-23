@@ -1,63 +1,64 @@
 "use client";
 
-import React, { FormEvent } from "react";
+import React from "react";
 import {
   Modal,
   ModalContent,
   ModalHeader,
   ModalBody,
   ModalFooter,
-  form,
 } from "@heroui/react";
-import { Form, Input, Button, Checkbox } from "@heroui/react";
-import {
-  ClientData,
-  registerClient,
-  registerSupplier,
-} from "@/app/server/user";
+import { Form, Input, Button } from "@heroui/react";
+import { registerClient, registerSupplier } from "@/app/server/user";
 import { hash } from "bcryptjs";
 import { Tabs, Tab } from "@heroui/react";
 import { get } from "http";
-import { format } from "path";
 
-// Define types for errors and submitted data
-type Errors = {
-  password?: string;
-  name?: string;
-  email?: string;
-  enterpriseName?: string;
-  cnpj?: string;
-};
-
-const ClientForm = ({
-  isLoading,
-  onClose,
-  clearVariables,
-  onSubmit,
-}: {
-  isLoading: boolean;
-  onClose: () => void;
-  clearVariables: () => void;
-  onSubmit: (data: {
-    name: string;
-    email: string;
-    password: string;
-  }) => Promise<string | null>;
-}) => {
+const ClientForm = ({ onClose }: { onClose: () => void }) => {
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [name, setName] = React.useState("");
+  const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [repeatPassword, setRepeatPassword] = React.useState("");
-  const [touched, setTouched] = React.useState({
+  const [firstFocused, setFirstFocused] = React.useState({
+    name: false,
+    email: false,
     password: false,
     repeat_password: false,
   });
-  const [errors, setErrors] = React.useState<{ password?: string }>({});
+  const [touched, setTouched] = React.useState({
+    name: false,
+    email: false,
+    password: false,
+    repeat_password: false,
+  });
+  const [errors, setErrors] = React.useState<{
+    name?: string;
+    email?: string;
+    password?: string;
+    repeat_password?: string;
+  }>({});
+
+  const getNameError = (value: string): string | null => {
+    if (!value) return "Please enter your name.";
+    return null;
+  };
+
+  const getEmailError = (value: string): string | null => {
+    if (!value) return "Please enter your email.";
+    const emailRegex =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!emailRegex.test(value))
+      return "Invalid email address. Must be a valid email address, with characters before and after the '@' and a '.' with something at the end.";
+    return null;
+  };
 
   const getPasswordError = (value: string): string | null => {
-    if (value.length < 4) return "Password must be 4 characters or more";
+    if (value.length < 4) return "Password must be 4 characters or more.";
     if ((value.match(/[A-Z]/g) || []).length < 1)
-      return "Password needs at least 1 uppercase letter";
+      return "Password needs at least 1 uppercase letter.";
     if ((value.match(/[^a-z]/gi) || []).length < 1)
-      return "Password needs at least 1 symbol";
+      return "Password needs at least 1 symbol.";
     return null;
   };
 
@@ -65,26 +66,75 @@ const ClientForm = ({
     value1: string,
     value2: string
   ): string | null => {
-    return value1 !== value2 ? "Passwords do not match" : null;
+    return value1 !== value2 ? "Passwords do not match." : null;
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const name = formData.get("name") as string;
-    const email = formData.get("email") as string;
-    const newErrors: { email?: string; password?: string } = {};
+    const newErrors: {
+      name?: string;
+      email?: string;
+      password?: string;
+      repeat_password?: string;
+    } = {};
+
+    const nameError = getNameError(name);
+    if (nameError) newErrors.name = nameError || "";
+    const emailError = getEmailError(email);
+    if (emailError) newErrors.email = emailError || "";
     const passwordError = getPasswordError(password);
-    if (passwordError) newErrors.password = passwordError;
-    if (getRepeatPasswordError(password, repeatPassword))
-      newErrors.password =
-        getRepeatPasswordError(password, repeatPassword) || "";
+    if (passwordError) newErrors.password = passwordError || "";
+    const repeatedPasswordError = getPasswordError(password);
+    if (repeatedPasswordError)
+      newErrors.repeat_password = repeatedPasswordError || "";
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
-      newErrors.email = await onSubmit({ name, email, password }) || "";
-      setErrors(newErrors);
+      await handleClientSubmit({ name, email, password });
     }
-    return "";
+  };
+
+  // Handler for client form submission
+  const handleClientSubmit = async (data: {
+    name: string;
+    email: string;
+    password: string;
+  }) => {
+    setIsLoading(true);
+    const hashedPassword = await hash(data.password, 10);
+    const formattedData = {
+      name: data.name,
+      email: data.email,
+      password: hashedPassword,
+      credits: 0,
+    };
+    const registered = await registerClient(formattedData);
+    if (registered === "email") {
+      errors.email = "An account with this email already exists.";
+      setErrors(errors);
+      setIsLoading(false);
+      return;
+    }
+    localStorage.setItem("logged_name_debug", data.name);
+    localStorage.setItem("logged_email_debug", data.email);
+    setErrors({});
+    setIsLoading(false);
+    window.location.reload();
+  };
+
+  // Clear variables for modal close/reset
+  const clearVariables = () => {
+    setName("");
+    setEmail("");
+    setPassword("");
+    setRepeatPassword("");
+    setTouched({
+      name: false,
+      email: false,
+      password: false,
+      repeat_password: false,
+    });
+    setErrors({});
   };
 
   return (
@@ -95,13 +145,56 @@ const ClientForm = ({
       autoComplete="on"
     >
       <div className="flex flex-col gap-4 max-w-md">
-        <Input isRequired label="Name" name="name" />
-        <Input isRequired label="Email" name="email" type="email" />
+        <Input
+          isRequired
+          errorMessage={errors.name}
+          isInvalid={touched.name && !!errors.name}
+          label="Name"
+          name="name"
+          type="text"
+          autoComplete="name"
+          value={name}
+          onValueChange={(value) => {
+            setName(value);
+            setErrors((prev) => ({
+              ...prev,
+              name: getNameError(value) || "",
+            }));
+          }}
+          onFocus={() => setFirstFocused((prev) => ({ ...prev, name: true }))}
+          onBlur={() => {
+            if (firstFocused.name)
+              setTouched((prev) => ({ ...prev, name: true }));
+          }}
+        />
 
         <Input
           isRequired
-          errorMessage={touched.password ? getPasswordError(password) : null}
-          isInvalid={touched.password && getPasswordError(password) !== null}
+          errorMessage={errors.email}
+          isInvalid={touched.email && !!errors.email}
+          label="Email"
+          name="email"
+          type="text"
+          autoComplete="email"
+          value={email}
+          onValueChange={(value) => {
+            setEmail(value);
+            setErrors((prev) => ({
+              ...prev,
+              email: getEmailError(value) || "",
+            }));
+          }}
+          onFocus={() => setFirstFocused((prev) => ({ ...prev, email: true }))}
+          onBlur={() => {
+            if (firstFocused.email)
+              setTouched((prev) => ({ ...prev, email: true }));
+          }}
+        />
+
+        <Input
+          isRequired
+          errorMessage={errors.password}
+          isInvalid={touched.password && !!errors.password}
           label="Password"
           name="password"
           type="password"
@@ -109,28 +202,41 @@ const ClientForm = ({
           value={password}
           onValueChange={(value) => {
             setPassword(value);
-            setTouched((prev) => ({ ...prev, password: true }));
+            setErrors((prev) => ({
+              ...prev,
+              password: getPasswordError(value) || "",
+            }));
+          }}
+          onFocus={() =>
+            setFirstFocused((prev) => ({ ...prev, password: true }))
+          }
+          onBlur={() => {
+            if (firstFocused.password)
+              setTouched((prev) => ({ ...prev, password: true }));
           }}
         />
 
         <Input
           isRequired
-          errorMessage={
-            touched.repeat_password
-              ? getRepeatPasswordError(password, repeatPassword)
-              : null
-          }
-          isInvalid={
-            touched.repeat_password &&
-            getRepeatPasswordError(password, repeatPassword) !== null
-          }
+          errorMessage={errors.repeat_password}
+          isInvalid={touched.repeat_password && !!errors.repeat_password}
           label="Repeat password"
           type="password"
           autoComplete="new-password"
           value={repeatPassword}
           onValueChange={(value) => {
             setRepeatPassword(value);
-            setTouched((prev) => ({ ...prev, repeat_password: true }));
+            setErrors((prev) => ({
+              ...prev,
+              repeat_password: getRepeatPasswordError(password, value) || "",
+            }));
+          }}
+          onFocus={() =>
+            setFirstFocused((prev) => ({ ...prev, repeat_password: true }))
+          }
+          onBlur={() => {
+            if (firstFocused.repeat_password)
+              setTouched((prev) => ({ ...prev, repeat_password: true }));
           }}
         />
 
@@ -153,6 +259,8 @@ const ClientForm = ({
             color="primary"
             isLoading={isLoading}
             isDisabled={
+              !!getNameError(name) ||
+              !!getEmailError(email) ||
               !!getPasswordError(password) ||
               !!getRepeatPasswordError(password, repeatPassword)
             }
@@ -165,49 +273,55 @@ const ClientForm = ({
   );
 };
 
-const SupplierForm = ({
-  isLoading,
-  onClose,
-  clearVariables,
-  onSubmit,
-}: {
-  isLoading: boolean;
-  onClose: () => void;
-  clearVariables: () => void;
-  onSubmit: (data: {
-    email: string;
-    password: string;
-    enterpriseName: string;
-    cnpj: string;
-  }) => Promise<string | null>;
-}) => {
+const SupplierForm = ({ onClose }: { onClose: () => void }) => {
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [enterpriseName, setEnterpriseName] = React.useState("");
+  const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [repeatPassword, setRepeatPassword] = React.useState("");
+  const [cnpj, setCnpj] = React.useState("");
+  const [firstFocused, setFirstFocused] = React.useState({
+    enterpriseName: false,
+    email: false,
+    password: false,
+    repeat_password: false,
+    cnpj: false,
+  });
   const [touched, setTouched] = React.useState({
     enterpriseName: false,
+    email: false,
     password: false,
     repeat_password: false,
     cnpj: false,
   });
   const [errors, setErrors] = React.useState<{
-    password?: string;
     enterpriseName?: string;
+    email?: string;
+    password?: string;
+    repeat_password?: string;
     cnpj?: string;
   }>({});
-  const [cnpj, setCnpj] = React.useState("");
-  const [enterpriseName, setEnterpriseName] = React.useState("");
 
   const getEnterpriseNameError = (value: string): string | null => {
-    if (!value) return "Please enter your enterprise name";
+    if (!value) return "Please enter your enterprise name.";
+    return null;
+  };
+
+  const getEmailError = (value: string): string | null => {
+    if (!value) return "Please enter your email.";
+    const emailRegex =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!emailRegex.test(value))
+      return "Invalid email address. Must be a valid email address, with characters before and after the '@' and a '.' with something at the end.";
     return null;
   };
 
   const getPasswordError = (value: string): string | null => {
-    if (value.length < 4) return "Password must be 4 characters or more";
+    if (value.length < 4) return "Password must be 4 characters or more.";
     if ((value.match(/[A-Z]/g) || []).length < 1)
-      return "Password needs at least 1 uppercase letter";
+      return "Password needs at least 1 uppercase letter.";
     if ((value.match(/[^a-z]/gi) || []).length < 1)
-      return "Password needs at least 1 symbol";
+      return "Password needs at least 1 symbol.";
     return null;
   };
 
@@ -215,11 +329,12 @@ const SupplierForm = ({
     value1: string,
     value2: string
   ): string | null => {
-    return value1 !== value2 ? "Passwords do not match" : null;
+    return value1 !== value2 ? "Passwords do not match." : null;
   };
 
   const getCnpjError = (value: string): string | null => {
-    if (!value.replace(/\D/g, "")) return "Please enter your CNPJ";
+    if (!value.replace(/\D/g, "")) return "Please enter your CNPJ.";
+    if (value.length !== 18) return "Please enter a valid CNPJ with 14 digits.";
     return null;
   };
 
@@ -236,30 +351,82 @@ const SupplierForm = ({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setErrors({});
     const newErrors: {
-      password?: string;
       enterpriseName?: string;
       email?: string;
+      password?: string;
+      repeat_password?: string;
       cnpj?: string;
     } = {};
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const enterpriseName = formData.get("enterpriseName") as string;
-    const email = formData.get("email") as string;
-    const passwordError = getPasswordError(password);
-    if (passwordError) newErrors.password = passwordError;
-    if (getRepeatPasswordError(password, repeatPassword))
-      newErrors.password =
-        getRepeatPasswordError(password, repeatPassword) || "";
+
     if (getEnterpriseNameError(enterpriseName))
       newErrors.enterpriseName = getEnterpriseNameError(enterpriseName) || "";
-    if (getCnpjError(cnpj)) newErrors.cnpj = getCnpjError(cnpj) || "";
+    const emailError = getEmailError(email) || "";
+    if (emailError) newErrors.email = emailError || "";
+    const passwordError = getPasswordError(password);
+    if (passwordError) newErrors.password = passwordError || "";
+    const repeatedPasswordError = getPasswordError(password);
+    if (repeatedPasswordError)
+      newErrors.repeat_password = repeatedPasswordError || "";
+    const cnpjError = getCnpjError(cnpj);
+    if (cnpjError) newErrors.cnpj = cnpjError || "";
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
-      newErrors.cnpj =
-        (await onSubmit({ email, password, enterpriseName, cnpj })) || "";
-      newErrors.enterpriseName = newErrors.cnpj || "";
-      setErrors(newErrors);
+      await handleSupplierSubmit({ email, password, enterpriseName, cnpj });
     }
+  };
+
+  // Handler for supplier form submission
+  const handleSupplierSubmit = async (data: {
+    enterpriseName: string;
+    email: string;
+    password: string;
+    cnpj: string;
+  }) => {
+    setIsLoading(true);
+    const hashedPassword = await hash(data.password, 10);
+    const formattedData = {
+      enterpriseName: data.enterpriseName,
+      email: data.email,
+      password: hashedPassword,
+      cnpj: data.cnpj,
+      credits: 0,
+    };
+    const registered = await registerSupplier(formattedData);
+    if (registered === "email") {
+      errors.email = "An account with this email already exists.";
+      setIsLoading(false);
+      setErrors(errors);
+      return;
+    } else if (registered === "cnpj") {
+      errors.cnpj = "An account with this CNPJ already exists.";
+      setIsLoading(false);
+      setErrors(errors);
+      return;
+    }
+    localStorage.setItem("logged_name_debug", data.enterpriseName);
+    localStorage.setItem("logged_email_debug", data.email);
+    localStorage.setItem("cnpj_debug", data.cnpj.replace(/\D/g, ""));
+    setErrors({});
+    setIsLoading(false);
+    window.location.reload();
+  };
+
+  // Clear variables for modal close/reset
+  const clearVariables = () => {
+    setEnterpriseName("");
+    setEmail("");
+    setPassword("");
+    setRepeatPassword("");
+    setCnpj("");
+    setTouched({
+      enterpriseName: false,
+      email: false,
+      password: false,
+      repeat_password: false,
+      cnpj: false,
+    });
+    setErrors({});
   };
 
   return (
@@ -272,11 +439,8 @@ const SupplierForm = ({
       <div className="flex flex-col gap-4 max-w-md">
         <Input
           isRequired
-          errorMessage={
-            touched.enterpriseName
-              ? getEnterpriseNameError(enterpriseName)
-              : null
-          }
+          errorMessage={errors.enterpriseName}
+          isInvalid={touched.enterpriseName && !!errors.enterpriseName}
           label="Enterprise Name"
           name="enterpriseName"
           type="text"
@@ -284,16 +448,47 @@ const SupplierForm = ({
           value={enterpriseName}
           onValueChange={(value) => {
             setEnterpriseName(value);
-            setTouched((prev) => ({ ...prev, enterpriseName: true }));
+            setErrors((prev) => ({
+              ...prev,
+              enterpriseName: getEnterpriseNameError(value) || "",
+            }));
+          }}
+          onFocus={() =>
+            setFirstFocused((prev) => ({ ...prev, enterpriseName: true }))
+          }
+          onBlur={() => {
+            if (firstFocused.enterpriseName)
+              setTouched((prev) => ({ ...prev, enterpriseName: true }));
           }}
         />
 
-        <Input isRequired label="Email" name="email" type="email" />
+        <Input
+          isRequired
+          errorMessage={errors.email}
+          isInvalid={touched.email && !!errors.email}
+          label="Email"
+          name="email"
+          type="text"
+          autoComplete="email"
+          value={email}
+          onValueChange={(value) => {
+            setEmail(value);
+            setErrors((prev) => ({
+              ...prev,
+              email: getEmailError(value) || "",
+            }));
+          }}
+          onFocus={() => setFirstFocused((prev) => ({ ...prev, email: true }))}
+          onBlur={() => {
+            if (firstFocused.email)
+              setTouched((prev) => ({ ...prev, email: true }));
+          }}
+        />
 
         <Input
           isRequired
-          errorMessage={touched.password ? getPasswordError(password) : null}
-          isInvalid={touched.password && getPasswordError(password) !== null}
+          errorMessage={errors.password}
+          isInvalid={touched.password && !!errors.password}
           label="Password"
           name="password"
           type="password"
@@ -301,44 +496,61 @@ const SupplierForm = ({
           value={password}
           onValueChange={(value) => {
             setPassword(value);
-            setTouched((prev) => ({ ...prev, password: true }));
+            setErrors((prev) => ({
+              ...prev,
+              password: getPasswordError(value) || "",
+            }));
+          }}
+          onFocus={() =>
+            setFirstFocused((prev) => ({ ...prev, password: true }))
+          }
+          onBlur={() => {
+            if (firstFocused.password)
+              setTouched((prev) => ({ ...prev, password: true }));
           }}
         />
 
         <Input
           isRequired
-          errorMessage={
-            touched.repeat_password
-              ? getRepeatPasswordError(password, repeatPassword)
-              : null
-          }
-          isInvalid={
-            touched.repeat_password &&
-            getRepeatPasswordError(password, repeatPassword) !== null
-          }
+          errorMessage={errors.repeat_password}
+          isInvalid={touched.repeat_password && !!errors.repeat_password}
           label="Repeat password"
           type="password"
           autoComplete="new-password"
           value={repeatPassword}
           onValueChange={(value) => {
             setRepeatPassword(value);
-            setTouched((prev) => ({ ...prev, repeat_password: true }));
+            setErrors((prev) => ({
+              ...prev,
+              repeat_password: getRepeatPasswordError(password, value) || "",
+            }));
+          }}
+          onFocus={() =>
+            setFirstFocused((prev) => ({ ...prev, repeat_password: true }))
+          }
+          onBlur={() => {
+            if (firstFocused.repeat_password)
+              setTouched((prev) => ({ ...prev, repeat_password: true }));
           }}
         />
 
         <Input
           isRequired
           value={cnpj}
-          errorMessage={
-            touched.cnpj ? (getCnpjError(cnpj) ? errors.cnpj : null) : null
-          }
+          errorMessage={errors.cnpj}
+          isInvalid={touched.cnpj && !!errors.cnpj}
           label="CNPJ"
           name="cnpj"
           type="text"
           autoComplete="off"
           onValueChange={(value) => {
             setCnpj(formatCnpj(value));
-            setTouched((prev) => ({ ...prev, cnpj: true }));
+            setErrors((prev) => ({ ...prev, cnpj: getCnpjError(value) || "" }));
+          }}
+          onFocus={() => setFirstFocused((prev) => ({ ...prev, cnpj: true }))}
+          onBlur={() => {
+            if (firstFocused.cnpj)
+              setTouched((prev) => ({ ...prev, cnpj: true }));
           }}
         />
 
@@ -361,8 +573,11 @@ const SupplierForm = ({
             color="primary"
             isLoading={isLoading}
             isDisabled={
-              !!getPasswordError(password) ||
-              !!getRepeatPasswordError(password, repeatPassword)
+              !!errors.enterpriseName ||
+              !!errors.email ||
+              !!errors.password ||
+              !!errors.repeat_password ||
+              !!errors.cnpj
             }
           >
             Submit
@@ -382,86 +597,10 @@ export const SignUpModal = ({
   isOpen: boolean;
   onClose: () => void;
 }) => {
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [submitted, setSubmitted] = React.useState<any>(null);
-  const [errors, setErrors] = React.useState<Errors>({});
-
-  // Clear variables for modal close/reset
-  const clearVariables = () => {
-    setSubmitted(null);
-    setErrors({});
-  };
-
-  // Handler for client form submission
-  const handleClientSubmit = async (data: {
-    name: string;
-    email: string;
-    password: string;
-  }) => {
-    setIsLoading(true);
-    const hashedPassword = await hash(data.password, 10);
-    const formattedData = {
-      name: data.name,
-      email: data.email,
-      password: hashedPassword,
-      credits: 0,
-    };
-    const registered = await registerClient(formattedData);
-    if (registered === false) {
-      errors.email = "An account with this email already exists.";
-      setErrors(errors);
-      setIsLoading(false);
-      return errors.email;
-    }
-    localStorage.setItem("logged_name_debug", data.name);
-    localStorage.setItem("logged_email_debug", data.email);
-    setErrors({});
-    setSubmitted(formattedData);
-    setIsLoading(false);
-    window.location.reload();
-    return "";
-  };
-
-  // Handler for supplier form submission
-  const handleSupplierSubmit = async (data: {
-    enterpriseName: string;
-    email: string;
-    password: string;
-    cnpj: string;
-  }) => {
-    setIsLoading(true);
-    const hashedPassword = await hash(data.password, 10);
-    const formattedData = {
-      name: data.enterpriseName,
-      email: data.email,
-      password: hashedPassword,
-      enterpriseName: data.enterpriseName,
-      cnpj: data.cnpj,
-      credits: 0,
-    };
-    const registered = await registerSupplier(formattedData);
-    if (registered === false) {
-      errors.email = "An account with this email or CNPJ already exists.";
-      errors.cnpj = "An account with this email or CNPJ already exists.";
-      setIsLoading(false);
-      setErrors(errors)
-      return errors.cnpj;
-    }
-    localStorage.setItem("logged_name_debug", data.enterpriseName);
-    localStorage.setItem("logged_email_debug", data.email);
-    localStorage.setItem("cnpj_debug", data.cnpj.replace(/\D/g, ""));
-    setErrors({});
-    setSubmitted(formattedData);
-    setIsLoading(false);
-    window.location.reload();
-    return "";
-  };
-
   return (
     <Modal
       isOpen={isOpen}
       onOpenChange={(isOpen) => !isOpen && onClose()}
-      onClose={clearVariables}
       backdrop="blur"
       size="xs"
     >
@@ -482,20 +621,10 @@ export const SignUpModal = ({
                 }}
               >
                 <Tab key="client" title="Client">
-                  <ClientForm
-                    onSubmit={handleClientSubmit}
-                    isLoading={isLoading}
-                    onClose={onClose}
-                    clearVariables={clearVariables}
-                  />
+                  <ClientForm onClose={onClose} />
                 </Tab>
                 <Tab key="supplier" title="Supplier">
-                  <SupplierForm
-                    onSubmit={handleSupplierSubmit}
-                    isLoading={isLoading}
-                    onClose={onClose}
-                    clearVariables={clearVariables}
-                  />
+                  <SupplierForm onClose={onClose} />
                 </Tab>
               </Tabs>
             </div>
