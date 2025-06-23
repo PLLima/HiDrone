@@ -54,13 +54,13 @@ export default function TransactionProgressPage() {
             </div>
             {/* Add spacing between the bar and the cards */}
             <div className="h-8" />
-            <div className="flex gap-4">
+            <div className="flex gap-5">
                 <Listbox
                         className="p-0 gap-0 divide-y divide-default-300/50 dark:divide-default-100/80 bg-content1 overflow-visible shadow-small rounded-medium"
                         itemClasses={{
                             base: "px-3 first:rounded-t-medium last:rounded-b-medium rounded-none gap-3 h-12 data-[hover=true]:bg-default-100/80",
                         }}>
-                    <ListboxItem key="action-header" isDisabled>
+                    <ListboxItem key="action-header">
                         <span className="text-2xl font-bold block">Accept request?</span>
                     </ListboxItem>
                     <ListboxItem key="route-body">
@@ -86,7 +86,7 @@ export default function TransactionProgressPage() {
                         itemClasses={{
                             base: "px-3 first:rounded-t-medium last:rounded-b-medium rounded-none gap-3 h-12 data-[hover=true]:bg-default-100/80",
                         }}>
-                    <ListboxItem key="route-header" isDisabled>
+                    <ListboxItem key="route-header">
                         <span className="text-2xl font-bold block">Route</span>
                     </ListboxItem>
                     <ListboxItem key="route-body">
@@ -112,7 +112,7 @@ export default function TransactionProgressPage() {
                         itemClasses={{
                             base: "px-3 first:rounded-t-medium last:rounded-b-medium rounded-none gap-3 h-12 data-[hover=true]:bg-default-100/80",
                         }}>
-                    <ListboxItem key="hiring-header" isDisabled>
+                    <ListboxItem key="hiring-header">
                         <span className="text-2xl font-bold block">Hiring</span>
                     </ListboxItem>
                     <ListboxItem key="route-body">
