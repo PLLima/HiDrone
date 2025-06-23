@@ -1,6 +1,19 @@
 import * as React from "react";
 
 import { IconSvgProps } from "@/types";
+// If @heroui/react exports 'cn' as a named export:
+import { cn } from "@heroui/react";
+
+interface IconWrapperProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+export const IconWrapper: React.FC<IconWrapperProps> = ({children, className}) => (
+  <div className={cn(className, "flex items-center rounded-small justify-center w-7 h-7")}>
+    {children}
+  </div>
+);
 
 /**
  * Helper to render an outlined circle and an inner outlined shape.
@@ -18,6 +31,42 @@ const withCircle = (children: React.ReactNode) => (
     {children}
   </>
 );
+
+
+export const PinIcon: React.FC<IconSvgProps> = ({ size = 24, className = '', ...props }) => (
+  <svg
+    viewBox="0 0 24 24"
+    width={size}
+    height={size}
+    fill="none"
+    className={className}
+    {...props}
+  >
+    <circle
+      cx="12"
+      cy="12"
+      r="10"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+    />
+    <path
+      d="M12 6a4 4 0 0 1 4 4c0 3-4 8-4 8s-4-5-4-8a4 4 0 0 1 4-4z"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <circle
+      cx="12"
+      cy="10"
+      r="1.5"
+      fill="currentColor"
+    />
+  </svg>
+);
+
 
 export const ExclamationIcon: React.FC<IconSvgProps> = ({ size = 24, className = '', ...props }) => (
   <svg
