@@ -3,7 +3,7 @@
 import { Input, Button } from "@heroui/react";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation"; // para navegar após confirmação
+import { useRouter } from "next/navigation";
 
 export default function Payment({
   droneId,
@@ -14,30 +14,45 @@ export default function Payment({
 }) {
   const [paymentMethod, setPaymentMethod] = useState<string | null>(null);
   const [routeCompleted, setRouteCompleted] = useState(false);
+  const [clientName, setClientName] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
     const savedMethod = localStorage.getItem("paymentMethod");
-    if (savedMethod) {
-      setPaymentMethod(savedMethod);
-    }
+    if (savedMethod) setPaymentMethod(savedMethod);
+
     const routeFlag = localStorage.getItem("routeCompleted");
     setRouteCompleted(routeFlag === "true");
+
+    const storedClientName = localStorage.getItem("logged_name_debug");
+    if (storedClientName) setClientName(storedClientName);
+
+    function handleStorageChange(event: StorageEvent) {
+      if (event.key === "logged_name_debug") setClientName(event.newValue);
+      if (event.key === "paymentMethod") setPaymentMethod(event.newValue);
+      if (event.key === "routeCompleted") setRouteCompleted(event.newValue === "true");
+    }
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
   const basePrice = droneId ? droneId * 10 : 0;
   const total = basePrice + distanceCost;
 
-  const canProceed = droneId !== null && routeCompleted && paymentMethod !== null;
+  const canProceed =
+    droneId !== null &&
+    routeCompleted === true &&
+    paymentMethod !== null &&
+    paymentMethod.trim() !== "" &&
+    clientName !== null &&
+    clientName.trim() !== "";
 
-  // Função que cria a order e salva no localStorage
   function handleConfirmPayment() {
     if (!canProceed) return;
 
-    // Pega dados do localStorage (ajuste as chaves conforme sua aplicação)
     const pickupLocation = localStorage.getItem("pickupLocation");
     const deliveryLocation = localStorage.getItem("deliveryLocation");
-    const clientName = localStorage.getItem("clientName");
 
     if (!droneId || !pickupLocation || !deliveryLocation || !clientName || !paymentMethod) {
       alert("Missing some order information.");
@@ -59,14 +74,21 @@ export default function Payment({
 
     alert("Order confirmed!");
 
-    // Opcional: navegar para a página de progresso da ordem
-    router.push("/transaction-progress");
+    router.push("/order"); // <-- redireciona para a página de status
   }
 
   if (!paymentMethod) {
     return (
       <div className="text-center mt-8">
         <p className="text-lg text-default-700">Please select a payment method first.</p>
+      </div>
+    );
+  }
+
+  if (!clientName) {
+    return (
+      <div className="text-center mt-8">
+        <p className="text-lg text-default-700">User not logged in. Please log in first.</p>
       </div>
     );
   }
