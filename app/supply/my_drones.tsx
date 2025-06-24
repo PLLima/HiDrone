@@ -26,6 +26,7 @@ import { PlusIcon } from "@/components/icons";
 import { Input } from "@heroui/react";
 
 import {
+  addDroneToSupplier,
   DroneFilters,
   DroneInstanceData,
   DroneModelData,
@@ -65,11 +66,11 @@ const mockDrones = Array.from({ length: 12 }, (_, index) => ({
   city: "New York",
   neighborhood: "Downtown",
   image: "/drone.png",
-  drone_weight: 2.5,
-  drone_dimentions: "2x2x2",
-  weight_capacity: 1.5,
-  volume_capacity: 2,
-  material: "Carbon Fiber",
+  weight: 2.5,
+  size: "2x2x2",
+  capacityWeight: 1.5,
+  capacityVolume: 2,
+  composition: "Carbon Fiber",
 }));
 
 // Drone Card Component
@@ -154,11 +155,11 @@ const DroneDetailsModal = ({
         ? drone.city.concat(", ", drone.neighborhood)
         : drone.city,
     },
-    { name: "Weight Capacity", value: `${drone.weight_capacity} kg` },
-    { name: "Volume Capacity", value: `${drone.volume_capacity} L` },
-    { name: "Drone Weight", value: `${drone.drone_weight} kg` },
-    { name: "Drone Dimensions", value: `${drone.drone_dimentions} (m)` },
-    { name: "Material", value: drone.material },
+    { name: "Weight Capacity", value: `${drone.capacityWeight} kg` },
+    { name: "Volume Capacity", value: `${drone.capacityVolume} L` },
+    { name: "Drone Weight", value: `${drone.weight} kg` },
+    { name: "Drone Dimensions", value: `${drone.size} (m)` },
+    { name: "Material", value: drone.composition },
   ];
 
   return (
@@ -249,7 +250,10 @@ const AddDroneModal = ({
   if (!droneModels) return null;
 
   // State for selected model
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [selectedModel, setSelectedModel] = useState<DroneModelData>(droneModels[0]);
+  const [addedNeighborhood, setAddedNeighborhood] = useState<string>("");
+  const [addedCity, setAddedCity] = useState<string>("");
 
   // Prepare rows for the table
   let rows = [
@@ -271,6 +275,26 @@ const AddDroneModal = ({
       { name: "Material", value: droneModels[key].composition },
     ];
   };
+
+  const handleAddDrone = async () => {
+    setIsLoading(true);
+    const formattedDroneData : DroneInstanceData = {
+      supplier: localStorage.getItem("cnpj_debug") as string,
+      id: selectedModel.id,
+      model: selectedModel.model,
+      city: addedCity,
+      neighborhood: addedNeighborhood,
+      image: selectedModel.image,
+      weight: selectedModel.weight,
+      size: selectedModel.size,
+      capacityWeight: selectedModel.capacityWeight,
+      capacityVolume: selectedModel.capacityVolume,
+      composition: selectedModel.composition,
+    };
+    await addDroneToSupplier(formattedDroneData);
+    setIsLoading(false);
+    window.location.reload();
+  }
 
   return (
     <Modal
@@ -315,8 +339,8 @@ const AddDroneModal = ({
               </Autocomplete>
 
               {/* Region Input */}
-              <Input label="City" type="city" />
-              <Input label="Neighborhood" type="neighborhood" />
+              <Input label="City" type="city" onValueChange={setAddedCity} />
+              <Input label="Neighborhood" type="neighborhood" onValueChange={setAddedNeighborhood}/>
             </div>
 
             {/* Drone Details Table */}
@@ -359,7 +383,8 @@ const AddDroneModal = ({
                 Cancel
               </Button>
               <Button
-                onPress={() => alert(`Drone ${selectedModel.id} chosen!`)}
+                isLoading={isLoading}
+                onPress={handleAddDrone}
                 color="primary"
                 className="flex-[1.5]"
               >

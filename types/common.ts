@@ -5,11 +5,11 @@ export type Drone = {
     city?: string;
     neighborhood?: string;
     image?: string;
-    drone_weight?: number;
-    drone_dimentions?: string;
-    weight_capacity?: number;
-    volume_capacity?: number;
-    material?: string;
+    weight?: number;
+    size?: string;
+    capacity_Weight?: number;
+    capacity_Volume?: number;
+    composition?: string;
 };
 
 export type Order = {
