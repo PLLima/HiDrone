@@ -27,6 +27,7 @@ import { Input } from "@heroui/react";
 
 import {
   addDroneToSupplier,
+  DroneFilterLimits,
   DroneFilters,
   DroneInstanceData,
   DroneModelData,
@@ -58,21 +59,6 @@ export const materials = [
   { label: "Steel", key: "steel" },
   { label: "Titanium", key: "titanium" },
 ];
-
-// Mock data for drones (same data for all drones for now)
-const mockDrones = Array.from({ length: 12 }, (_, index) => ({
-  id: index + 1,
-  supplier: "Drone Supplier Inc.",
-  model: "Drone Model X",
-  city: "New York",
-  neighborhood: "Downtown",
-  image: "/drone.png",
-  weight: 2.5,
-  size: "2x2x2",
-  capacityWeight: 1.5,
-  capacityVolume: 2,
-  composition: "Carbon Fiber",
-}));
 
 // Drone Card Component
 const DroneCard = ({
@@ -402,28 +388,16 @@ const AddDroneModal = ({
   );
 };
 
-// Default filter values
-const defaultFilters: DroneFilters = {
-  city: null,
-  material: null,
-  weightCapacity: [0, 100],
-  volumeCapacity: [0, 100],
-  droneWeight: [0, 100],
-};
-
-// Utility functions for localStorage
-const loadFiltersFromLocalStorage = (): DroneFilters => {
-  const storedFilters = localStorage.getItem("droneFilters");
-  return storedFilters ? JSON.parse(storedFilters) : defaultFilters;
-};
-
-const saveFiltersToLocalStorage = (filters: DroneFilters) => {
-  localStorage.setItem("droneFilters", JSON.stringify(filters));
-};
-
 // Main Search Drones Page
 export function MyDronesPage() {
-  const [filters, setFilters] = useState<DroneFilters>(defaultFilters);
+  const [isLoading, setIsLoading] = useState(true);
+  const [filterLimits, setFilterLimits] = useState<DroneFilterLimits | null>(
+    null
+  );
+  const [defaultFilters, setDefaultFilters] = useState<DroneFilters | null>(
+    null
+  );
+  const [filters, setFilters] = useState<DroneFilters | null>(null);
   const [selectedDroneId, setSelectedDroneId] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isADModalOpen, setIsADModalOpen] = useState(false);
@@ -433,9 +407,11 @@ export function MyDronesPage() {
   // Runs on every page request (server-side)
   useEffect(() => {
     async function load() {
+      // Get supplier drones
       const drones = await getSupplierDrones(
         localStorage.getItem("cnpj_debug") as string
       );
+      // Format drone instances
       const droneInstances = drones
         .map((drone) => {
           return {
@@ -454,9 +430,98 @@ export function MyDronesPage() {
         })
         .sort((a: any, b: any) => a.id - b.id);
       setDrones(droneInstances);
+
+      // Calculate filter limits
+      const filterLimits = calculateFilterLimits(droneInstances);
+      setFilterLimits(filterLimits);
+
+      // Set default filters
+      setDefaultFilters({
+        city: null,
+        composition: null,
+        weightCapacity: [
+          filterLimits.weightCapacityLimits[0],
+          filterLimits.weightCapacityLimits[1],
+        ],
+        volumeCapacity: [
+          filterLimits.weightCapacityLimits[0],
+          filterLimits.volumeCapacityLimits[1],
+        ],
+        droneWeight: [
+          filterLimits.weightCapacityLimits[0],
+          filterLimits.droneWeightLimits[1],
+        ],
+      });
+      setIsLoading(false);
     }
     load();
   }, []);
+
+  const calculateFilterLimits = (
+    drones: DroneInstanceData[]
+  ): DroneFilterLimits => {
+    if (!drones) {
+      return {
+        cities: [],
+        compositions: [],
+        weightCapacityLimits: [0, 0],
+        volumeCapacityLimits: [0, 0],
+        droneWeightLimits: [0, 0],
+      };
+    }
+
+    // Get list of available cities
+    const cities =
+      drones?.map((drone) => {
+        return {
+          label: drone.city,
+          key: drone.city
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/\s+/g, "_")
+            .toLocaleLowerCase(),
+        };
+      }) ?? [];
+    const compositions = drones?.map((drone) => {
+      return {
+        label: drone.composition,
+        key: drone.composition
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/\s+/g, "_")
+          .toLocaleLowerCase(),
+      };
+    }) ?? [];
+
+    // Calculate min and max weight, volume, and weight capacity
+    const weights = drones?.map((drone) => drone.weight) ?? [];
+    const minWeight = Math.min(...weights);
+    const maxWeight = Math.max(...weights);
+    const capacityVolumes = drones?.map((drone) => drone.capacityVolume) ?? [];
+    const minCapacityVolume = Math.min(...capacityVolumes);
+    const maxCapacityVolume = Math.max(...capacityVolumes);
+    const capacityWeights = drones?.map((drone) => drone.capacityWeight) ?? [];
+    const minCapacityWeight = Math.min(...capacityWeights);
+    const maxCapacityWeight = Math.max(...capacityWeights);
+
+    return {
+      cities: Array.from(new Set(cities)),
+      compositions: Array.from(new Set(compositions)),
+      weightCapacityLimits: [minCapacityWeight, maxCapacityWeight],
+      volumeCapacityLimits: [minCapacityVolume, maxCapacityVolume],
+      droneWeightLimits: [minWeight, maxWeight],
+    };
+  };
+
+  // Utility functions for localStorage
+  const loadFiltersFromLocalStorage = (): DroneFilters => {
+    const storedFilters = localStorage.getItem("droneFilters");
+    return storedFilters ? JSON.parse(storedFilters) : defaultFilters as DroneFilters;
+  };
+
+  const saveFiltersToLocalStorage = (filters: DroneFilters) => {
+    localStorage.setItem("droneFilters", JSON.stringify(filters));
+  };
 
   // Load filters when the accordion is opened
   const handleAccordionOpen = () => {
@@ -467,8 +532,8 @@ export function MyDronesPage() {
   // Handle filter changes
   const handleFilterChange = (key: keyof DroneFilters, value: any) => {
     const updatedFilters = { ...filters, [key]: value };
-    setFilters(updatedFilters);
-    saveFiltersToLocalStorage(updatedFilters);
+    setFilters(updatedFilters as DroneFilters);
+    saveFiltersToLocalStorage(updatedFilters as DroneFilters);
   };
 
   // Handle "Apply Filters" button
@@ -478,7 +543,7 @@ export function MyDronesPage() {
 
   // Handle "Reset Filters" button
   const handleResetFilters = () => {
-    saveFiltersToLocalStorage(defaultFilters);
+    saveFiltersToLocalStorage(defaultFilters as DroneFilters);
     setFilters(defaultFilters);
   };
 
@@ -503,134 +568,152 @@ export function MyDronesPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center gap-6 w-full max-w-screen-2xl mx-auto">
-      {/* Filters Accordion */}
-      {/* @ts-ignore: Suppress TypeScript error */}
-      <Accordion variant="shadow" className="w-full max-w-6xl" onOpenChange={handleAccordionOpen}>
-        <AccordionItem title="Filters">
-          <div className="flex flex-col gap-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {/* City Filter */}
-              <Autocomplete
-                className="max-w-xs"
-                label="City"
-                selectedKey={filters.city}
-                onSelectionChange={(key) =>
-                  handleFilterChange("city", key as string)
-                }
-              >
-                {cities.map((city) => (
-                  <AutocompleteItem key={city.key}>
-                    {city.label}
-                  </AutocompleteItem>
-                ))}
-              </Autocomplete>
+    !isLoading && (
+      <div className="flex flex-col items-center justify-center gap-6 w-full max-w-screen-2xl mx-auto">
+        {/* Filters Accordion */}
+        {/* @ts-ignore: Suppress TypeScript error */}
+        <Accordion variant="shadow" className="w-full max-w-6xl" onOpenChange={handleAccordionOpen}>
+          <AccordionItem title="Filters">
+            <div className="flex flex-col gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {/* City Filter */}
+                <Autocomplete
+                  className="max-w-xs"
+                  label="City"
+                  selectedKey={(filters as DroneFilters).city}
+                  onSelectionChange={(key) =>
+                    handleFilterChange("city", key as string)
+                  }
+                >
+                  {(filterLimits?.cities || []).map((city) => (
+                    <AutocompleteItem key={city.key}>
+                      {city.label}
+                    </AutocompleteItem>
+                  ))}
+                </Autocomplete>
 
-              {/* Material Filter */}
-              <Autocomplete
-                className="max-w-xs"
-                label="Material"
-                selectedKey={filters.material}
-                onSelectionChange={(key) =>
-                  handleFilterChange("material", key as string)
-                }
-              >
-                {materials.map((material) => (
-                  <AutocompleteItem key={material.key}>
-                    {material.label}
-                  </AutocompleteItem>
-                ))}
-              </Autocomplete>
+                {/* Composition Filter */}
+                <Autocomplete
+                  className="max-w-xs"
+                  label="Composition"
+                  selectedKey={filters?.composition}
+                  onSelectionChange={(key) =>
+                    handleFilterChange("composition", key as string)
+                  }
+                >
+                  {(filterLimits?.compositions || []).map((composition) => (
+                    <AutocompleteItem key={composition.key}>
+                      {composition.label}
+                    </AutocompleteItem>
+                  ))}
+                </Autocomplete>
 
-              {/* Weight Capacity Filter */}
-              <Slider
-                className="max-w-md"
-                value={filters.weightCapacity}
-                label="Weight Capacity (kg)"
-                maxValue={100}
-                minValue={0}
-                step={0.1}
-                onChange={(value) =>
-                  handleFilterChange(
-                    "weightCapacity",
-                    value as [number, number]
-                  )
-                }
-              />
+                {/* Weight Capacity Filter */}
+                <Slider
+                  className="max-w-md"
+                  value={filters?.weightCapacity}
+                  label="Weight Capacity (kg)"
+                  maxValue={filterLimits?.weightCapacityLimits[1] || 0}
+                  minValue={filterLimits?.weightCapacityLimits[0] || 0}
+                  step={
+                    ((filterLimits?.weightCapacityLimits[1] || 0) -
+                      (filterLimits?.weightCapacityLimits[0] || 0)) /
+                    1000
+                  }
+                  onChange={(value) =>
+                    handleFilterChange(
+                      "weightCapacity",
+                      value as [number, number]
+                    )
+                  }
+                />
 
-              {/* Volume Capacity Filter */}
-              <Slider
-                className="max-w-md"
-                value={filters.volumeCapacity}
-                label="Volume Capacity (l)"
-                maxValue={100}
-                minValue={0}
-                step={0.1}
-                onChange={(value) =>
-                  handleFilterChange(
-                    "volumeCapacity",
-                    value as [number, number]
-                  )
-                }
-              />
+                {/* Volume Capacity Filter */}
+                <Slider
+                  className="max-w-md"
+                  value={filters?.volumeCapacity}
+                  label="Volume Capacity (l)"
+                  maxValue={filterLimits?.volumeCapacityLimits[1] || 0}
+                  minValue={filterLimits?.volumeCapacityLimits[0] || 0}
+                  step={
+                    ((filterLimits?.volumeCapacityLimits[1] || 0) -
+                      (filterLimits?.volumeCapacityLimits[0] || 0)) /
+                    1000
+                  }
+                  onChange={(value) =>
+                    handleFilterChange(
+                      "volumeCapacity",
+                      value as [number, number]
+                    )
+                  }
+                />
 
-              {/* Drone Weight Filter */}
-              <Slider
-                className="max-w-md"
-                value={filters.droneWeight}
-                label="Drone Weight (kg)"
-                maxValue={100}
-                minValue={0}
-                step={0.1}
-                onChange={(value) =>
-                  handleFilterChange("droneWeight", value as [number, number])
-                }
-              />
+                {/* Drone Weight Filter */}
+                <Slider
+                  className="max-w-md"
+                  value={filters?.droneWeight}
+                  label="Drone Weight (kg)"
+                  maxValue={filterLimits?.droneWeightLimits[1] || 0}
+                  minValue={filterLimits?.droneWeightLimits[0] || 0}
+                  step={
+                    ((filterLimits?.droneWeightLimits[1] || 0) -
+                      (filterLimits?.droneWeightLimits[0] || 0)) /
+                    1000
+                  }
+                  onChange={(value) =>
+                    handleFilterChange("droneWeight", value as [number, number])
+                  }
+                />
+              </div>
+
+              {/* Buttons at the bottom */}
+              <div className="flex justify-end mt-4">
+                <Button
+                  variant="light"
+                  color="danger"
+                  className="mr-4"
+                  onPress={handleResetFilters}
+                >
+                  Reset Filters
+                </Button>
+                <Button
+                  variant="solid"
+                  color="primary"
+                  onPress={handleApplyFilters}
+                >
+                  Apply Filters
+                </Button>
+              </div>
             </div>
+          </AccordionItem>
+        </Accordion>
 
-            {/* Buttons at the bottom */}
-            <div className="flex justify-end mt-4">
-              <Button
-                variant="light"
-                color="danger"
-                className="mr-4"
-                onPress={handleResetFilters}
-              >
-                Reset Filters
-              </Button>
-              <Button
-                variant="solid"
-                color="primary"
-                onPress={handleApplyFilters}
-              >
-                Apply Filters
-              </Button>
-            </div>
-          </div>
-        </AccordionItem>
-      </Accordion>
+        {/* Drone Cards Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 w-full">
+          <AddDroneCard onClick={handleAddDroneClick} />
+          {drones &&
+            drones.map((drone) => (
+              <DroneCard
+                key={drone.id}
+                drone={drone}
+                onClick={handleCardClick}
+              />
+            ))}
+        </div>
 
-      {/* Drone Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 w-full">
-        <AddDroneCard onClick={handleAddDroneClick} />
-        {drones &&
-          drones.map((drone) => (
-            <DroneCard key={drone.id} drone={drone} onClick={handleCardClick} />
-          ))}
+        {/* Drone Details Modal */}
+        <DroneDetailsModal
+          drones={drones}
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          droneId={selectedDroneId}
+        />
+        <AddDroneModal
+          isOpen={isADModalOpen}
+          droneModels={droneModels}
+          onClose={handleCloseAddDroneModal}
+        />
       </div>
-
-      {/* Drone Details Modal */}
-      <DroneDetailsModal
-        drones={drones}
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        droneId={selectedDroneId}
-      />
-      <AddDroneModal
-        isOpen={isADModalOpen}
-        droneModels={droneModels}
-        onClose={handleCloseAddDroneModal}
-      />
-    </div>
+    )
   );
 }

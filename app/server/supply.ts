@@ -29,11 +29,19 @@ export type DroneInstanceData = {
 // Types for filters
 export type DroneFilters = {
   city: string | null;
-  material: string | null;
+  composition: string | null;
   weightCapacity: [number, number];
   volumeCapacity: [number, number];
   droneWeight: [number, number];
 };
+
+export type DroneFilterLimits = {
+  cities: {label: string, key: string}[];
+  compositions: {label: string, key: string}[];
+  weightCapacityLimits: [number, number];
+  volumeCapacityLimits: [number, number];
+  droneWeightLimits: [number, number];
+}
 
 export async function getDroneModels() {
   const models = await (prisma as any).droneModel.findMany();
@@ -115,7 +123,7 @@ export async function filterDrones(filters: DroneFilters) {
     },
     where: {
       city: filters.city,
-      material: filters.material,
+      material: filters.composition,
       drone_weight: {
         gte: filters.droneWeight ? filters.droneWeight[0] : 0,
         lte: filters.droneWeight ? filters.droneWeight[1] : 10,
