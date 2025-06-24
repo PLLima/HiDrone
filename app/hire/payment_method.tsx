@@ -39,10 +39,14 @@ export default function PaymentMethod({
   goToPayment,
 }: PaymentMethodProps) {
   const [selected, setSelected] = useState<string | null>(null);
+  const [routeCompleted, setRouteCompleted] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem("paymentMethod");
     if (saved) setSelected(saved);
+
+    const routeFlag = localStorage.getItem("routeCompleted");
+    setRouteCompleted(routeFlag === "true");
   }, []);
 
   const handleChange = (value: string) => {
@@ -51,14 +55,14 @@ export default function PaymentMethod({
   };
 
   const canContinue =
-    selectedDroneId !== null && distanceCost > 0 && selected !== null;
+    selectedDroneId !== null && routeCompleted && selected !== null;
 
   const handleClick = () => {
     if (selectedDroneId === null) {
       alert("Please select a drone before continuing.");
       return;
     }
-    if (distanceCost <= 0) {
+    if (!routeCompleted) {
       alert("Please set a delivery route before continuing.");
       return;
     }
@@ -93,7 +97,12 @@ export default function PaymentMethod({
         </CustomRadio>
       </RadioGroup>
 
-	  <Button color="primary" className="w-full mt-1" onClick={handleClick}>
+      <Button
+        color="primary"
+        className="w-full mt-1"
+        onClick={handleClick}
+        isDisabled={!canContinue}
+      >
         Continue to Payment
       </Button>
     </div>

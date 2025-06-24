@@ -1,5 +1,7 @@
-import { Autocomplete, AutocompleteItem, Input, Button } from "@heroui/react";
-import { useState } from "react";
+"use client";
+
+import { Autocomplete, AutocompleteItem, Input } from "@heroui/react";
+import { useState, useEffect } from "react";
 
 export const cities = [
   { label: "São Paulo", key: "sao_paulo" },
@@ -28,29 +30,32 @@ export function SetPath({
 }) {
   const [pickup, setPickup] = useState("");
   const [delivery, setDelivery] = useState("");
-  const [cityKey, setCityKey] = useState<string | null>(null);
   const [cityInputValue, setCityInputValue] = useState("");
-
-  const handleGoToPayment = () => {
-    if (selectedDroneId === null) {
-      alert("Por favor, selecione um drone antes de continuar.");
-      return;
-    }
-
-    if (pickup.trim() === "" || delivery.trim() === "") {
-      alert("Por favor, preencha todos os campos de endereço.");
-      return;
-    }
-
-    //Gera valor de distância aleatório entre 20 e 100
-    const distanceCost = Math.floor(Math.random() * (100 - 20 + 1)) + 20;
-    setDistanceCost(distanceCost);
-    goToPayment();
-  };
 
   const filteredCities = cities.filter((city) =>
     city.label.toLowerCase().includes(cityInputValue.toLowerCase())
   );
+
+  useEffect(() => {
+    const storedPickup = localStorage.getItem("pickupAddress") || "";
+    const storedDelivery = localStorage.getItem("deliveryAddress") || "";
+    setPickup(storedPickup);
+    setDelivery(storedDelivery);
+  }, []);
+
+  useEffect(() => {
+    const isValid = pickup.trim() !== "" && delivery.trim() !== "";
+
+    localStorage.setItem("pickupAddress", pickup);
+    localStorage.setItem("deliveryAddress", delivery);
+    localStorage.setItem("routeCompleted", isValid ? "true" : "false");
+
+    if (isValid) {
+      const cost = Math.floor(Math.random() * (100 - 20 + 1)) + 20;
+      localStorage.setItem("distanceCost", String(cost));
+      setDistanceCost(cost);
+    }
+  }, [pickup, delivery, setDistanceCost]);
 
   return (
     <div className="flex flex-col items-center justify-center gap-6 w-full max-w-screen-2xl mx-auto">
@@ -58,51 +63,18 @@ export function SetPath({
         Choose Delivery Location
       </h2>
 
-      {/* <Autocomplete
-        className="max-w-xs"
-        label="Delivery City"
-        inputValue={cityInputValue}
-        selectedKey={cityKey ?? undefined}
-        onInputChange={setCityInputValue}
-        onSelectionChange={(key) => {
-          setCityKey(key as string);
-          const selectedCity = cities.find(city => city.key === key);
-          if (selectedCity) {
-            setCityInputValue(selectedCity.label);
-          } else {
-            setCityInputValue(""); // Clear input if selected key is not found (shouldn't happen with allowsCustomValue=false)
-          }
-        }}
-        allowsCustomValue={false}
-        allowsEmptyCollection={false}
-      >
-
-        {cities.map((city) => (
-          <AutocompleteItem key={city.key}> {city.label} </AutocompleteItem>
-        ))}
-
-      </Autocomplete> */}
-
       <Input
         name="pickupAddress"
         label="Pickup Address"
         value={pickup}
         onValueChange={setPickup}
-      ></Input>
+      />
       <Input
         name="deliveryAddress"
         label="Delivery Address"
         value={delivery}
         onValueChange={setDelivery}
-      ></Input>
-
-      <Button
-        color="primary"
-        className="w-full max-w-xs"
-        onPress={handleGoToPayment}
-      >
-        Go to Payment
-      </Button>
+      />
     </div>
   );
 }
