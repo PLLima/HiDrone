@@ -10,7 +10,7 @@ export type DroneModelData = {
   image: string;
   capacityVolume: number;
   capacityWeight: number;
-}
+};
 
 export type DroneInstanceData = {
   id: number;
@@ -19,11 +19,11 @@ export type DroneInstanceData = {
   city: string;
   neighborhood: string;
   image: string;
-  drone_weight: number;
-  drone_dimentions: string;
-  weight_capacity: number;
-  volume_capacity: number;
-  material: string;
+  weight: number;
+  size: string;
+  capacityWeight: number;
+  capacityVolume: number;
+  composition: string;
 };
 
 // Types for filters
@@ -88,4 +88,26 @@ export async function filterDrones(filters: DroneFilters) {
     },
   });
   return drones;
+}
+
+export async function addDroneToSupplier(droneData: DroneInstanceData) {
+  // Find the supplier related to cnpj
+  const supplier = await (prisma as any).supplier.findUnique({
+    where: {
+      cnpj: droneData.supplier,
+    },
+  });
+  const supplierId = supplier.id;
+
+  // If the drone instance doesn't exist, create it
+  await (prisma as any).droneInstance.create({
+    data: {
+      modelId: droneData.id,
+      supplierId: supplierId,
+      region: {
+        city: droneData.city,
+        neighborhood: droneData.neighborhood,
+      },
+    },
+  });
 }
