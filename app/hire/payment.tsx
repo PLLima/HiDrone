@@ -72,9 +72,9 @@ export default function Payment({
 
     localStorage.setItem("currentOrder", JSON.stringify(newOrder));
 
-    alert("Order confirmed!");
+    // alert removido
 
-    router.push("/order"); // <-- redireciona para a página de status
+    router.push("/order"); // redireciona para a página de status
   }
 
   if (!paymentMethod) {
