@@ -64,6 +64,49 @@ export async function getDrones() {
   return JSON.parse(JSON.stringify(drones));
 }
 
+export async function getSupplierDrones(supplierCnpj: string) {
+  // Don't search for client drones!
+  if (!supplierCnpj) {
+    return [];
+  }
+  // Get supplier id
+  const supplierData = await (prisma as any).supplier.findUnique({
+    select: {
+      id: true,
+      name: true,
+    },
+    where: {
+      cnpj: supplierCnpj,
+    },
+  });
+
+  // Get supplier drones
+  const supplierDrones = await (prisma as any).droneInstance.findMany({
+    include: {
+      model: {
+        select: {
+          model: true,
+          image: true,
+          size: true,
+          composition: true,
+          weight: true,
+          capacityWeight: true,
+          capacityVolume: true,
+        },
+      },
+      supplier: {
+        select: {
+          name: true,
+        },
+      },
+    },
+    where: {
+      supplierId: supplierData.id,
+    },
+  });
+  return JSON.parse(JSON.stringify(supplierDrones));
+}
+
 export async function filterDrones(filters: DroneFilters) {
   const drones = await (prisma as any).droneInstance.findMany({
     include: {

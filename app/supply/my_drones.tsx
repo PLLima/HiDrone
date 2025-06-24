@@ -32,6 +32,7 @@ import {
   DroneModelData,
   getDroneModels,
   getDrones,
+  getSupplierDrones,
 } from "@/app/server/supply";
 
 export const cities = [
@@ -169,6 +170,7 @@ const DroneDetailsModal = ({
         if (!open) onClose();
       }}
       backdrop="blur"
+      hideCloseButton
     >
       <ModalContent>
         <>
@@ -212,20 +214,8 @@ const DroneDetailsModal = ({
           {/* Modal Footer */}
           <div className="flex justify-center gap-4 p-4">
             <div className="flex w-full gap-4">
-              <Button
-                onPress={onClose}
-                color="danger"
-                variant="light"
-                className="flex-[0.5]"
-              >
-                Cancel
-              </Button>
-              <Button
-                onPress={() => alert(`Drone ${drone.id} chosen!`)}
-                color="primary"
-                className="flex-[1.5]"
-              >
-                Choose this Drone
+              <Button onPress={onClose} color="primary" className="w-full">
+                Close Details
               </Button>
             </div>
           </div>
@@ -251,7 +241,9 @@ const AddDroneModal = ({
 
   // State for selected model
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [selectedModel, setSelectedModel] = useState<DroneModelData>(droneModels[0]);
+  const [selectedModel, setSelectedModel] = useState<DroneModelData>(
+    droneModels[0]
+  );
   const [addedNeighborhood, setAddedNeighborhood] = useState<string>("");
   const [addedCity, setAddedCity] = useState<string>("");
 
@@ -268,8 +260,14 @@ const AddDroneModal = ({
   const handleSelectionChange = (key: number) => {
     setSelectedModel(droneModels[key]);
     rows = [
-      { name: "Weight Capacity", value: `${droneModels[key].capacityWeight} kg` },
-      { name: "Volume Capacity", value: `${droneModels[key].capacityVolume} L` },
+      {
+        name: "Weight Capacity",
+        value: `${droneModels[key].capacityWeight} kg`,
+      },
+      {
+        name: "Volume Capacity",
+        value: `${droneModels[key].capacityVolume} L`,
+      },
       { name: "Drone Weight", value: `${droneModels[key].weight} kg` },
       { name: "Drone Dimensions", value: `${droneModels[key].size} (m)` },
       { name: "Material", value: droneModels[key].composition },
@@ -278,7 +276,7 @@ const AddDroneModal = ({
 
   const handleAddDrone = async () => {
     setIsLoading(true);
-    const formattedDroneData : DroneInstanceData = {
+    const formattedDroneData: DroneInstanceData = {
       supplier: localStorage.getItem("cnpj_debug") as string,
       id: selectedModel.id,
       model: selectedModel.model,
@@ -294,7 +292,7 @@ const AddDroneModal = ({
     await addDroneToSupplier(formattedDroneData);
     setIsLoading(false);
     window.location.reload();
-  }
+  };
 
   return (
     <Modal
@@ -329,7 +327,9 @@ const AddDroneModal = ({
                 defaultInputValue={droneModels[0].model}
                 className="w-full"
                 defaultItems={droneModels}
-                onSelectionChange={(key) => handleSelectionChange(key as number - 1)}
+                onSelectionChange={(key) =>
+                  handleSelectionChange((key as number) - 1)
+                }
               >
                 {(droneModel) => (
                   <AutocompleteItem key={droneModel.id}>
@@ -340,7 +340,11 @@ const AddDroneModal = ({
 
               {/* Region Input */}
               <Input label="City" type="city" onValueChange={setAddedCity} />
-              <Input label="Neighborhood" type="neighborhood" onValueChange={setAddedNeighborhood}/>
+              <Input
+                label="Neighborhood"
+                type="neighborhood"
+                onValueChange={setAddedNeighborhood}
+              />
             </div>
 
             {/* Drone Details Table */}
@@ -424,19 +428,35 @@ export function MyDronesPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isADModalOpen, setIsADModalOpen] = useState(false);
   const [drones, setDrones] = useState<DroneInstanceData[] | null>(null);
-  const [droneModels, setDroneModels] = useState<DroneModelData[] | null>(
-    null
-  )
+  const [droneModels, setDroneModels] = useState<DroneModelData[] | null>(null);
 
   // Runs on every page request (server-side)
-  // useEffect(() => {
-  //   async function load() {
-  //     const drones = await getDrones();
-  //     setDrones(drones);
-  //   }
-  //   load()
-  // }
-  // , [])
+  useEffect(() => {
+    async function load() {
+      const drones = await getSupplierDrones(
+        localStorage.getItem("cnpj_debug") as string
+      );
+      const droneInstances = drones
+        .map((drone) => {
+          return {
+            id: drone.id,
+            model: drone.model.model,
+            image: drone.model.image,
+            size: drone.model.size,
+            composition: drone.model.composition,
+            weight: drone.model.weight,
+            capacityWeight: drone.model.capacityWeight,
+            capacityVolume: drone.model.capacityVolume,
+            supplier: drone.supplier.name,
+            city: drone.region.city,
+            neighborhood: drone.region.neighborhood,
+          };
+        })
+        .sort((a: any, b: any) => a.id - b.id);
+      setDrones(droneInstances);
+    }
+    load();
+  }, []);
 
   // Load filters when the accordion is opened
   const handleAccordionOpen = () => {
@@ -476,7 +496,7 @@ export function MyDronesPage() {
     const droneModels = await getDroneModels();
     setDroneModels(droneModels.sort((a: any, b: any) => a.id - b.id));
     setIsADModalOpen(true);
-  };
+  }
 
   const handleCloseAddDroneModal = () => {
     setIsADModalOpen(false);
@@ -486,7 +506,7 @@ export function MyDronesPage() {
     <div className="flex flex-col items-center justify-center gap-6 w-full max-w-screen-2xl mx-auto">
       {/* Filters Accordion */}
       {/* @ts-ignore: Suppress TypeScript error */}
-      <Accordion variant="shadow" className="w-full max-w-6xl" onOpenChange={handleAccordionOpen} >
+      <Accordion variant="shadow" className="w-full max-w-6xl" onOpenChange={handleAccordionOpen}>
         <AccordionItem title="Filters">
           <div className="flex flex-col gap-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -593,14 +613,15 @@ export function MyDronesPage() {
       {/* Drone Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 w-full">
         <AddDroneCard onClick={handleAddDroneClick} />
-        {mockDrones.map((drone) => (
-          <DroneCard key={drone.id} drone={drone} onClick={handleCardClick} />
-        ))}
+        {drones &&
+          drones.map((drone) => (
+            <DroneCard key={drone.id} drone={drone} onClick={handleCardClick} />
+          ))}
       </div>
 
       {/* Drone Details Modal */}
       <DroneDetailsModal
-        drones={mockDrones}
+        drones={drones}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         droneId={selectedDroneId}
