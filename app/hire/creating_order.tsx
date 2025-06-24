@@ -38,7 +38,7 @@ export const DroneItems = ({ order }: { order?: Order }) => (
         <IconWrapper className="bg-default-100 text-default-600">
           <DroneIcon size={30} className="text-default-500" />
         </IconWrapper>
-        <span>{order?.droneModel ?? "Drone Model"}</span>
+        <span>{order?.drone?.model ?? "Drone Model"}</span>
       </div>
     </ListboxItem>
 )
