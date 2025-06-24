@@ -97,14 +97,6 @@ export default function PaymentMethod({
         </CustomRadio>
       </RadioGroup>
 
-      <Button
-        color="primary"
-        className="w-full mt-1"
-        onClick={handleClick}
-        isDisabled={!canContinue}
-      >
-        Continue to Payment
-      </Button>
     </div>
   );
 }
